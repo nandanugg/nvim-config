@@ -61,25 +61,25 @@ vim.keymap.set("n", "<C-y>", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "<C-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
 
-vim.keymap.set("n", ".", "", { noremap = true })
+vim.keymap.set("n", ",", "", { noremap = true })
 -- Explorer
-vim.keymap.set("n", ".e", ":Neotree toggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", ",e", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "..", "<Cmd>Telescope find_files<CR>", { noremap = true, silent = true, desc = "Search files" })
-vim.keymap.set("n", ".o", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true, desc = "Search old files" })
+vim.keymap.set("n", ",,", "<Cmd>Telescope find_files<CR>", { noremap = true, silent = true, desc = "Search files" })
+vim.keymap.set("n", ",o", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true, desc = "Search old files" })
 local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
-vim.keymap.set("v", ".g", live_grep_args_shortcuts.grep_word_under_cursor_current_buffer)
-vim.keymap.set("n", ".g", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
-vim.keymap.set("n", ".b", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Search buffers" })
+vim.keymap.set("v", ",g", live_grep_args_shortcuts.grep_word_under_cursor_current_buffer)
+vim.keymap.set("n", ",g", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+vim.keymap.set("n", ",b", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Search buffers" })
 
-vim.keymap.set("n", ".h", "<cmd>Telescope neoclip<CR>")
-vim.keymap.set("n", ".r", "<cmd>Telescope zoxide list<CR>")
-vim.keymap.set("n", ".u", vim.cmd.UndotreeToggle)
-vim.keymap.set("n", ".m", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
-vim.keymap.set("n", ".s", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
+vim.keymap.set("n", ",h", "<cmd>Telescope neoclip<CR>")
+vim.keymap.set("n", ",r", "<cmd>Telescope zoxide list<CR>")
+vim.keymap.set("n", ",u", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", ",m", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
+vim.keymap.set("n", ",s", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
 
 -- replacing
-vim.api.nvim_set_keymap("v", ".c", ":ReplaceSelection<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", ",c", ":ReplaceSelection<CR>", { noremap = true, silent = true })
 
 -- buffers
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
@@ -115,11 +115,11 @@ local function open_in_new_buffer_and_navigate(lsp_function)
 end
 
 local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "gd", open_in_new_buffer_and_navigate("textDocument/definition"), opts)
+vim.keymap.set("n", "gE", open_in_new_buffer_and_navigate("textDocument/definition"), opts)
 vim.keymap.set("n", "gD", open_in_new_buffer_and_navigate("textDocument/declaration"), opts)
-vim.keymap.set("n", "gy", open_in_new_buffer_and_navigate("textDocument/typeDefinition"), opts)
+vim.keymap.set("n", "gY", open_in_new_buffer_and_navigate("textDocument/typeDefinition"), opts)
 vim.keymap.set("n", "gI", open_in_new_buffer_and_navigate("textDocument/implementation"), opts)
-vim.keymap.set("n", "gA", open_in_new_buffer_and_navigate("textDocument/references"), opts)
+vim.keymap.set("n", "gU", open_in_new_buffer_and_navigate("textDocument/references"), opts)
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -187,7 +187,7 @@ vim.keymap.set("t", "2<C-\\><C-\\>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true,
 vim.keymap.set("t", "3<C-\\><C-\\>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 
 -- deburing
-vim.keymap.set("n", "<F5>", '<cmd>lua require"dap".torle_breakpoint()<CR>', {})
+vim.keymap.set("n", "<F5>", '<cmd>lua require"dap",torle_breakpoint()<CR>', {})
 vim.keymap.set("n", "<F6>", function()
 	require("dap").continue()
 end)
@@ -203,7 +203,7 @@ end)
 vim.keymap.set("n", "<F10>", function()
 	require("dap").terminate()
 end)
-vim.keymap.set("n", "<F6>u", '<cmd>lua require"dapui".torle()<CR>', {})
+vim.keymap.set("n", "<F6>u", '<cmd>lua require"dapui",torle()<CR>', {})
 vim.keymap.set("n", "<F6>p", ":Telescope dap list_breakpoints<CR>", {})
 vim.keymap.set("n", "<F6>f", ":Telescope dap frames<CR>", {})
 vim.keymap.set("n", "<F6>l", ":DapShowLog<CR>", {})

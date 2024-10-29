@@ -179,9 +179,6 @@ require("lazy").setup({
 		"nvim-telescope/telescope-fzf-native.nvim", -- search backend
 		build = "make",
 	},
-	{
-		"camspiers/snap",
-	},
 	{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
 	{
 		"AckslD/nvim-neoclip.lua", -- search clipboard

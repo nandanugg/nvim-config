@@ -65,32 +65,7 @@ vim.keymap.set("n", ".", "", { noremap = true })
 -- Explorer
 vim.keymap.set("n", ".e", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
-local snap = require("snap")
-snap.maps({
-	{
-		"..",
-		snap.config.file({
-			producer = snap.get("consumer.fzf")(snap.get("producer.ripgrep.file").args({
-				"--hidden",
-				"--no-ignore-vcs",
-				"--glob",
-				"!**/node_modules/*",
-				"--glob",
-				"!**/.cache/*",
-				"--glob",
-				"!**/dist/*",
-				"--glob",
-				"!**/.git/*",
-			})),
-			preview = false,
-			reverse = true,
-			prompt = "Search file",
-			layout = snap.get("layout").top,
-			suffix = " 🔎",
-		}),
-	},
-})
-
+vim.keymap.set("n", "..", "<Cmd>Telescope find_files<CR>", { noremap = true, silent = true, desc = "Search files" })
 vim.keymap.set("n", ".o", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true, desc = "Search old files" })
 local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
 vim.keymap.set("v", ".g", live_grep_args_shortcuts.grep_word_under_cursor_current_buffer)

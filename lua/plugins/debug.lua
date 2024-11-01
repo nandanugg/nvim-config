@@ -13,6 +13,7 @@ local function clear_dap_log()
 		print("DAP log cleared")
 	end
 end
+-- vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
 dap.listeners.before.event_initialized["clear_dap_log"] = function()
 	clear_dap_log()
 end
@@ -24,9 +25,8 @@ dapui.setup({
 		{
 			elements = {
 				"scopes",
-				"breakpoints",
 			},
-			size = 40,
+			size = 50,
 			position = "right",
 		},
 	},
@@ -69,18 +69,16 @@ dap.configurations.php = {
 			return file_path
 		end,
 		args = function()
+			local aerial = require("aerial")
 			local function_name = ""
 
-			-- if navic.is_available() then
-			-- 	local location = navic.get_location()
-			-- 	local clean_location = location
-			-- 		:gsub("%%#.-#", "") -- Remove formatting like %#NavicIconsMethod#
-			-- 		:gsub("%%*", "") -- Remove any remaining %%
-			-- 		:gsub("%*", "") -- Remove asterisks (*)
-			-- 		:match("[^%s]+$") -- Extract the last non-whitespace word
-			-- 	function_name = clean_location or ""
-			-- end
+			-- Try to get the current symbol (function name) from aerial
+			local symbol = aerial.get_location()
+			if symbol and symbol.kind == "Function" then
+				function_name = symbol.name
+			end
 
+			-- Fallback to input if function name is not detected
 			function_name = vim.fn.input("Method to test (leave blank to test all): ", function_name)
 
 			if function_name == "" then
@@ -172,3 +170,37 @@ dap.configurations.php = {
 -- 	},
 -- }
 -- < GO DEBUG
+require("neotest").setup({
+	log_level = vim.log.levels.DEBUG,
+	adapters = {
+		require("neotest-phpunit")({
+			phpunit_cmd = function()
+				local currentCwd = vim.fn.getcwd()
+				return currentCwd .. "/backend/vendor/bin/phpunit"
+			end,
+			root_files = { "composer.json", "phpunit.xml" },
+			env = {
+				XDEBUG_CONFIG = "idekey=neotest",
+			},
+			dap = { -- this is for neotest
+				log = true,
+				type = "php",
+				request = "launch",
+				name = "Listen for XDebug from neotest",
+				port = 9003,
+				cwd = "${workspaceFolder}/backend",
+				runtimeExecutable = "php",
+				stopOnEntry = false,
+				breakpoints = {
+					exception = {
+						Notice = false,
+						Warning = false,
+						Error = false,
+						Exception = false,
+						["*"] = false,
+					},
+				},
+			},
+		}),
+	},
+})

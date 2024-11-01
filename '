@@ -46,6 +46,10 @@ local function replace_visual_selection()
 	end
 end
 
+vim.api.nvim_create_user_command("ReplaceSelection", function()
+	replace_visual_selection()
+end, { range = true })
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -57,36 +61,25 @@ vim.keymap.set("n", "<C-y>", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "<C-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
 
+vim.keymap.set("n", ",", "", { noremap = true })
 -- Explorer
-vim.keymap.set("n", "<C-k>", "", { noremap = true })
-vim.keymap.set("n", "<C-k><C-e>", ":Neotree toggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", ",e", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<C-k><C-k>", function()
-	require("telescope.builtin").find_files({
-		hidden = true, -- Show hidden files and dotfiles
-		no_ignore = true, -- Show gitignored files
-	})
-end, {})
-vim.keymap.set(
-	"n",
-	"<C-k>o",
-	"<Cmd>Telescope oldfiles<CR>",
-	{ noremap = true, silent = true, desc = "Search old files" }
-)
+vim.keymap.set("n", ",,", "<Cmd>Telescope find_files<CR>", { noremap = true, silent = true, desc = "Search files" })
+vim.keymap.set("n", ",o", "<Cmd>Telescope oldfiles<CR>", { noremap = true, silent = true, desc = "Search old files" })
 local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
-vim.keymap.set("v", "<C-k><C-g>", live_grep_args_shortcuts.grep_visual_selection)
-vim.keymap.set("n", "<C-k><C-g>", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
-vim.keymap.set(
-	"n",
-	"<C-k><C-b>",
-	"<Cmd>Telescope buffers<CR>",
-	{ noremap = true, silent = true, desc = "Search buffers" }
-)
-vim.keymap.set("n", "<C-k><C-h>", "<cmd>Telescope neoclip<CR>")
-vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
-vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
-vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
-vim.keymap.set("n", "<C-k><C-s>", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
+vim.keymap.set("v", ",g", live_grep_args_shortcuts.grep_word_under_cursor_current_buffer)
+vim.keymap.set("n", ",g", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+vim.keymap.set("n", ",b", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Search buffers" })
+
+vim.keymap.set("n", ",h", "<cmd>Telescope neoclip<CR>")
+vim.keymap.set("n", ",r", "<cmd>Telescope zoxide list<CR>")
+vim.keymap.set("n", ",u", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", ",m", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
+vim.keymap.set("n", ",s", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
+
+-- replacing
+vim.api.nvim_set_keymap("v", ",c", ":ReplaceSelection<CR>", { noremap = true, silent = true })
 
 -- buffers
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
@@ -122,9 +115,12 @@ local function open_in_new_buffer_and_navigate(lsp_function)
 end
 
 local opts = { noremap = true, silent = true }
+-- vim.keymap.set("n", "gd", open_in_new_buffer_and_navigate("textDocument/definition"), opts)
 vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, opts)
+-- vim.keymap.set("n", "gD", open_in_new_buffer_and_navigate("textDocument/declaration"), opts)
 vim.keymap.set("n", "gt", open_in_new_buffer_and_navigate("textDocument/typeDefinition"), opts)
 vim.keymap.set("n", "gU", open_in_new_buffer_and_navigate("textDocument/implementation"), opts)
+-- vim.keymap.set("n", "gu", open_in_new_buffer_and_navigate("textDocument/references"), opts)
 vim.keymap.set("n", "gu", require("telescope.builtin").lsp_references, opts)
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
@@ -133,9 +129,11 @@ vim.keymap.set("n", "gD", require("telescope.builtin").diagnostics, opts)
 vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
+-- vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
+-- vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
 
-vim.keymap.set("n", "<C-g><C-g>", "<cmd>Neogit<CR>", opts)
-vim.keymap.set("n", "<C-g><C-b>", "<cmd>GitBlameToggle<CR>", opts)
+vim.keymap.set("n", "\\g", "<cmd>Neogit<CR>", opts)
+vim.keymap.set("n", "\\b", "<cmd>GitBlameToggle<CR>", opts)
 require("gitsigns").setup({
 	on_attach = function(bufnr)
 		local gs = package.loaded.gitsigns
@@ -146,9 +144,9 @@ require("gitsigns").setup({
 			vim.keymap.set(mode, l, r, opts)
 		end
 
-		map("n", "]g", function()
+		map("n", "]\\", function()
 			if vim.wo.diff then
-				return "]g"
+				return "]\\"
 			end
 			vim.schedule(function()
 				gs.next_hunk()
@@ -156,18 +154,18 @@ require("gitsigns").setup({
 			return "<Ignore>"
 		end, { expr = true })
 
-		map("n", "[g", function()
+		map("n", "[\\", function()
 			if vim.wo.diff then
-				return "[g"
+				return "[\\"
 			end
 			vim.schedule(function()
 				gs.prev_hunk()
 			end)
 			return "<Ignore>"
 		end, { expr = true })
-		map("n", "<C-g><C-p>", gs.preview_hunk)
-		map("n", "<C-g><C-r>", gs.reset_hunk)
-		-- more options
+		map("n", "\\h", gs.preview_hunk)
+		map("n", "\\r", gs.reset_hunk)
+		-- more option
 		-- https://github.com/lewis6991/gitsigns.nvim
 	end,
 })
@@ -194,35 +192,41 @@ vim.keymap.set("t", "2<C-\\><C-\\>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true,
 vim.keymap.set("t", "3<C-\\><C-\\>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 
 -- debugging
-local neotest = require("neotest")
-vim.keymap.set("n", "<C-b>", "", { noremap = true })
-vim.keymap.set("n", "<C-b><C-s>", function()
+vim.keymap.set("n", "<C-t><C-b>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
+vim.keymap.set("n", "<F6>", function()
 	require("dap").continue()
 end)
-vim.keymap.set("n", "<C-b><C-n>", function()
+vim.keymap.set("n", "<F7>", function()
 	require("dap").step_over()
 end)
-vim.keymap.set("n", "<C-b><C-i>", function()
+vim.keymap.set("n", "<F8>", function()
 	require("dap").step_into()
 end)
-vim.keymap.set("n", "<C-b><C-o>", function()
+vim.keymap.set("n", "<F9>", function()
 	require("dap").step_out()
 end)
-vim.keymap.set("n", "<C-b><C-q>", function()
+vim.keymap.set("n", "<F10>", function()
 	require("dap").terminate()
 end)
-vim.keymap.set("n", "<C-b><C-b>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
-vim.keymap.set("n", "<C-b><C-u>", '<cmd>lua require("dapui").toggle()<CR>', {})
-vim.keymap.set("n", "<C-b><C-i>", ":Telescope dap list_breakpoints<CR>", {})
-vim.keymap.set("n", "<C-b><C-f>", ":Telescope dap frames<CR>", {})
-vim.keymap.set("n", "<C-b><C-o>", ":DapShowLog<CR>", {})
-vim.keymap.set("n", "<C-b><C-l>", function()
-	neotest.output.open({ enter = true })
-end)
-vim.keymap.set("n", "<C-b><C-t>", function()
+
+local neotest = require("neotest")
+vim.keymap.set("n", "<C-e><C-e>", '<cmd>lua require("dapui").toggle()<CR>', {})
+vim.keymap.set("n", "<C-e><C-l>", ":Telescope dap list_breakpoints<CR>", {})
+vim.keymap.set("n", "<C-e><C-f>", ":Telescope dap frames<CR>", {})
+vim.keymap.set("n", "<C-e><C-o>", ":DapShowLog<CR>", {})
+vim.keymap.set("n", "<C-e><C-t>", function()
+	-- require("neotest").run.run()
+	-- neotest.run.run()
 	neotest.run.run({ strategy = "dap" })
 end)
+vim.keymap.set("n", "<C-e><C-r>", function()
+	neotest.run.run_last({ strategy = "dap" })
+end)
 
-vim.keymap.set("n", "<C-b><C-w>", function()
+vim.keymap.set("n", "<C-e><C-w>", function()
 	require("dap.ui.widgets").hover()
+end)
+
+vim.keymap.set("n", "<F6>dp", function()
+	require("dap.ui.widgets").preview()
 end)

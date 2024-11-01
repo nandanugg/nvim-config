@@ -258,6 +258,7 @@ require("telescope").load_extension("frecency") -- recent opened file
 require("telescope").load_extension("neoclip") -- clipboard
 require("telescope").load_extension("fzf") -- search backend
 require("telescope").load_extension("live_grep_args") -- replace string
+require("telescope").load_extension("ui-select") -- decorate the ui for selection
 -- < SEARCH
 
 -- > RECENT OPENED DIRECTORY
@@ -276,13 +277,17 @@ vim.api.nvim_create_autocmd("DirChanged", {
 
 -- > UI EHANCEMENT
 require("noice").setup({
-	override = {},
+	messages = {
+		enabled = false, -- Set to false if you want to disable Noice handling of `:messages`
+	},
 	lsp = {
 		signature = {
 			enabled = false,
 		},
 	},
-	routes = {},
+	notify = {
+		enabled = true, -- Set to false if you want default `vim.notify` behavior
+	},
 })
 require("telescope").load_extension("noice")
 require("ibl").setup({

@@ -150,6 +150,23 @@ require("lazy").setup({
 		},
 	},
 	{ "nvim-telescope/telescope-dap.nvim" }, -- debug integration with search
+	{
+		"nvim-neotest/neotest", -- debug tests
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+	},
+	{
+		"olimorris/neotest-phpunit", -- debug php test
+		build = function()
+			os.execute(
+				'if [[ "$OSTYPE" == "darwin"* ]]; then sed -i "" "/cwd = async.fn.getcwd()/d" ~/.local/share/nvim/lazy/neotest-phpunit/lua/neotest-phpunit/init.lua; else sed -i "/cwd = async.fn.getcwd()/d" ~/.local/share/nvim/lazy/neotest-phpunit/lua/neotest-phpunit/init.lua; fi'
+			)
+		end,
+	},
 	-- < debugger
 	-- > autocomplete
 	{
@@ -175,6 +192,7 @@ require("lazy").setup({
 		tag = "0.1.4",
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
 	},
+	{ "nvim-telescope/telescope-ui-select.nvim" },
 	{
 		"nvim-telescope/telescope-fzf-native.nvim", -- search backend
 		build = "make",

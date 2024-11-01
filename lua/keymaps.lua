@@ -1,3 +1,5 @@
+local M = {}
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -39,6 +41,41 @@ vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
+M.mappings = {
+	treesitter = {
+		incremental_selection_keymaps = {
+			-- h: nvim-treesitter-incremental-selection-mod
+			init_selection = "gnn", -- Start selection with "gnn"
+			node_incremental = "grn", -- Increment to the next node with "grn"
+			scope_incremental = "grc", -- Increment to the next scope with "grc"
+			node_decremental = "grm", -- Decrement the selection with "grm"
+		},
+	},
+	telescope = {
+		-- :h telescope.mappings
+		i = {
+			["<CR>"] = "select_default",
+			["<C-s>"] = "file_vsplit",
+		},
+		n = {},
+	},
+	neotree = {
+		-- :h neotree-mappings
+		["<C-y>"] = function(state)
+			local node = state.tree:get_node()
+			if node then
+				local full_path = node:get_id()
+				local cwd = vim.fn.getcwd()
+				local relative_path = vim.fn.fnamemodify(full_path, ":." .. cwd)
+
+				vim.fn.setreg("+", relative_path) -- Yank to the system clipboard
+				vim.notify("Yanked: " .. relative_path, vim.log.levels.INFO)
+			else
+				vim.notify("No file selected to yank", vim.log.levels.WARN)
+			end
+		end,
+	},
+}
 
 -- buffers
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
@@ -86,6 +123,7 @@ vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 
+-- git
 vim.keymap.set("n", "<C-g><C-g>", "<cmd>Neogit<CR>", opts)
 vim.keymap.set("n", "<C-g><C-b>", "<cmd>GitBlameToggle<CR>", opts)
 require("gitsigns").setup({
@@ -178,3 +216,5 @@ end)
 vim.keymap.set("n", "<C-b><C-w>", function()
 	require("dap.ui.widgets").hover()
 end)
+
+return M

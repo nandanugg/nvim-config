@@ -1,3 +1,5 @@
+local keymaps = require("keymaps")
+
 -- theme
 require("kanagawa").setup({
 	compile = true, -- enable compiling the colorscheme
@@ -30,21 +32,7 @@ vim.cmd("colorscheme kanagawa")
 require("neo-tree").setup({
 	window = {
 		position = "right",
-		mappings = {
-			["<C-y>"] = function(state)
-				local node = state.tree:get_node()
-				if node then
-					local full_path = node:get_id()
-					local cwd = vim.fn.getcwd()
-					local relative_path = vim.fn.fnamemodify(full_path, ":." .. cwd)
-
-					vim.fn.setreg("+", relative_path) -- Yank to the system clipboard
-					vim.notify("Yanked: " .. relative_path, vim.log.levels.INFO)
-				else
-					vim.notify("No file selected to yank", vim.log.levels.WARN)
-				end
-			end,
-		},
+		mappings = keymaps.mappings.neotree,
 		auto_expand_width = true,
 	},
 	popup_border_style = "rounded",
@@ -78,7 +66,6 @@ require("bufferline").setup({
 	options = {
 		diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
 		themable = true,
-		-- separator_style = { "", "" },
 		separator_style = "slant",
 		tab_size = 13,
 		show_buffer_close_icons = false,
@@ -142,40 +129,40 @@ require("nvim-treesitter.configs").setup({
 	},
 	incremental_selection = {
 		enable = true,
-		keymaps = {
-			init_selection = "gnn", -- Start selection with "gnn"
-			node_incremental = "grn", -- Increment to the next node with "grn"
-			scope_incremental = "grc", -- Increment to the next scope with "grc"
-			node_decremental = "grm", -- Decrement the selection with "grm"
-		},
-	},
-	textobjects = {
-		select = {
-			enable = true,
-			lookahead = true,
-			keymaps = {
-				["at"] = "@tag.outer",
-				["it"] = "@tag.inner",
-			},
-		},
+		keymaps = keymaps.mappings.treesitter.incremental_selection_keymaps,
 	},
 })
 -- < LANGUAGE PARSER
 
 -- > SEARCH
-local actions = require("telescope.actions")
 local lga_actions = require("telescope-live-grep-args.actions")
 require("telescope").setup({
 	defaults = {
-		mappings = {
-			i = {
-				["<C-t>"] = actions.select_tab, -- Remove or remap if you don't want new tabs
-				["<CR>"] = actions.select_default, -- Ensure default selection opens in buffer
+		sorting_strategy = "ascending", -- Options: "ascending" or "descending"
+		layout_strategy = "vertical", -- Choose "horizontal", "vertical", "center", "flex"
+		layout_config = {
+			width = 0.7, -- Width as a proportion of the screen (e.g., 80% of the screen)
+			height = 0.8, -- Height as a proportion of the screen
+			prompt_position = "top", -- Position of the prompt; can be "top" or "bottom"
+
+			-- horizontal = {
+			-- 	preview_width = 0.5, -- Width of the preview window for horizontal layout
+			-- 	mirror = false, -- Flip the results and preview positions
+			-- },
+			vertical = {
+				preview_height = 0.5, -- Height of the preview window for vertical layout
+				mirror = true,
 			},
-			n = {
-				["<C-t>"] = actions.select_tab,
-			},
+			-- center = {
+			-- 	preview_cutoff = 40, -- When to switch to center layout instead of flex
+			-- 	width = 0.5,
+			-- 	height = 0.4,
+			-- },
+			-- flex = {
+			-- 	flip_columns = 120, -- At this column width, Telescope will switch to vertical layout
+			-- },
 		},
+		mappings = keymaps.mappings.telescope,
 		file_ignore_patterns = {
 			"node_modules",
 			"%.git/",
@@ -236,12 +223,7 @@ require("telescope").setup({
 			auto_quoting = true, -- enable/disable auto-quoting
 			-- define mappings, e.g.
 			mappings = { -- extend mappings
-				i = {
-					["<C-k>"] = lga_actions.quote_prompt(),
-					["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-					-- freeze the current list and start a fuzzy search in the frozen list
-					["<C-space>"] = actions.to_fuzzy_refine,
-				},
+				i = {},
 			},
 			-- ... also accepts theme settings, for example:
 			-- theme = "dropdown", -- use dropdown theme
@@ -316,16 +298,10 @@ vim.opt.tabstop = 4 -- Number of spaces that a <Tab> in the file counts for
 vim.opt.softtabstop = 4 -- Number of spaces tabs count when editing
 vim.opt.autoindent = true -- Copy indent from the current line when starting a new one
 vim.opt.smartindent = true -- Makes indenting smart (good for programming)
--- Optional: Set for specific file types
--- vim.cmd [[
---   autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
---   autocmd FileType lua setlocal tabstop=2 shiftwidth=2 expandtab
--- ]]
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- for not interfering with gitsigns
 vim.o.autoread = true
--- vim.cmd([[colorscheme nordic]])
 vim.cmd([[
   autocmd FocusGained,BufEnter * checktime
 ]])

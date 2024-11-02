@@ -10,11 +10,6 @@ require("lazy").setup({
 		end,
 	},
 	{ "mbbill/undotree" }, -- show the undo history of a file
-	{
-		"chentoast/marks.nvim",
-		event = "VeryLazy",
-		opts = {},
-	},
 	{ "famiu/bufdelete.nvim" }, -- safely remove buffer without messing the layout
 	{ "gbprod/substitute.nvim" }, -- replace texts
 	-- { "editorconfig/editorconfig-vim" },

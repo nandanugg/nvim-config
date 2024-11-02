@@ -16,30 +16,24 @@ vim.keymap.set("n", "<C-k>", "", { noremap = true })
 vim.keymap.set("n", "<C-k><C-e>", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
 vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
--- vim.keymap.set("n", "<C-k><C-k>", function()
--- 	require("telescope.builtin").find_files({
--- 		hidden = true, -- Show hidden files and dotfiles
--- 		no_ignore = true, -- Show gitignored files
--- 	})
--- end, {})
-vim.keymap.set("n", "<C-k><C-o>", "<Cmd>Telescope oldfiles<CR>")
+vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
+vim.keymap.set("v", "<C-k><C-g>", "<cmd>FzfLua grep_visual<CR>")
+vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua grep<CR>")
+vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
+vim.keymap.set("n", "<C-k><C-m>", "<cmd>FzfLua marks<CR>")
+vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-p>", "<Cmd>Telescope commander<CR>")
-vim.keymap.set("v", "<C-k><C-g>", "<cmd>Telescope grep_string<CR>")
-vim.keymap.set("n", "<C-k><C-g>", "<cmd>Telescope live_grep<CR>")
-vim.keymap.set("n", "<C-k><C-b>", "<Cmd>Telescope buffers<CR>")
 vim.keymap.set("n", "<C-k><C-h>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
-vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>") -- https://github.com/chentoast/marks.nvim?tab=readme-ov-file#mappings
-vim.keymap.set("n", "<C-k><C-s>", "<cmd>Telescope aerial<CR>", { desc = "Find Symbols" })
 M.mappings = {
 	treesitter = {
 		incremental_selection_keymaps = {
 			-- h: nvim-treesitter-incremental-selection-mod
 			init_selection = "gnn", -- Start selection with "gnn"
-			node_incremental = "grn", -- Increment to the next node with "grn"
-			scope_incremental = "grc", -- Increment to the next scope with "grc"
-			node_decremental = "grm", -- Decrement the selection with "grm"
+			node_incremental = "gni", -- Increment to the next node with "grn"
+			scope_incremental = "gns", -- Increment to the next scope with "grc"
+			node_decremental = "gno", -- Decrement the selection with "grm"
 		},
 	},
 	telescope = {

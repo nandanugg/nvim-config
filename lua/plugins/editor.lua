@@ -77,9 +77,6 @@ require("bufferline").setup({
 	highlights = {},
 })
 -- > BUFFER SUPPORT
--- > MARKS
-require("marks").setup({})
--- < MARKS
 
 -- > LANGUAGE PARSER
 require("nvim-treesitter.configs").setup({
@@ -145,26 +142,54 @@ require("fzf-lua").setup({
 			hidden = "nohidden",
 			layout = "vertical",
 			preview_height = 0.5, -- Height of the preview window for vertical layout
-			mirror = true,
+			mirror = false,
 		},
 	},
-	actions = {
-		-- Below are the default actions, setting any value in these tables will override
-		-- the defaults, to inherit from the defaults change [1] from `false` to `true`
-		files = {
-			false, -- do not inherit from defaults
-			-- Pickers inheriting these actions:
-			--   files, git_files, git_status, grep, lsp, oldfiles, quickfix, loclist,
-			--   tags, btags, args, buffers, tabs, lines, blines
-			-- `file_edit_or_qf` opens a single selection or sends multiple selection to quickfix
-			-- replace `enter` with `file_edit` to open all files/bufs whether single or multiple
-			-- replace `enter` with `file_switch_or_edit` to attempt a switch in current tab first
-			["enter"] = actions.file_edit_or_qf,
-			["ctrl-s"] = actions.file_split,
-			["ctrl-v"] = actions.file_vsplit,
-			["alt-q"] = actions.file_sel_to_qf,
-			["alt-Q"] = actions.file_sel_to_ll,
-		},
+
+	files = {
+		-- fd_opts are untested
+		fd_opts = "--color=never --no-ignore --hidden --follow "
+			.. " --exclude '.git'"
+			.. " --exclude '.direnv'"
+			.. " --exclude '.devenv'"
+			.. " --exclude 'vendor'"
+			.. " --exclude 'node_modules'"
+			.. " --exclude 'direnv'"
+			.. " --exclude 'dist'"
+			.. " --exclude 'build'"
+			.. " --exclude 'tmp'",
+		rg_opts = "--color=never --files --no-ignore --hidden --follow "
+			.. " -g '!.git' "
+			.. " -g '!.devenv' "
+			.. " -g '!.direnv' "
+			.. " -g '!vendor' "
+			.. " -g '!node_modules' "
+			.. " -g '!dist' "
+			.. " -g '!build' "
+			.. " -g '!tmp'",
+		find_opts = "-type f" -- already not respecting .gitignore and dotfiles
+			.. " -not -path '*/.git/*'"
+			.. " -not -path '*/.direnv/*'"
+			.. " -not -path '*/.devenv/*'"
+			.. " -not -path '*/vendor/*'"
+			.. " -not -path '*/node_modules/*'"
+			.. " -not -path '*/direnv/*'"
+			.. " -not -path '*/dist/*'"
+			.. " -not -path '*/build/*'"
+			.. " -not -path '*/tmp/*'"
+			.. " -printf '%P\\n'",
+	},
+	grep = {
+		preview = true,
+		rg_opts = "--color=never --no-heading --with-filename --line-number --column --smart-case --hidden --no-ignore-vcs "
+			.. " -g '!.git' "
+			.. " -g '!.devenv' "
+			.. " -g '!.direnv' "
+			.. " -g '!vendor' "
+			.. " -g '!node_modules' "
+			.. " -g '!dist' "
+			.. " -g '!build' "
+			.. " -g '!tmp'",
 	},
 })
 require("telescope").setup({
@@ -217,18 +242,6 @@ require("telescope").setup({
 		},
 	},
 	extensions = {
-		aerial = {
-			col1_width = 4,
-			col2_width = 30,
-			format_symbol = function(symbol_path, filetype)
-				if filetype == "json" or filetype == "yaml" then
-					return table.concat(symbol_path, ".")
-				else
-					return symbol_path[#symbol_path]
-				end
-			end,
-			show_columns = "both",
-		},
 		zoxide = {
 			prompt_title = "[ Open folder ]",
 			mappings = {
@@ -239,18 +252,11 @@ require("telescope").setup({
 				},
 			},
 		},
-		-- fzf = {
-		-- 	fuzzy = true, -- false will only do exact matching
-		-- 	override_generic_sorter = false, -- override the generic sorter
-		-- 	override_file_sorter = false, -- override the file sorter
-		-- 	case_mode = "ignore_case", -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
-		-- },
 	},
 })
 require("aerial").setup({
 	backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
 })
-require("telescope").load_extension("aerial")
 require("telescope").load_extension("frecency") -- recent opened file
 require("telescope").load_extension("neoclip") -- clipboard
 -- require("telescope").load_extension("fzf") -- search backend
@@ -306,14 +312,8 @@ vim.wo.foldmethod = "expr"
 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.wo.foldlevel = 99
 vim.o.foldmethod = "manual"
-vim.opt.expandtab = true -- Use spaces instead of tabs
-vim.opt.shiftwidth = 4 -- Size of an indent (number of spaces)
-vim.opt.tabstop = 4 -- Number of spaces that a <Tab> in the file counts for
-vim.opt.softtabstop = 4 -- Number of spaces tabs count when editing
 vim.opt.autoindent = true -- Copy indent from the current line when starting a new one
-vim.opt.smartindent = true -- Makes indenting smart (good for programming)
 vim.opt.number = true
-vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- for not interfering with gitsigns
 vim.o.autoread = true
 vim.cmd([[

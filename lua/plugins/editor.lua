@@ -135,7 +135,38 @@ require("nvim-treesitter.configs").setup({
 -- < LANGUAGE PARSER
 
 -- > SEARCH
-local lga_actions = require("telescope-live-grep-args.actions")
+local actions = require("fzf-lua.actions")
+require("fzf-lua").setup({
+	"telescope",
+	winopts = {
+		width = 0.8,
+		height = 0.9,
+		preview = {
+			hidden = "nohidden",
+			layout = "vertical",
+			preview_height = 0.5, -- Height of the preview window for vertical layout
+			mirror = true,
+		},
+	},
+	actions = {
+		-- Below are the default actions, setting any value in these tables will override
+		-- the defaults, to inherit from the defaults change [1] from `false` to `true`
+		files = {
+			false, -- do not inherit from defaults
+			-- Pickers inheriting these actions:
+			--   files, git_files, git_status, grep, lsp, oldfiles, quickfix, loclist,
+			--   tags, btags, args, buffers, tabs, lines, blines
+			-- `file_edit_or_qf` opens a single selection or sends multiple selection to quickfix
+			-- replace `enter` with `file_edit` to open all files/bufs whether single or multiple
+			-- replace `enter` with `file_switch_or_edit` to attempt a switch in current tab first
+			["enter"] = actions.file_edit_or_qf,
+			["ctrl-s"] = actions.file_split,
+			["ctrl-v"] = actions.file_vsplit,
+			["alt-q"] = actions.file_sel_to_qf,
+			["alt-Q"] = actions.file_sel_to_ll,
+		},
+	},
+})
 require("telescope").setup({
 	defaults = {
 		sorting_strategy = "ascending", -- Options: "ascending" or "descending"
@@ -164,12 +195,12 @@ require("telescope").setup({
 		},
 		mappings = keymaps.mappings.telescope,
 		file_ignore_patterns = {
-			"node_modules",
 			"%.git/",
+			"%.lock",
+			"__pycache__/",
+			"node_modules/",
 			"vendor/",
 			"dist/",
-			"__pycache__/",
-			"%.lock",
 			"build/",
 			"tmp/",
 		},
@@ -181,12 +212,8 @@ require("telescope").setup({
 			"--line-number",
 			"--column",
 			"--smart-case",
-			"--glob",
-			"!.git/*",
-			"--glob",
-			"!node_modules/*",
-			"--glob",
-			"!vendor/*",
+			"--hidden", -- Include hidden files in the search
+			"--no-ignore", -- Don't respect .gitignore files
 		},
 	},
 	extensions = {
@@ -212,24 +239,12 @@ require("telescope").setup({
 				},
 			},
 		},
-		fzf = {
-			fuzzy = true, -- false will only do exact matching
-			override_generic_sorter = true, -- override the generic sorter
-			override_file_sorter = true, -- override the file sorter
-			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-			-- the default case_mode is "smart_case"
-		},
-		live_grep_args = {
-			auto_quoting = true, -- enable/disable auto-quoting
-			-- define mappings, e.g.
-			mappings = { -- extend mappings
-				i = {},
-			},
-			-- ... also accepts theme settings, for example:
-			-- theme = "dropdown", -- use dropdown theme
-			-- theme = { }, -- use own theme spec
-			-- layout_config = { mirror=true }, -- mirror preview pane
-		},
+		-- fzf = {
+		-- 	fuzzy = true, -- false will only do exact matching
+		-- 	override_generic_sorter = false, -- override the generic sorter
+		-- 	override_file_sorter = false, -- override the file sorter
+		-- 	case_mode = "ignore_case", -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
+		-- },
 	},
 })
 require("aerial").setup({
@@ -238,8 +253,7 @@ require("aerial").setup({
 require("telescope").load_extension("aerial")
 require("telescope").load_extension("frecency") -- recent opened file
 require("telescope").load_extension("neoclip") -- clipboard
-require("telescope").load_extension("fzf") -- search backend
-require("telescope").load_extension("live_grep_args") -- replace string
+-- require("telescope").load_extension("fzf") -- search backend
 require("telescope").load_extension("ui-select") -- decorate the ui for selection
 -- < SEARCH
 

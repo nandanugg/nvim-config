@@ -15,27 +15,18 @@ vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k>", "", { noremap = true })
 vim.keymap.set("n", "<C-k><C-e>", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<C-k><C-k>", function()
-	require("telescope.builtin").find_files({
-		hidden = true, -- Show hidden files and dotfiles
-		no_ignore = true, -- Show gitignored files
-	})
-end, {})
-vim.keymap.set(
-	"n",
-	"<C-k>o",
-	"<Cmd>Telescope oldfiles<CR>",
-	{ noremap = true, silent = true, desc = "Search old files" }
-)
-local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
-vim.keymap.set("v", "<C-k><C-g>", live_grep_args_shortcuts.grep_visual_selection)
-vim.keymap.set("n", "<C-k><C-g>", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
-vim.keymap.set(
-	"n",
-	"<C-k><C-b>",
-	"<Cmd>Telescope buffers<CR>",
-	{ noremap = true, silent = true, desc = "Search buffers" }
-)
+vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
+-- vim.keymap.set("n", "<C-k><C-k>", function()
+-- 	require("telescope.builtin").find_files({
+-- 		hidden = true, -- Show hidden files and dotfiles
+-- 		no_ignore = true, -- Show gitignored files
+-- 	})
+-- end, {})
+vim.keymap.set("n", "<C-k><C-o>", "<Cmd>Telescope oldfiles<CR>")
+vim.keymap.set("n", "<C-k><C-p>", "<Cmd>Telescope commander<CR>")
+vim.keymap.set("v", "<C-k><C-g>", "<cmd>Telescope grep_string<CR>")
+vim.keymap.set("n", "<C-k><C-g>", "<cmd>Telescope live_grep<CR>")
+vim.keymap.set("n", "<C-k><C-b>", "<Cmd>Telescope buffers<CR>")
 vim.keymap.set("n", "<C-k><C-h>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
@@ -164,13 +155,15 @@ require("gitsigns").setup({
 
 -- terminal
 function _G.set_terminal_keymaps()
-	local opts = { buffer = 0 }
-	vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
-	vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
-	vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
-	vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
-	vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-	vim.keymap.set("t", "<C-w>", [[<C-\><niC-n><C-w>]], opts)
+	if vim.bo.filetype == "toggleterm" then
+		local opts = { buffer = 0 }
+		vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+		vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+		vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+		vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+		vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+		vim.keymap.set("t", "<C-w>", [[<C-\><niC-n><C-w>]], opts)
+	end
 end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")

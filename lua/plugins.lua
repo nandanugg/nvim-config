@@ -190,13 +190,17 @@ require("lazy").setup({
 	{
 		"nvim-telescope/telescope.nvim", -- search
 		tag = "0.1.4",
-		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 	{
-		"nvim-telescope/telescope-fzf-native.nvim", -- search backend
-		build = "make",
+		"ibhagwan/fzf-lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
+	-- {
+	-- 	"nvim-telescope/telescope-fzf-native.nvim", -- search backend
+	-- 	build = "make",
+	-- },
 	{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
 	{
 		"AckslD/nvim-neoclip.lua", -- search clipboard
@@ -229,4 +233,4 @@ require("lazy").setup({
 
 	-- Automatically check for plugin updates
 	checker = { enabled = true },
-})
+}, { rocks = { enabled = false } })

@@ -132,7 +132,6 @@ require("nvim-treesitter.configs").setup({
 -- < LANGUAGE PARSER
 
 -- > SEARCH
-local actions = require("fzf-lua.actions")
 require("fzf-lua").setup({
 	"telescope",
 	winopts = {
@@ -280,7 +279,7 @@ vim.api.nvim_create_autocmd("DirChanged", {
 -- > UI EHANCEMENT
 require("noice").setup({
 	messages = {
-		enabled = false, -- Set to false if you want to disable Noice handling of `:messages`
+		enabled = true, -- Set to false if you want to disable Noice handling of `:messages`
 	},
 	lsp = {
 		signature = {

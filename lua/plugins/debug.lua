@@ -24,15 +24,18 @@ dapui.setup({
 	layouts = {
 		{
 			elements = {
+				"console",
 				"scopes",
 			},
-			size = 50,
-			position = "right",
+			size = 18,
+			position = "bottom",
 		},
 	},
 })
 require("nvim-dap-virtual-text").setup({
-	commented = true,
+	clear_on_continue = true,
+	highlight_new_as_changed = true,
+	highlight_changed_variables = true,
 })
 require("telescope").load_extension("dap")
 dap.listeners.before.attach.dapui_config = function()
@@ -140,35 +143,38 @@ dap.configurations.php = {
 }
 -- < PHP DEBUG
 -- > GO DEBUG
--- dap.adapters.go = {
--- 	type = "executable",
--- 	command = "node",
--- 	args = {
--- 		require("mason-registry").get_package("go-debug-adapter"):get_install_path()
--- 			.. "/extension/dist/debugAdapter.js",
--- 	},
--- }
--- dap.configurations.go = {
--- 	{
--- 		type = "go",
--- 		name = "Debug custom main.go path",
--- 		request = "launch",
--- 		showLog = false,
--- 		program = function()
--- 			-- Prompt the user to enter the path to the program to debug
--- 			return vim.fn.input("Path to main.go: ", vim.fn.getcwd() .. "/", "file")
--- 		end,
--- 		dlvToolPath = vim.fn.exepath("dlv"), -- Automatically locate Delve
--- 	},
--- 	{
--- 		type = "go",
--- 		name = "Debug current cwd",
--- 		request = "launch",
--- 		showLog = false,
--- 		program = "${workspaceFolder}",
--- 		dlvToolPath = vim.fn.exepath("dlv"),
--- 	},
--- }
+dap.adapters.go = {
+	type = "executable",
+	command = "node",
+	args = {
+		require("mason-registry").get_package("go-debug-adapter"):get_install_path()
+			.. "/extension/dist/debugAdapter.js",
+	},
+}
+dap.configurations.go = {
+	{
+		type = "go",
+		name = "Debug custom main.go path",
+		request = "launch",
+		showLog = true,
+		program = function()
+			return vim.fn.input("Path to main.go: ", vim.fn.getcwd() .. "/", "file")
+		end,
+		dlvToolPath = vim.fn.exepath("dlv"),
+		env = {
+			HOME_DIR = os.getenv("HOME"),
+		},
+	},
+	{
+		type = "go",
+		name = "Debug current cwd",
+		request = "launch",
+		showLog = true,
+		program = "${workspaceFolder}",
+		dlvToolPath = vim.fn.exepath("dlv"),
+		HOME_DIR = os.getenv("HOME"),
+	},
+}
 -- < GO DEBUG
 require("neotest").setup({
 	log_level = vim.log.levels.DEBUG,

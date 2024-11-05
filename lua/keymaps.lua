@@ -109,7 +109,7 @@ vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 
 -- git
-vim.keymap.set("n", "<C-g><C-g>", "<cmd>Neogit<CR>", opts)
+vim.keymap.set("n", "<C-g><C-g>", "<cmd>:LazyGit<CR>", opts)
 vim.keymap.set("n", "<C-g><C-b>", "<cmd>GitBlameToggle<CR>", opts)
 require("gitsigns").setup({
 	on_attach = function(bufnr)
@@ -190,6 +190,7 @@ vim.keymap.set("n", "<C-b><C-q>", function()
 end)
 vim.keymap.set("n", "<C-b><C-b>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
 vim.keymap.set("n", "<C-b><C-u>", '<cmd>lua require("dapui").toggle()<CR>', {})
+vim.keymap.set("n", "<C-b><C-h>", '<cmd>lua require("dapui").eval()<CR>', {})
 vim.keymap.set("n", "<C-b><C-i>", ":Telescope dap list_breakpoints<CR>", {})
 vim.keymap.set("n", "<C-b><C-f>", ":Telescope dap frames<CR>", {})
 vim.keymap.set("n", "<C-b><C-o>", ":DapShowLog<CR>", {})

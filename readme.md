@@ -5,6 +5,7 @@
 make sure that all binaries are exists before installing
 
 - git
+- lazygit
 - imagemagick
 - w3m-img or ueberzug (for image previews)
 - gcc or clang (C compiler)

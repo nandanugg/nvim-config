@@ -1,6 +1,4 @@
 -- > GIT UI
-local neogit = require("neogit")
-neogit.setup({})
 -- < GIT UI
 -- > GIT BLAME
 require("gitblame").setup({

@@ -24,16 +24,18 @@ require("lazy").setup({
 	-- < terminal
 	-- > git
 	{
-		"NeogitOrg/neogit", -- git UI
-		dependencies = {
-			"nvim-lua/plenary.nvim", -- required
-			"sindrets/diffview.nvim", -- optional - Diff integration
-
-			-- Only one of these is needed.
-			"nvim-telescope/telescope.nvim", -- optional
-			"echasnovski/mini.pick", -- optional
+		"kdheepak/lazygit.nvim",
+		lazy = true,
+		cmd = {
+			"LazyGit",
+			"LazyGitConfig",
+			"LazyGitCurrentFile",
+			"LazyGitFilter",
+			"LazyGitFilterCurrentFile",
 		},
-		config = true,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
 	},
 	{
 		"f-person/git-blame.nvim", -- git blame

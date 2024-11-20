@@ -12,7 +12,6 @@ require("lazy").setup({
 	{ "mbbill/undotree" }, -- show the undo history of a file
 	{ "famiu/bufdelete.nvim" }, -- safely remove buffer without messing the layout
 	{ "gbprod/substitute.nvim" }, -- replace texts
-	-- { "editorconfig/editorconfig-vim" },
 	-- < editing
 	-- > terminal
 	{ "akinsho/toggleterm.nvim", version = "*", config = true }, -- terminal
@@ -24,28 +23,13 @@ require("lazy").setup({
 	-- < terminal
 	-- > git
 	{
-		"kdheepak/lazygit.nvim",
-		lazy = true,
-		cmd = {
-			"LazyGit",
-			"LazyGitConfig",
-			"LazyGitCurrentFile",
-			"LazyGitFilter",
-			"LazyGitFilterCurrentFile",
-		},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
+		"tpope/vim-fugitive", -- git toolkit
 	},
 	{
-		"f-person/git-blame.nvim", -- git blame
-		event = "VeryLazy",
+		"lewis6991/gitsigns.nvim", -- git changes
 	},
 	{
-		"lewis6991/gitsigns.nvim", -- git line changes
-		config = function()
-			require("gitsigns").setup()
-		end,
+		"f-person/git-blame.nvim", -- git blames
 	},
 	-- < git
 	-- > session
@@ -55,6 +39,8 @@ require("lazy").setup({
 	},
 	-- < session
 	-- > editor
+	{ "karb94/neoscroll.nvim" }, -- smooth scroll
+	{ "szw/vim-maximizer" }, -- window maximizer
 	{
 		"nvim-neo-tree/neo-tree.nvim", -- file explorer
 		branch = "v3.x",
@@ -181,23 +167,30 @@ require("lazy").setup({
 	-- < autocomplete
 	-- > search
 	{
-		"junegunn/fzf", -- search by fzf
-		build = 'sh -c "cd ~/.local/share/nvim/lazy/fzf && ./install --all"',
-	},
-	{
 		"nvim-telescope/telescope.nvim", -- search
 		tag = "0.1.4",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{ "nvim-telescope/telescope-ui-select.nvim" },
-	{
-		"ibhagwan/fzf-lua",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-	},
+	-- {
+	-- 	"junegunn/fzf", -- search by fzf
+	-- 	build = 'sh -c "cd ~/.local/share/nvim/lazy/fzf && ./install --all"',
+	-- },
+	-- {
+	-- 	"ibhagwan/fzf-lua",
+	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	-- },
 	-- {
 	-- 	"nvim-telescope/telescope-fzf-native.nvim", -- search backend
 	-- 	build = "make",
 	-- },
+	{
+		"romgrk/fzy-lua-native", -- search by fzy
+		build = "make",
+	},
+	{
+		"nvim-telescope/telescope-fzy-native.nvim", -- telescope search backend
+	},
 	{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
 	{
 		"AckslD/nvim-neoclip.lua", -- search clipboard

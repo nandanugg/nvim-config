@@ -100,9 +100,6 @@ require("lualine").setup({
 
 -- > LSP SETUP
 local function lsp_attach(client, bufnr)
-	if client.server_capabilities.documentSymbolProvider then
-		-- navic.attach(client, bufnr)
-	end
 	if client.server_capabilities.document_diagnostics then
 		require("bufferline").setup({
 			options = {
@@ -145,8 +142,9 @@ require("mason-lspconfig").setup_handlers({
 	end,
 })
 
--- Example of server-specific settings for `lua_ls`
-require("lspconfig").lua_ls.setup({
+local lspconfig = require("lspconfig")
+lspconfig.lua_ls.setup({
+	filetypes = { "lua" },
 	settings = {
 		Lua = {
 			runtime = {
@@ -164,9 +162,8 @@ require("lspconfig").lua_ls.setup({
 		},
 	},
 })
-
--- Example of server-specific settings for `intelephense`
-require("lspconfig").intelephense.setup({
+lspconfig.intelephense.setup({
+	filetypes = { "php" },
 	settings = {
 		intelephense = {
 			files = {
@@ -189,7 +186,22 @@ require("lspconfig").intelephense.setup({
 		},
 	},
 })
--- < LANGUAGE SERVER PROTOCOL (LSP)
+lspconfig.yamlls.setup({
+	settings = {
+		yaml = {
+			schemas = {
+				["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose*.yml",
+			},
+		},
+	},
+})
+lspconfig.docker_compose_language_service.setup({
+	filetypes = { "yaml" },
+	root_dir = function(fname)
+		return lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml")(fname)
+	end,
+})
+--  LANGUAGE SERVER PROTOCOL (LSP)
 
 -- Set PHP file-specific options
 vim.api.nvim_create_autocmd("FileType", {
@@ -198,3 +210,59 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.bo.commentstring = "// %s"
 	end,
 })
+
+local null_ls = require("null-ls")
+local helpers = require("null-ls.helpers")
+local methods = require("null-ls.methods")
+--  PHP SISTER FORMATTER
+local phpcsfixer_sister_dosen = helpers.make_builtin({
+	name = "phpcsfixer_sister_dosen",
+	meta = {
+		url = "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer",
+		description = "Formatter for PHP files.",
+	},
+	method = methods.internal.FORMATTING,
+	filetypes = { "php" },
+	generator_opts = {
+		command = "/usr/local/bin/php-cs-fixer",
+		args = {
+			"fix",
+			"$FILENAME",
+			"--using-cache=yes",
+			"--config=$ROOT/.php-cs-fixer.dist.php",
+		},
+		to_stdin = false,
+		to_temp_file = true,
+	},
+	factory = helpers.formatter_factory,
+})
+--  PHP SISTER FORMATTER
+
+--  FORMATTER
+null_ls.setup({
+	sources = {
+		phpcsfixer_sister_dosen,
+	},
+	debug = true,
+})
+require("mason-null-ls").setup({
+	automatic_installation = true, -- Automatically install tools from mason
+	automatic_setup = true, -- Automatically setup in null-ls
+	handlers = {},
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	callback = function()
+		vim.lsp.buf.format({
+			timeout_ms = 5000,
+			filter = function(client)
+				if vim.bo.filetype == "php" then
+					return client.name == "null-ls"
+				end
+				return true
+			end,
+			async = false,
+		})
+	end,
+})
+-- < FORMATTER

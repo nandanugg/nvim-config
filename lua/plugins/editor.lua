@@ -132,82 +132,23 @@ require("nvim-treesitter.configs").setup({
 -- < LANGUAGE PARSER
 
 -- > SEARCH
-require("fzf-lua").setup({
-	"telescope",
-	winopts = {
-		width = 0.8,
-		height = 0.9,
-		preview = {
-			hidden = "nohidden",
-			layout = "vertical",
-			preview_height = 0.5, -- Height of the preview window for vertical layout
-			mirror = false,
-		},
-	},
-
-	files = {
-		-- fd_opts are untested
-		fd_opts = "--color=never --no-ignore --hidden --follow "
-			.. " --exclude '.git'"
-			.. " --exclude '.direnv'"
-			.. " --exclude '.devenv'"
-			.. " --exclude 'vendor'"
-			.. " --exclude 'node_modules'"
-			.. " --exclude 'direnv'"
-			.. " --exclude 'dist'"
-			.. " --exclude 'build'"
-			.. " --exclude 'tmp'",
-		rg_opts = "--color=never --files --no-ignore --hidden --follow "
-			.. " -g '!.git' "
-			.. " -g '!.devenv' "
-			.. " -g '!.direnv' "
-			.. " -g '!vendor' "
-			.. " -g '!node_modules' "
-			.. " -g '!dist' "
-			.. " -g '!build' "
-			.. " -g '!tmp'",
-		find_opts = "-type f" -- already not respecting .gitignore and dotfiles
-			.. " -not -path '*/.git/*'"
-			.. " -not -path '*/.direnv/*'"
-			.. " -not -path '*/.devenv/*'"
-			.. " -not -path '*/vendor/*'"
-			.. " -not -path '*/node_modules/*'"
-			.. " -not -path '*/direnv/*'"
-			.. " -not -path '*/dist/*'"
-			.. " -not -path '*/build/*'"
-			.. " -not -path '*/tmp/*'"
-			.. " -printf '%P\\n'",
-	},
-	grep = {
-		preview = true,
-		rg_opts = "--color=never --no-heading --with-filename --line-number --column --smart-case --hidden --no-ignore-vcs "
-			.. " -g '!.git' "
-			.. " -g '!.devenv' "
-			.. " -g '!.direnv' "
-			.. " -g '!vendor' "
-			.. " -g '!node_modules' "
-			.. " -g '!dist' "
-			.. " -g '!build' "
-			.. " -g '!tmp'",
-	},
-})
 require("telescope").setup({
 	defaults = {
-		sorting_strategy = "ascending", -- Options: "ascending" or "descending"
-		layout_strategy = "vertical", -- Choose "horizontal", "vertical", "center", "flex"
+		-- sorting_strategy = "ascending", -- Options: "ascending" or "descending"
+		layout_strategy = "flex", -- Choose "horizontal", "vertical", "center", "flex"
 		layout_config = {
-			width = 0.7, -- Width as a proportion of the screen (e.g., 80% of the screen)
-			height = 0.8, -- Height as a proportion of the screen
-			prompt_position = "top", -- Position of the prompt; can be "top" or "bottom"
+			width = 0.8, -- Width as a proportion of the screen (e.g., 80% of the screen)
+			height = 0.9, -- Height as a proportion of the screen
+			prompt_position = "bottom", -- Position of the prompt; can be "top" or "bottom"
 
 			-- horizontal = {
 			-- 	preview_width = 0.5, -- Width of the preview window for horizontal layout
 			-- 	mirror = false, -- Flip the results and preview positions
 			-- },
-			vertical = {
-				preview_height = 0.5, -- Height of the preview window for vertical layout
-				mirror = true,
-			},
+			-- vertical = {
+			-- 	preview_height = 0.5, -- Height of the preview window for vertical layout
+			-- 	mirror = true,
+			-- },
 			-- center = {
 			-- 	preview_cutoff = 40, -- When to switch to center layout instead of flex
 			-- 	width = 0.5,
@@ -240,6 +181,12 @@ require("telescope").setup({
 			"--no-ignore", -- Don't respect .gitignore files
 		},
 	},
+	pickers = {
+		find_files = {
+			hidden = true, -- This will include dotfiles
+			no_ignore = true, -- This will not respect .gitignore files
+		},
+	},
 	extensions = {
 		zoxide = {
 			prompt_title = "[ Open folder ]",
@@ -253,12 +200,12 @@ require("telescope").setup({
 		},
 	},
 })
+require("telescope").load_extension("fzy_native")
 require("aerial").setup({
 	backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
 })
 require("telescope").load_extension("frecency") -- recent opened file
 require("telescope").load_extension("neoclip") -- clipboard
--- require("telescope").load_extension("fzf") -- search backend
 require("telescope").load_extension("ui-select") -- decorate the ui for selection
 -- < SEARCH
 
@@ -305,16 +252,51 @@ require("ibl").setup({
 		char = "╎",
 	},
 })
+require("neoscroll").setup({
+	mappings = {
+		-- <C-b>: Scroll one screen backward.
+		-- <C-f>: Scroll one screen forward.
+		-- <C-d>: Scroll half a screen downward.
+		-- <C-u>: Scroll half a screen upward.
+		-- <C-e>: Scroll the screen downward by one line.
+		-- <C-y>: Scroll the screen upward by one line.
+		-- zz: Center the current line in the middle of the screen.
+		-- zt: Move the current line to the top of the screen.
+		-- zb: Move the current line to the bottom of the screen.
+		"<C-u>",
+		"<C-d>",
+		"<C-b>",
+		"<C-f>",
+		"<C-y>",
+		"<C-e>",
+		"zt",
+		"zz",
+		"zb",
+	},
+	hide_cursor = true, -- Hide cursor while scrolling
+	stop_eof = true, -- Stop at <EOF> when scrolling downwards
+	respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+	cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+	easing = "linear", -- Default easing function
+	pre_hook = nil, -- Function to run before the scrolling animation starts
+	post_hook = nil, -- Function to run after the scrolling animation ends
+	performance_mode = false, -- Disable "Performance Mode" on all buffers.
+	ignored_events = { -- Events ignored while scrolling
+		"WinScrolled",
+		"CursorMoved",
+	},
+})
 -- < UI EHANCEMENT
 
 vim.wo.foldmethod = "expr"
 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.wo.foldlevel = 99
-vim.o.foldmethod = "manual"
+vim.opt.foldmethod = "manual"
+vim.opt.relativenumber = true
+vim.opt.signcolumn = "yes" -- for not interfering with gitsigns
 vim.opt.autoindent = true -- Copy indent from the current line when starting a new one
 vim.opt.number = true
-vim.opt.signcolumn = "yes" -- for not interfering with gitsigns
-vim.o.autoread = true
+vim.opt.autoread = true
 vim.cmd([[
   autocmd FocusGained,BufEnter * checktime
 ]])

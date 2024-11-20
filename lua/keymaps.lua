@@ -15,13 +15,14 @@ vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k>", "", { noremap = true })
 vim.keymap.set("n", "<C-k><C-e>", ":Neotree toggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
-vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
-vim.keymap.set("v", "<C-k><C-g>", "<cmd>FzfLua grep_visual<CR>")
-vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua grep<CR>")
-vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
-vim.keymap.set("n", "<C-k><C-m>", "<cmd>FzfLua marks<CR>")
-vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
+local telescope = require("telescope.builtin")
+vim.keymap.set("n", "<C-k><C-k>", "<Cmd>Telescope find_files hidden=true no_ignore=true<CR>", {})
+vim.keymap.set("n", "<C-k><C-o>", "<Cmd>Telescope oldfiles<CR>")
+vim.keymap.set("v", "<C-k><C-g>", "<cmd>Telescope grep_string<CR>")
+vim.keymap.set("n", "<C-k><C-g>", "<cmd>Telescope live_grep<CR>")
+vim.keymap.set("n", "<C-k><C-'>", "<Cmd>Telescope buffers<CR>")
+vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
+vim.keymap.set("n", "<C-k><C-s>", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-p>", "<Cmd>Telescope commander<CR>")
 vim.keymap.set("n", "<C-k><C-h>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
@@ -30,10 +31,10 @@ M.mappings = {
 	treesitter = {
 		incremental_selection_keymaps = {
 			-- h: nvim-treesitter-incremental-selection-mod
-			init_selection = "gnn", -- Start selection with "gnn"
-			node_incremental = "gni", -- Increment to the next node with "grn"
-			scope_incremental = "gns", -- Increment to the next scope with "grc"
-			node_decremental = "gno", -- Decrement the selection with "grm"
+			init_selection = "gnn", -- Start selection
+			node_incremental = "gni", -- Increment to the next node
+			scope_incremental = "gns", -- Increment to the next scop
+			node_decremental = "gno", -- Decrement the selectio
 		},
 	},
 	telescope = {
@@ -63,8 +64,74 @@ M.mappings = {
 }
 
 -- buffers
+local function toggle_split_with_plugin()
+	local current_win = vim.api.nvim_get_current_win()
+	local windows = vim.api.nvim_tabpage_list_wins(0)
+
+	-- If there's only one window, do nothing
+	if #windows == 1 then
+		return
+	end
+
+	-- Get all window information
+	local wins_info = {}
+	for _, win in ipairs(windows) do
+		table.insert(wins_info, {
+			win = win,
+			buf = vim.api.nvim_win_get_buf(win),
+			cursor = vim.api.nvim_win_get_cursor(win),
+			width = vim.api.nvim_win_get_width(win),
+			height = vim.api.nvim_win_get_height(win),
+		})
+	end
+
+	-- Determine if current layout is vertical or horizontal split
+	local is_vsplit = wins_info[1].width < vim.o.columns - 1
+
+	-- Store active window index
+	local active_idx = 1
+	for i, info in ipairs(wins_info) do
+		if info.win == current_win then
+			active_idx = i
+			break
+		end
+	end
+
+	-- Close all windows except the first one
+	for i = #windows, 2, -1 do
+		vim.api.nvim_win_close(windows[i], false)
+	end
+
+	-- Create new split in opposite direction
+	local cmd = is_vsplit and "split" or "vsplit"
+	vim.cmd(cmd)
+
+	-- Get the new windows after split
+	local new_windows = vim.api.nvim_tabpage_list_wins(0)
+
+	-- Restore buffers and cursor positions
+	for i, win in ipairs(new_windows) do
+		local info = wins_info[i]
+		if info then
+			vim.api.nvim_win_set_buf(win, info.buf)
+			vim.api.nvim_win_set_cursor(win, info.cursor)
+		end
+	end
+
+	-- Restore active window focus
+	if active_idx <= #new_windows then
+		vim.api.nvim_set_current_win(new_windows[active_idx])
+	end
+end
+
+vim.keymap.set("n", "<S-r>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-f>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-r>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-f>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-w><S-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-w><S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-w><S-v>", toggle_split_with_plugin, { noremap = true, silent = true })
 vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 for i = 1, 9 do
@@ -109,43 +176,15 @@ vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 
 -- git
-vim.keymap.set("n", "<C-g><C-g>", "<cmd>:LazyGit<CR>", opts)
-vim.keymap.set("n", "<C-g><C-b>", "<cmd>GitBlameToggle<CR>", opts)
-require("gitsigns").setup({
-	on_attach = function(bufnr)
-		local gs = package.loaded.gitsigns
-
-		local function map(mode, l, r, opts)
-			opts = opts or {}
-			opts.buffer = bufnr
-			vim.keymap.set(mode, l, r, opts)
-		end
-
-		map("n", "]g", function()
-			if vim.wo.diff then
-				return "]g"
-			end
-			vim.schedule(function()
-				gs.next_hunk()
-			end)
-			return "<Ignore>"
-		end, { expr = true })
-
-		map("n", "[g", function()
-			if vim.wo.diff then
-				return "[g"
-			end
-			vim.schedule(function()
-				gs.prev_hunk()
-			end)
-			return "<Ignore>"
-		end, { expr = true })
-		map("n", "<C-g><C-p>", gs.preview_hunk)
-		map("n", "<C-g><C-r>", gs.reset_hunk)
-		-- more options
-		-- https://github.com/lewis6991/gitsigns.nvim
-	end,
-})
+vim.keymap.set("n", "<C-g><C-g>", ":Git<CR>", opts)
+-- vim.keymap.set("n", "<C-g><C-'>", ":Git blame<CR>", opts)
+vim.keymap.set("n", "<C-g><C-d>", ":Gvdiff<CR>", opts)
+local gitsigns = require("gitsigns")
+vim.keymap.set("n", "<C-g><C-h>", gitsigns.preview_hunk, opts)
+vim.keymap.set("n", "<C-g><C-r>", gitsigns.reset_hunk, opts)
+vim.keymap.set("n", "<C-g><C-'>", gitsigns.toggle_current_line_blame, opts)
+vim.keymap.set("n", "]h", "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+vim.keymap.set("n", "[h", "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
 
 -- terminal
 function _G.set_terminal_keymaps()
@@ -172,36 +211,36 @@ vim.keymap.set("t", "3<C-\\><C-\\>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true,
 
 -- debugging
 local neotest = require("neotest")
-vim.keymap.set("n", "<C-b>", "", { noremap = true })
-vim.keymap.set("n", "<C-b><C-s>", function()
+vim.keymap.set("n", "<C-'>", "", { noremap = true })
+vim.keymap.set("n", "<C-'><C-s>", function()
 	require("dap").continue()
 end)
-vim.keymap.set("n", "<C-b><C-n>", function()
+vim.keymap.set("n", "<C-'><C-n>", function()
 	require("dap").step_over()
 end)
-vim.keymap.set("n", "<C-b><C-i>", function()
+vim.keymap.set("n", "<C-'><C-i>", function()
 	require("dap").step_into()
 end)
-vim.keymap.set("n", "<C-b><C-o>", function()
+vim.keymap.set("n", "<C-'><C-o>", function()
 	require("dap").step_out()
 end)
-vim.keymap.set("n", "<C-b><C-q>", function()
+vim.keymap.set("n", "<C-'><C-q>", function()
 	require("dap").terminate()
 end)
-vim.keymap.set("n", "<C-b><C-b>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
-vim.keymap.set("n", "<C-b><C-u>", '<cmd>lua require("dapui").toggle()<CR>', {})
-vim.keymap.set("n", "<C-b><C-h>", '<cmd>lua require("dapui").eval()<CR>', {})
-vim.keymap.set("n", "<C-b><C-i>", ":Telescope dap list_breakpoints<CR>", {})
-vim.keymap.set("n", "<C-b><C-f>", ":Telescope dap frames<CR>", {})
-vim.keymap.set("n", "<C-b><C-o>", ":DapShowLog<CR>", {})
-vim.keymap.set("n", "<C-b><C-l>", function()
+vim.keymap.set("n", "<C-'><C-b>", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
+vim.keymap.set("n", "<C-'><C-u>", '<cmd>lua require("dapui").toggle()<CR>', {})
+vim.keymap.set("n", "<C-'><C-h>", '<cmd>lua require("dapui").eval()<CR>', {})
+vim.keymap.set("n", "<C-'><C-i>", ":Telescope dap list_breakpoints<CR>", {})
+vim.keymap.set("n", "<C-'><C-f>", ":Telescope dap frames<CR>", {})
+vim.keymap.set("n", "<C-'><C-o>", ":DapShowLog<CR>", {})
+vim.keymap.set("n", "<C-'><C-l>", function()
 	neotest.output.open({ enter = true })
 end)
-vim.keymap.set("n", "<C-b><C-t>", function()
+vim.keymap.set("n", "<C-'><C-t>", function()
 	neotest.run.run({ strategy = "dap" })
 end)
 
-vim.keymap.set("n", "<C-b><C-w>", function()
+vim.keymap.set("n", "<C-'><C-w>", function()
 	require("dap.ui.widgets").hover()
 end)
 

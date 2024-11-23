@@ -7,9 +7,14 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
 
 -- basic functionality
-vim.keymap.set("n", "<C-y>", '"+yy', { noremap = true, silent = true })
-vim.keymap.set("v", "<C-y>", '"+y', { noremap = true, silent = true })
+vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
+vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wf", function()
+	vim.g.disable_autoformat = true
+	vim.cmd("write")
+	vim.g.disable_autoformat = false
+end, { desc = "Write without formatting" })
 
 -- Explorer
 vim.keymap.set("n", "<C-k>", "", { noremap = true })
@@ -20,7 +25,7 @@ vim.keymap.set("n", "<C-k><C-k>", "<Cmd>Telescope find_files hidden=true no_igno
 vim.keymap.set("n", "<C-k><C-o>", "<Cmd>Telescope oldfiles<CR>")
 vim.keymap.set("v", "<C-k><C-g>", "<cmd>Telescope grep_string<CR>")
 vim.keymap.set("n", "<C-k><C-g>", "<cmd>Telescope live_grep<CR>")
-vim.keymap.set("n", "<C-k><C-'>", "<Cmd>Telescope buffers<CR>")
+vim.keymap.set("n", "<C-k><C-b>", "<Cmd>Telescope buffers<CR>")
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-p>", "<Cmd>Telescope commander<CR>")
@@ -32,17 +37,14 @@ M.mappings = {
 		incremental_selection_keymaps = {
 			-- h: nvim-treesitter-incremental-selection-mod
 			init_selection = "gnn", -- Start selection
-			node_incremental = "gni", -- Increment to the next node
-			scope_incremental = "gns", -- Increment to the next scop
-			node_decremental = "gno", -- Decrement the selectio
+			node_incremental = "gna", -- Increment to the next node
+			scope_incremental = "gng", -- Increment to the next scop
+			node_decremental = "gnx", -- Decrement the selectio
 		},
 	},
 	telescope = {
 		-- :h telescope.mappings
-		i = {
-			["<CR>"] = "select_default",
-			["<C-s>"] = "file_vsplit",
-		},
+		i = {},
 		n = {},
 	},
 	neotree = {
@@ -177,14 +179,13 @@ vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 
 -- git
 vim.keymap.set("n", "<C-g><C-g>", ":Git<CR>", opts)
--- vim.keymap.set("n", "<C-g><C-'>", ":Git blame<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d>", ":Gvdiff<CR>", opts)
 local gitsigns = require("gitsigns")
 vim.keymap.set("n", "<C-g><C-h>", gitsigns.preview_hunk, opts)
 vim.keymap.set("n", "<C-g><C-r>", gitsigns.reset_hunk, opts)
-vim.keymap.set("n", "<C-g><C-'>", gitsigns.toggle_current_line_blame, opts)
-vim.keymap.set("n", "]h", "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
-vim.keymap.set("n", "[h", "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
+vim.keymap.set("n", "<C-g><C-b>", gitsigns.blame, opts)
+vim.keymap.set("n", "]h", "<cmd>Gitsigns next_hunk<CR>", {})
+vim.keymap.set("n", "[h", "<cmd>Gitsigns prev_hunk<CR>", {})
 
 -- terminal
 function _G.set_terminal_keymaps()

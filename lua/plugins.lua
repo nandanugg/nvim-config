@@ -28,9 +28,6 @@ require("lazy").setup({
 	{
 		"lewis6991/gitsigns.nvim", -- git changes
 	},
-	{
-		"f-person/git-blame.nvim", -- git blames
-	},
 	-- < git
 	-- > session
 	{
@@ -171,7 +168,6 @@ require("lazy").setup({
 		tag = "0.1.4",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{ "nvim-telescope/telescope-ui-select.nvim" },
 	-- {
 	-- 	"junegunn/fzf", -- search by fzf
 	-- 	build = 'sh -c "cd ~/.local/share/nvim/lazy/fzf && ./install --all"',
@@ -180,17 +176,6 @@ require("lazy").setup({
 	-- 	"ibhagwan/fzf-lua",
 	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	-- },
-	-- {
-	-- 	"nvim-telescope/telescope-fzf-native.nvim", -- search backend
-	-- 	build = "make",
-	-- },
-	{
-		"romgrk/fzy-lua-native", -- search by fzy
-		build = "make",
-	},
-	{
-		"nvim-telescope/telescope-fzy-native.nvim", -- telescope search backend
-	},
 	{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
 	{
 		"AckslD/nvim-neoclip.lua", -- search clipboard
@@ -201,15 +186,6 @@ require("lazy").setup({
 		config = function()
 			require("neoclip").setup()
 		end,
-	},
-
-	{
-		"jvgrootveld/telescope-zoxide", -- search opened folders
-		dependencies = {
-			"nvim-lua/popup.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
 	},
 	-- < search
 

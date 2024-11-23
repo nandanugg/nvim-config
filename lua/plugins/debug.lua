@@ -182,7 +182,9 @@ require("neotest").setup({
 		require("neotest-phpunit")({
 			phpunit_cmd = function()
 				local currentCwd = vim.fn.getcwd()
-				return currentCwd .. "/backend/vendor/bin/phpunit"
+				-- Run composer dump-autoload first, then phpunit
+				vim.fn.system("cd " .. currentCwd .. " && composer dump-autoload")
+				return currentCwd .. "/vendor/bin/phpunit" -- Keep the original phpunit path
 			end,
 			root_files = { "composer.json", "phpunit.xml" },
 			env = {
@@ -194,7 +196,7 @@ require("neotest").setup({
 				request = "launch",
 				name = "Listen for XDebug from neotest",
 				port = 9003,
-				cwd = "${workspaceFolder}/backend",
+				cwd = "${workspaceFolder}",
 				runtimeExecutable = "php",
 				stopOnEntry = false,
 				breakpoints = {

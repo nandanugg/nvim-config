@@ -32,11 +32,6 @@ dapui.setup({
 		},
 	},
 })
-require("nvim-dap-virtual-text").setup({
-	clear_on_continue = true,
-	highlight_new_as_changed = true,
-	highlight_changed_variables = true,
-})
 require("telescope").load_extension("dap")
 dap.listeners.before.attach.dapui_config = function()
 	dapui.open()

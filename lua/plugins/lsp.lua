@@ -52,6 +52,8 @@ cmp.setup({
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<Up>"] = cmp.mapping.select_prev_item(),
+		["<Down>"] = cmp.mapping.select_next_item(),
 		["<Tab>"] = cmp.mapping(tab_mapping, { "i", "s", "c" }),
 		["<S-Tab>"] = cmp.mapping(shift_tab_mapping, { "i", "s", "c" }),
 	},
@@ -65,6 +67,10 @@ cmp.setup({
 })
 
 cmp.setup.cmdline("/", {
+	mapping = cmp.mapping.preset.cmdline({
+		["<Up>"] = cmp.mapping.select_next_item(),
+		["<Down>"] = cmp.mapping.select_prev_item(),
+	}),
 	sources = {
 		{ name = "buffer" },
 	},
@@ -77,26 +83,6 @@ cmp.setup.cmdline(":", {
 	}),
 })
 -- < CODE COMPLETIONS (CMP)
-
--- > SYMBOLS
-
--- Set up lualine using the same theme colors
-require("lualine").setup({
-	options = {
-		globalstatus = true,
-		component_separators = "",
-		section_separators = { left = "", right = "" },
-	},
-	sections = {
-		lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-		lualine_b = { "branch", "diff", "filename" },
-		lualine_c = { "aerial" },
-		lualine_x = { "encoding", "filetype" },
-		lualine_y = {},
-		lualine_z = { { "location", separator = { right = "" }, left_padding = 2 } },
-	},
-})
--- < SYMBOLS
 
 -- > LSP SETUP
 local function lsp_attach(client, bufnr)
@@ -190,7 +176,8 @@ lspconfig.yamlls.setup({
 	settings = {
 		yaml = {
 			schemas = {
-				["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose*.yml",
+				["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+				"/docker-compose*.yml",
 			},
 		},
 	},

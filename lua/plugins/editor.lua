@@ -103,12 +103,93 @@ require("nvim-treesitter.configs").setup({
 })
 -- < LANGUAGE PARSER
 
+local searchArgs = "--no-ignore --hidden"
+local function generateExcludeOpts()
+	local excludeFolders = {
+		".git",
+		".devenv",
+		".direnv",
+		"node_modules",
+		"vendor",
+		"dist",
+		"build",
+		"out",
+		"coverage",
+		"tmp",
+	}
+	local find_excludes = table.concat(
+		vim.tbl_map(function(dir)
+			return string.format("-not -path '*/%s/*'", dir)
+		end, excludeFolders),
+		" "
+	)
+
+	local rg_excludes = table.concat(
+		vim.tbl_map(function(dir)
+			return string.format("--glob '!%s'", dir)
+		end, excludeFolders),
+		" "
+	)
+
+	local fd_excludes = table.concat(
+		vim.tbl_map(function(dir)
+			return string.format("-E '%s'", dir)
+		end, excludeFolders),
+		" "
+	)
+	local grep_excludes = table.concat(
+		vim.tbl_map(function(dir)
+			return string.format("--exclude-dir='%s'", dir)
+		end, excludeFolders),
+		" "
+	)
+
+	return {
+		find = find_excludes,
+		rg = rg_excludes,
+		fd = fd_excludes,
+		grep = grep_excludes,
+	}
+end
+
+local ignoredPath = generateExcludeOpts()
 -- > SEARCH
+require("fzf-lua").setup({
+	"telescope",
+	files = {
+		find_opts = searchArgs .. " " .. ignoredPath.find .. " -type f -not -path '*/\\.git/*' -printf '%P\\n'",
+		rg_opts = searchArgs .. " " .. ignoredPath.rg .. " --color=never --files --follow",
+		fd_opts = searchArgs .. " " .. ignoredPath.fd .. " --color=never --type f --follow",
+	},
+	winopts = {
+		width = 0.8,
+		height = 0.9,
+		preview = {
+			layout = "vertical",
+			delay = 150,
+			winopts = { number = false },
+		},
+	},
+	grep = {
+		grep_opts = searchArgs
+		    .. " "
+		    .. searchArgs
+		    .. " "
+		    .. ignoredPath.grep
+		    .. "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
+		rg_opts = searchArgs
+		    .. " "
+		    .. searchArgs
+		    .. " "
+		    .. ignoredPath.rg
+		    .. "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+	},
+})
 require("telescope").setup({
 	defaults = {
 		find_command = { "rg", "--files" },
 		-- sorting_strategy = "ascending", -- Options: "ascending" or "descending"
-		layout_strategy = "flex", -- Choose "horizontal", "vertical", "center", "flex"
+		layout_strategy = "vertical", -- Choose "horizontal", "vertical", "center", "flex"
 		layout_config = {
 			width = 0.8, -- Width as a proportion of the screen (e.g., 80% of the screen)
 			height = 0.9, -- Height as a proportion of the screen
@@ -168,6 +249,6 @@ require("aerial").setup({
 	backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
 })
 require("telescope").load_extension("frecency") -- recent opened file
-require("telescope").load_extension("neoclip") -- clipboard
+require("telescope").load_extension("neoclip")  -- clipboard
 require("telescope").load_extension("noice")
 -- < SEARCH

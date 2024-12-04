@@ -35,6 +35,9 @@ require("lazy").setup({
 		lazy = false,
 	},
 	-- < session
+	-- > marks
+	{ "kshenoy/vim-signature" },
+	-- < marks
 	-- > editor
 	{ "karb94/neoscroll.nvim" }, -- smooth scroll
 	{ "szw/vim-maximizer" }, -- window maximizer
@@ -69,7 +72,7 @@ require("lazy").setup({
 	},
 	{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
 	{
-		"folke/noice.nvim", --- ui enhancement
+		"folke/noice.nvim",                        --- ui enhancement
 		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
@@ -101,7 +104,7 @@ require("lazy").setup({
 	},
 	-- < editor
 	-- > lsp
-	{ "williamboman/mason.nvim" }, -- programming language plugin manager
+	{ "williamboman/mason.nvim" },    -- programming language plugin manager
 	{ "williamboman/mason-lspconfig.nvim" }, -- lsp intergration with plugin manager
 	{
 		"jay-babu/mason-null-ls.nvim", -- formatter intergration with plugin manager
@@ -122,16 +125,9 @@ require("lazy").setup({
 			"nvim-neotest/nvim-nio",
 		},
 	},
-	{
-		"theHamsta/nvim-dap-virtual-text", -- show the variable value when debugging
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"mfussenegger/nvim-dap",
-		},
-	},
 	{ "nvim-telescope/telescope-dap.nvim" }, -- debug integration with search
 	{
-		"nvim-neotest/neotest", -- debug tests
+		"nvim-neotest/neotest",   -- debug tests
 		dependencies = {
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
@@ -172,15 +168,15 @@ require("lazy").setup({
 	-- 	"junegunn/fzf", -- search by fzf
 	-- 	build = 'sh -c "cd ~/.local/share/nvim/lazy/fzf && ./install --all"',
 	-- },
-	-- {
-	-- 	"ibhagwan/fzf-lua",
-	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
-	-- },
+	{
+		"ibhagwan/fzf-lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 	{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
 	{
-		"AckslD/nvim-neoclip.lua", -- search clipboard
+		"AckslD/nvim-neoclip.lua",                                            -- search clipboard
 		dependencies = {
-			{ "kkharji/sqlite.lua", module = "sqlite" },
+			{ "kkharji/sqlite.lua",           module = "sqlite" },
 			{ "nvim-telescope/telescope.nvim" },
 		},
 		config = function()

@@ -77,7 +77,7 @@ vim.keymap.set("n", "<S-u>", ":vertical resize -5<CR>", { noremap = true, silent
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-w><S-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-w><S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w><S-v>", "vsplit", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-w><S-v>", ":vsplit", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 for i = 1, 9 do

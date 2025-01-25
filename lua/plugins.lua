@@ -39,54 +39,15 @@ require("lazy").setup({
 	{ "kshenoy/vim-signature" },
 	-- < marks
 	-- > editor
-	{ "karb94/neoscroll.nvim" }, -- smooth scroll
-	{ "szw/vim-maximizer" }, -- window maximizer
-	{
-		"nvim-neo-tree/neo-tree.nvim", -- file explorer
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-			"MunifTanjim/nui.nvim",
-			"3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-			{
-				"s1n7ax/nvim-window-picker",
-				version = "2.*",
-				config = function()
-					require("window-picker").setup({
-						filter_rules = {
-							include_current_win = false,
-							autoselect_one = true,
-							-- filter using buffer options
-							bo = {
-								-- if the file type is one of following, the window will be ignored
-								filetype = { "neo-tree", "neo-tree-popup", "notify" },
-								-- if the buffer type is one of following, the window will be ignored
-								buftype = { "terminal", "quickfix" },
-							},
-						},
-					})
-				end,
-			},
-		},
-	},
+	{ "karb94/neoscroll.nvim" },                       -- smooth scroll
+	{ "szw/vim-maximizer" },                           -- window maximizer
+	{ "nvim-tree/nvim-tree.lua" },                     -- file explorer
 	{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
 	{
-		"folke/noice.nvim",                        --- ui enhancement
-		event = "VeryLazy",
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-		},
-	},
-	{
-		"roobert/tailwindcss-colorizer-cmp.nvim", -- colors on tailwind classes
+		"roobert/tailwindcss-colorizer-cmp.nvim",  -- colors on tailwind classes
 		dependencies = {
 			"NvChad/nvim-colorizer.lua",
 		},
-	},
-	{
-		"ray-x/lsp_signature.nvim", -- Show function signature when you type
-		event = "VeryLazy",
 	},
 	{ "nvim-lualine/lualine.nvim" }, -- Decorate winbar & statusbar
 	{
@@ -145,17 +106,28 @@ require("lazy").setup({
 	},
 	-- < debugger
 	-- > autocomplete
+	-- {
+	-- 	"hrsh7th/nvim-cmp", -- autocomplete
+	-- 	dependencies = {
+	-- 		"hrsh7th/cmp-nvim-lsp",
+	-- 		"hrsh7th/cmp-buffer",
+	-- 		"hrsh7th/cmp-path",
+	-- 		"hrsh7th/cmp-cmdline",
+	-- 		"saadparwaiz1/cmp_luasnip",
+	-- 		"L3MON4D3/LuaSnip",
+	-- 		"rafamadriz/friendly-snippets",
+	-- 	},
+	-- },
 	{
-		"hrsh7th/nvim-cmp", -- autocomplete
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"saadparwaiz1/cmp_luasnip",
-			"L3MON4D3/LuaSnip",
-			"rafamadriz/friendly-snippets",
-		},
+		"saghen/blink.cmp",
+		-- optional: provides snippets for the snippet source
+		dependencies = "rafamadriz/friendly-snippets",
+
+		-- use a release tag to download pre-built binaries
+		version = "*",
+		-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+		-- build = 'cargo build --release',
+		opts_extend = { "sources.default" },
 	},
 	-- < autocomplete
 	-- > search

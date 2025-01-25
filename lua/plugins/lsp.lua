@@ -18,101 +18,45 @@ tailwindcss.setup({
 })
 
 -- > CODE COMPLETIONS (CMP)
-local cmp = require("cmp")
-require("luasnip.loaders.from_vscode").lazy_load()
-
-local function tab_mapping(fallback)
-	if cmp.visible() then
-		cmp.select_next_item()
-	else
-		fallback()
-	end
-end
-
-local function shift_tab_mapping(fallback)
-	if cmp.visible() then
-		cmp.select_prev_item()
-	else
-		fallback()
-	end
-end
-
-cmp.setup({
-	formatting = {
-		format = tailwindcss.formatter,
+local blinkCmp = require("blink.cmp")
+blinkCmp.setup({
+	-- 'default' for mappings similar to built-in completion
+	-- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+	-- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+	-- See the full "keymap" documentation for information on defining your own keymap.
+	keymap = { preset = "enter" },
+	completion = {
+		documentation = {
+			auto_show = true,
+			auto_show_delay_ms = 200,
+			treesitter_highlighting = true,
+		},
+		menu = {
+			auto_show = function(ctx)
+				return ctx.mode ~= "cmdline"
+			end,
+		},
+		accept = {},
 	},
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
+	fuzzy = {
+		use_frecency = true,
+		use_proximity = true,
 	},
-	mapping = {
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.close(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
-		["<Up>"] = cmp.mapping.select_prev_item(),
-		["<Down>"] = cmp.mapping.select_next_item(),
-		["<Tab>"] = cmp.mapping(tab_mapping, { "i", "s", "c" }),
-		["<S-Tab>"] = cmp.mapping(shift_tab_mapping, { "i", "s", "c" }),
+	appearance = {
+		-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+		-- Adjusts spacing to ensure icons are aligned
+		nerd_font_variant = "mono",
 	},
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-	}, {
-		{ name = "buffer" },
-		{ name = "path" },
-	}),
-})
 
-cmp.setup.cmdline("/", {
-	mapping = cmp.mapping.preset.cmdline({
-		["<Up>"] = cmp.mapping.select_next_item(),
-		["<Down>"] = cmp.mapping.select_prev_item(),
-	}),
+	-- Default list of enabled providers defined so that you can extend it
+	-- elsewhere in your config, without redefining it, due to `opts_extend`
 	sources = {
-		{ name = "buffer" },
+		default = { "lsp", "path", "snippets", "buffer" },
 	},
-})
-cmp.setup.cmdline(":", {
-	sources = cmp.config.sources({
-		{ name = "path" },
-	}, {
-		{ name = "cmdline" },
-	}),
 })
 -- < CODE COMPLETIONS (CMP)
 
 -- > LSP SETUP
-local function lsp_attach(client, bufnr)
-	if client.server_capabilities.document_diagnostics then
-		require("bufferline").setup({
-			options = {
-				diagnostics = "nvim_lsp",
-			},
-		})
-	end
-	require("lsp_signature").on_attach({
-		bind = true,
-		handler_opts = {
-			border = "shadow",
-		},
-		max_height = 10,
-		padding = "  ",
-		timer_interval = 100,
-	}, bufnr)
-end
-
--- Create an LspAttach autocommand for setting up LSP-related functionalities
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		local bufnr = args.buf
-		lsp_attach(client, bufnr)
-	end,
-})
-
 require("mason-lspconfig").setup({
 	ensure_installed = { "lua_ls", "intelephense" },
 	automatic_installation = true,
@@ -129,6 +73,14 @@ require("mason-lspconfig").setup_handlers({
 })
 
 local lspconfig = require("lspconfig")
+lspconfig.config = function(_, opts)
+	for server, config in pairs(opts.servers) do
+		-- passing config.capabilities to blink.cmp merges with the capabilities in your
+		-- `opts[server].capabilities, if you've defined it
+		config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+		lspconfig[server].setup(config)
+	end
+end
 lspconfig.lua_ls.setup({
 	filetypes = { "lua" },
 	settings = {

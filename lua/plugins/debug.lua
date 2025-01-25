@@ -24,10 +24,9 @@ dapui.setup({
 	layouts = {
 		{
 			elements = {
-				"console",
 				"scopes",
 			},
-			size = 18,
+			size = 10,
 			position = "bottom",
 		},
 	},
@@ -54,7 +53,8 @@ dap.adapters.php = {
 	type = "executable",
 	command = "node",
 	args = {
-		require("mason-registry").get_package("php-debug-adapter"):get_install_path() .. "/extension/out/phpDebug.js",
+		require("mason-registry").get_package("php-debug-adapter"):get_install_path() ..
+		"/extension/out/phpDebug.js",
 	},
 }
 dap.configurations.php = {
@@ -143,7 +143,7 @@ dap.adapters.go = {
 	command = "node",
 	args = {
 		require("mason-registry").get_package("go-debug-adapter"):get_install_path()
-			.. "/extension/dist/debugAdapter.js",
+		.. "/extension/dist/debugAdapter.js",
 	},
 }
 dap.configurations.go = {

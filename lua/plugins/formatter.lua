@@ -43,12 +43,23 @@ local phpcsfixer_sister_dosen = helpers.make_builtin({
 null_ls.setup({
 	sources = {
 		phpcsfixer_sister_dosen,
+		null_ls.builtins.formatting.prettier.with({
+			args = {
+				"--use-tabs=false",
+				"--tab-width=2",
+				"--config-precedence=file-override", -- Make it respect .editorconfig
+			},
+		}),
 	},
 	debug = true,
 })
 require("mason-null-ls").setup({
 	automatic_installation = true, -- Automatically install tools from mason
 	automatic_setup = true, -- Automatically setup in null-ls
+	ensure_installed = {
+		"prettier",
+		"php-cs-fixer",
+	},
 	handlers = {},
 })
 

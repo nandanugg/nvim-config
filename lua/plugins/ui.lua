@@ -132,10 +132,10 @@ vim.opt.relativenumber = true
 vim.opt.autoindent = true -- Copy indent from the current line when starting a new one
 vim.opt.number = true
 vim.opt.autoread = true
-vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.shiftwidth = 2   -- Number of spaces for each indent
-vim.opt.tabstop = 2      -- Number of spaces a tab counts for
-vim.opt.softtabstop = 2  -- Number of spaces when hitting Tab in insert mode
+-- vim.opt.expandtab = true -- Convert tabs to spaces
+-- vim.opt.shiftwidth = 2   -- Number of spaces for each indent
+-- vim.opt.tabstop = 2      -- Number of spaces a tab counts for
+-- vim.opt.softtabstop = 2  -- Number of spaces when hitting Tab in insert mode
 vim.cmd([[
   autocmd FocusGained,BufEnter * checktime
 ]])

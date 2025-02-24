@@ -71,48 +71,49 @@ require("bufferline").setup({
 
 -- > LANGUAGE PARSER
 require("nvim-treesitter.configs").setup({
+    ensure_installed = {
+        -- web dev
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "astro",
+        "vue",
+        "svelte",
+        "graphql",
+        -- backend dev
+        "go",
+        "gomod",
+        "gosum",
+        "terraform",
+        "python",
+        "java",
+        "php",
+        "phpdoc",
+        "nginx",
+        "nix",
+        "dockerfile",
+        "sql",
+        "bash",
+        -- config dev
+        "lua",
+        "json",
+        "jsonc",
+        "yaml",
+        "csv",
+        "markdown",
+        "markdown_inline",
+        "git_config",
+        "regex",
+        "vim",
+        "tmux",
+        "ssh_config",
+    },
+    sync_install = false,
+    auto_install = false,
     highlight = {
         enable = true,
-        ensure_installed = {
-            -- web dev
-            "html",
-            "css",
-            "javascript",
-            "typescript",
-            "tsx",
-            "astro",
-            "vue",
-            "svelte",
-            "graphql",
-            -- backend dev
-            "go",
-            "gomod",
-            "gosum",
-            "terraform",
-            "python",
-            "java",
-            "php",
-            "phpdoc",
-            "nginx",
-            "nix",
-            "dockerfile",
-            "sql",
-            "bash",
-            -- config dev
-            "lua",
-            "json",
-            "jsonc",
-            "yaml",
-            "csv",
-            "markdown",
-            "markdown_inline",
-            "git_config",
-            "regex",
-            "ssh_config",
-            "vim",
-            "tmux",
-            "ssh_config",
-        },
         additional_vim_regex_highlighting = false,
     },
     incremental_selection = {
@@ -173,6 +174,7 @@ local function generateExcludeOpts()
 end
 
 local ignoredPath = generateExcludeOpts()
+
 -- > SEARCH
 require("fzf-lua").setup({
     "telescope",
@@ -209,10 +211,10 @@ require("telescope").setup({
     defaults = {
         find_command = { "rg", "--files" },
         -- sorting_strategy = "ascending", -- Options: "ascending" or "descending"
-        layout_strategy = "vertical", -- Choose "horizontal", "vertical", "center", "flex"
+        layout_strategy = "vertical",   -- Choose "horizontal", "vertical", "center", "flex"
         layout_config = {
-            width = 0.8,        -- Width as a proportion of the screen (e.g., 80% of the screen)
-            height = 0.9,       -- Height as a proportion of the screen
+            width = 0.8,                -- Width as a proportion of the screen (e.g., 80% of the screen)
+            height = 0.9,               -- Height as a proportion of the screen
             prompt_position = "bottom", -- Position of the prompt; can be "top" or "bottom"
 
             -- horizontal = {
@@ -253,18 +255,19 @@ require("telescope").setup({
             "--line-number",
             "--column",
             "--smart-case",
-            "--hidden", -- Include hidden files in the search
+            "--hidden",    -- Include hidden files in the search
             "--no-ignore", -- Don't respect .gitignore files
         },
     },
     pickers = {
         find_files = {
-            hidden = true, -- This will include dotfiles
+            hidden = true,    -- This will include dotfiles
             no_ignore = true, -- This will not respect .gitignore files
         },
     },
     extensions = {},
 })
+require('treesj').setup({})
 require("aerial").setup({
     backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
 })

@@ -9,14 +9,17 @@ require("lazy").setup({
             require("nvim-surround").setup({})
         end,
     },
-    { "mbbill/undotree" },        -- show the undo history of a file
-    { "famiu/bufdelete.nvim" },   -- safely remove buffer without messing the layout
-    { "gbprod/substitute.nvim" }, -- replace texts
+    { "mbbill/undotree" },                                    -- show the undo history of a file
+    { "famiu/bufdelete.nvim" },                               -- safely remove buffer without messing the layout
+    {
+        'Wansmer/treesj',                                     -- collapse or make one liner of a arguments or objects
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    },
     -- < editing
     -- > terminal
-    { "akinsho/toggleterm.nvim", version = "*", config = true }, -- terminal
+    { "akinsho/toggleterm.nvim",         version = "*",    config = true }, -- terminal
     {
-        "akinsho/bufferline.nvim",
+        "akinsho/bufferline.nvim",                                          -- tabs
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
@@ -36,7 +39,7 @@ require("lazy").setup({
     },
     -- < session
     -- > marks
-    { "kshenoy/vim-signature" },
+    { "kshenoy/vim-signature" }, -- makrs manager
     -- < marks
     -- > editor
     { "karb94/neoscroll.nvim" },                              -- smooth scroll
@@ -64,7 +67,7 @@ require("lazy").setup({
         main = "ibl",
     },
     {
-        "editorconfig/editorconfig-vim"
+        "editorconfig/editorconfig-vim" -- apply .editorconfig
     },
     -- < editor
     -- > lsp
@@ -102,7 +105,7 @@ require("lazy").setup({
     -- < debugger
     -- > autocomplete
     {
-        "saghen/blink.cmp",
+        "saghen/blink.cmp", -- autocomplete
         -- optional: provides snippets for the snippet source
         dependencies = "rafamadriz/friendly-snippets",
 
@@ -114,12 +117,12 @@ require("lazy").setup({
     -- < autocomplete
     -- > search
     {
-        "nvim-telescope/telescope.nvim", -- search
+        "nvim-telescope/telescope.nvim", -- secondary search
         tag = "0.1.4",
         dependencies = { "nvim-lua/plenary.nvim" },
     },
     {
-        "ibhagwan/fzf-lua",
+        "ibhagwan/fzf-lua", -- main search plugin
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files

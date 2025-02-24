@@ -18,7 +18,8 @@ end, { desc = "Write without formatting" })
 
 -- Explorer
 vim.keymap.set("n", "<C-k>", "", { noremap = true })
-vim.keymap.set("n", "<C-k><C-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k><C-e>", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k><C-w>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 -- searching
 vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
 vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
@@ -27,18 +28,16 @@ vim.keymap.set("v", "<C-k><C-g>", "<cmd>FzfLua grep_cword<CR>")
 vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
-vim.keymap.set("n", "<C-k><C-p>", "<Cmd>Telescope commander<CR>")
 vim.keymap.set("n", "<C-k><C-h>", "<cmd>Telescope neoclip<CR>")
-vim.keymap.set("n", "<C-k><C-r>", "<cmd>Telescope zoxide list<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     treesitter = {
         incremental_selection_keymaps = {
             -- h: nvim-treesitter-incremental-selection-mod
-            init_selection = "gnn", -- Start selection
-            node_incremental = "gna", -- Increment to the next node
+            init_selection = "gnn",    -- Start selection
+            node_incremental = "gna",  -- Increment to the next node
             scope_incremental = "gng", -- Increment to the next scop
-            node_decremental = "gnx", -- Decrement the selectio
+            node_decremental = "gnx",  -- Decrement the selectio
         },
     },
     telescope = {
@@ -77,17 +76,11 @@ vim.keymap.set("n", "<S-u>", ":vertical resize -5<CR>", { noremap = true, silent
 vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-w><S-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-w><S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-w><S-o>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-w><S-v>", ":vsplit<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
-for i = 1, 9 do
-    vim.keymap.set(
-        "n",
-        "<C-" .. i .. ">",
-        "<Cmd>BufferLineGoToBuffer " .. i .. "<CR>",
-        { noremap = true, silent = true }
-    )
-end
+vim.keymap.set("n", "<S-k>", ":TSJSplit<CR>", { noremap = true, silent = true })
 
 -- marks
 -- mx           Toggle mark 'x' and display it in the leftmost column

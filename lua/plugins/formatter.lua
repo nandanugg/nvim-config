@@ -20,18 +20,18 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-    callback = function()
-        vim.lsp.buf.format({
-            timeout_ms = 5000,
-            filter = function(client)
-                -- if vim.bo.filetype == "php" then
-                --     return client.name == "null-ls"
-                -- end
-                return true
-            end,
-            async = false,
-        })
-    end,
+require("conform").setup({
+    -- Define formatters for specific filetypes
+    formatters_by_ft = {
+        go = { "goimports", "gofumpt" },
+    },
+    default_format_opts = {
+        lsp_format = "fallback",
+    },
+    -- Format on save
+    format_on_save = {
+        timeout_ms = 5000,
+        lsp_format = "fallback",
+    },
 })
 -- < FORMATTER

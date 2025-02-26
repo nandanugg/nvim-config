@@ -70,6 +70,9 @@ require("lazy").setup({
         "editorconfig/editorconfig-vim" -- apply .editorconfig
     },
     -- < editor
+    -- > formatter
+    { 'stevearc/conform.nvim' },
+    -- < formatter
     -- > lsp
     { "williamboman/mason.nvim" },           -- programming language plugin manager
     { "williamboman/mason-lspconfig.nvim" }, -- lsp intergration with plugin manager

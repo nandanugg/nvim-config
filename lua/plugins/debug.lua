@@ -1,6 +1,3 @@
--- TODO: plugins to try
--- https://github.com/nvim-neotest/neotest
---
 -- > DEBUG
 local dap = require("dap")
 dap.set_log_level("TRACE")
@@ -82,9 +79,3 @@ dap.configurations.go = {
     },
 }
 -- < GO DEBUG
-
-require("neotest").setup({
-    log_level = vim.log.levels.DEBUG,
-    adapters = {
-    },
-})

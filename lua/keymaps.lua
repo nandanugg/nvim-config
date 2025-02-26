@@ -156,8 +156,15 @@ vim.keymap.set("t", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, s
 vim.keymap.set("t", "<C-\\><C-2>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("t", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 
--- debugging
+-- testing
 local neotest = require("neotest")
+vim.keymap.set("n", "<C-t><C-t>", function() neotest.run.run() end, { noremap = true })
+vim.keymap.set("n", "<C-t><C-a>", function() neotest.run.run(vim.fn.expand("%")) end, { noremap = true })
+vim.keymap.set("n", "<C-t><C-'>", function() neotest.run.run({ strategy = "dap" }) end, { noremap = true })
+vim.keymap.set("n", "<C-t><C-h>", function() neotest.output.open({ enter = true }) end, { noremap = true })
+vim.keymap.set("n", "<C-t><C-e>", ":Neotest summary<CR>", { noremap = true })
+
+-- debugging
 vim.keymap.set("n", "<C-'>", "", { noremap = true })
 vim.keymap.set("n", "<C-'><C-s>", function()
     require("dap").continue()
@@ -180,13 +187,6 @@ vim.keymap.set("n", "<C-'><C-h>", '<cmd>lua require("dapui").eval()<CR>', {})
 vim.keymap.set("n", "<C-'><C-i>", ":Telescope dap list_breakpoints<CR>", {})
 vim.keymap.set("n", "<C-'><C-f>", ":Telescope dap frames<CR>", {})
 vim.keymap.set("n", "<C-'><C-o>", ":DapShowLog<CR>", {})
-vim.keymap.set("n", "<C-'><C-l>", function()
-    neotest.output.open({ enter = true })
-end)
-vim.keymap.set("n", "<C-'><C-t>", function()
-    neotest.run.run({ strategy = "dap" })
-end)
-
 vim.keymap.set("n", "<C-'><C-w>", function()
     require("dap.ui.widgets").hover()
 end)

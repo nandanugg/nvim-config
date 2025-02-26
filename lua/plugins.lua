@@ -84,7 +84,6 @@ require("lazy").setup({
         "rcarriga/nvim-dap-ui",  -- debugging ui
         dependencies = {
             "mfussenegger/nvim-dap",
-            "nvim-neotest/nvim-nio",
         },
     },
     { "nvim-telescope/telescope-dap.nvim" }, -- debug integration with search
@@ -97,14 +96,7 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter",
         },
     },
-    {
-        "olimorris/neotest-phpunit", -- debug php test
-        build = function()
-            os.execute(
-                'if [[ "$OSTYPE" == "darwin"* ]]; then sed -i "" "/cwd = async.fn.getcwd()/d" ~/.local/share/nvim/lazy/neotest-phpunit/lua/neotest-phpunit/init.lua; else sed -i "/cwd = async.fn.getcwd()/d" ~/.local/share/nvim/lazy/neotest-phpunit/lua/neotest-phpunit/init.lua; fi'
-            )
-        end,
-    },
+    { "nvim-neotest/neotest-go" },
     -- < debugger
     -- > autocomplete
     {

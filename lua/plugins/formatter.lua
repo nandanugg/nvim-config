@@ -22,6 +22,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Format on save
 require("conform").setup({
     -- Define formatters for specific filetypes
+    -- log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
     },

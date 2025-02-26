@@ -61,87 +61,79 @@ blinkCmp.setup({
 -- < CODE COMPLETIONS (CMP)
 
 -- > LSP SETUP
+local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup({
     ensure_installed = { "lua_ls", "intelephense" },
     automatic_installation = true,
 })
+local server_configs = {
+    lua_ls = {
+        filetypes = { "lua" },
+        settings = {
+            Lua = {
+                runtime = {
+                    version = "LuaJIT",
+                },
+                diagnostics = {
+                    globals = { "vim", "require" },
+                },
+                workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    },
+    intelephense = {
+        filetypes = { "php" },
+        settings = {
+            intelephense = {
+                files = {
+                    maxSize = 5000000,
+                    exclude = {
+                        "**/node_modules/**",
+                        "**/vendor/**",
+                    },
+                },
+                diagnostics = {
+                    enable = true,
+                    undefinedTypes = false,
+                    undefinedMethods = false,
+                    undefinedProperties = false,
+                    undefinedFunctions = false,
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    },
+    yamlls = {
+        settings = {
+            yaml = {
+                schemas = {
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+                    "/docker-compose*.yml",
+                },
+            },
+        },
+    },
+    docker_compose_language_service = {
+        filetypes = { "yaml" },
+        root_dir = function(fname)
+            return lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml")(fname)
+        end,
+    },
+}
 
 require("mason-lspconfig").setup_handlers({
     function(server_name)
-        require("lspconfig")[server_name].setup({
-            settings = {
-                -- Add any server-specific settings here, like for `lua_ls` or `intelephense`
-            },
-        })
+        -- Use custom config if available, otherwise use default
+        local config = server_configs[server_name] or { settings = {} }
+        lspconfig[server_name].setup(config)
     end,
 })
 
-local lspconfig = require("lspconfig")
-lspconfig.config = function(_, opts)
-    for server, config in pairs(opts.servers) do
-        -- passing config.capabilities to blink.cmp merges with the capabilities in your
-        -- `opts[server].capabilities, if you've defined it
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
-    end
-end
-lspconfig.lua_ls.setup({
-    filetypes = { "lua" },
-    settings = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT",
-            },
-            diagnostics = {
-                globals = { "vim", "require" },
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-})
-lspconfig.intelephense.setup({
-    filetypes = { "php" },
-    settings = {
-        intelephense = {
-            files = {
-                maxSize = 5000000,
-                exclude = {
-                    "**/node_modules/**",
-                    "**/vendor/**",
-                },
-            },
-            diagnostics = {
-                enable = true,
-                undefinedTypes = false,
-                undefinedMethods = false,
-                undefinedProperties = false,
-                undefinedFunctions = false,
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-})
-lspconfig.yamlls.setup({
-    settings = {
-        yaml = {
-            schemas = {
-                ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
-                "/docker-compose*.yml",
-            },
-        },
-    },
-})
-lspconfig.docker_compose_language_service.setup({
-    filetypes = { "yaml" },
-    root_dir = function(fname)
-        return lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml")(fname)
-    end,
-})
 --  LANGUAGE SERVER PROTOCOL (LSP)

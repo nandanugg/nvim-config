@@ -71,7 +71,7 @@ require("lazy").setup({
     },
     -- < editor
     -- > formatter
-    { 'stevearc/conform.nvim' },
+    { 'stevearc/conform.nvim' }, -- formatter
     -- < formatter
     -- > lsp
     { "williamboman/mason.nvim" },           -- programming language plugin manager

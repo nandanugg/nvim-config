@@ -20,37 +20,6 @@ require("nvim-tree").setup({
         enable = true,
     },
 })
--- require("neo-tree").setup({
--- 	window = {
--- 		position = "right",
--- 		mappings = keymaps.mappings.neotree,
--- 		auto_expand_width = true,
--- 	},
--- 	popup_border_style = "rounded",
--- 	enable_git_status = true,
--- 	filesystem = {
--- 		restrict_to_cwd = true,
--- 		filtered_items = {
--- 			visible = true,
--- 			hide_dotfiles = false,
--- 			never_show = {
--- 				".DS_Store",
--- 				"thumbs.db",
--- 			},
--- 		},
--- 		follow_current_file = {
--- 			enabled = true,
--- 			leave_dirs_open = false,
--- 		},
--- 		hijack_netrw_behavior = "open_current", -- Open Neo-tree on netrw calls
--- 	},
--- 	buffers = {
--- 		follow_current_file = {
--- 			enabled = true,
--- 			leave_dirs_open = false,
--- 		},
--- 	},
--- })
 -- < FILE EXPLORER
 -- > BUFFER TABS
 require("bufferline").setup({
@@ -71,6 +40,8 @@ require("bufferline").setup({
 
 -- > LANGUAGE PARSER
 require("nvim-treesitter.configs").setup({
+    ignore_install = {},
+    modules = {},
     ensure_installed = {
         -- web dev
         "html",
@@ -267,10 +238,9 @@ require("telescope").setup({
     },
     extensions = {},
 })
+-- breaking down line into multiple lines
 require('treesj').setup({})
-require("aerial").setup({
-    backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
-})
+
 require("telescope").load_extension("frecency") -- recent opened file
 require("telescope").load_extension("neoclip")  -- clipboard
 -- < SEARCH

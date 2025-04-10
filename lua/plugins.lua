@@ -53,15 +53,15 @@ require("lazy").setup({
         },
     },
     { "nvim-lualine/lualine.nvim" }, -- Decorate winbar & statusbar
-    {
-        "stevearc/aerial.nvim",      -- symbol search
-        opts = {},
-        -- Optional dependencies
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter",
-            "nvim-tree/nvim-web-devicons",
-        },
-    },
+    -- {
+    --     "stevearc/aerial.nvim",      -- symbol search
+    --     opts = {},
+    --     -- Optional dependencies
+    --     dependencies = {
+    --         "nvim-treesitter/nvim-treesitter",
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    -- },
     {
         "lukas-reineke/indent-blankline.nvim", -- indent guides
         main = "ibl",
@@ -70,6 +70,9 @@ require("lazy").setup({
         "editorconfig/editorconfig-vim" -- apply .editorconfig
     },
     -- < editor
+    -- > AI
+    { "github/copilot.vim" },
+    -- < AI
     -- > formatter
     { 'stevearc/conform.nvim' }, -- formatter
     -- < formatter

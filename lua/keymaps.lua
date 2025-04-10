@@ -7,6 +7,7 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
 
 -- basic functionality
+vim.keymap.set("n", "<S-q>", ':q<CR>', { noremap = true, silent = true })
 vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
@@ -166,6 +167,7 @@ vim.keymap.set("n", "<C-t><C-a>", function() neotest.run.run(vim.fn.expand("%"))
 vim.keymap.set("n", "<C-t><C-'>", function() neotest.run.run({ strategy = "dap" }) end, { noremap = true })
 vim.keymap.set("n", "<C-t><C-h>", function() neotest.output.open({ enter = true }) end, { noremap = true })
 vim.keymap.set("n", "<C-t><C-e>", ":Neotest summary<CR>", { noremap = true })
+vim.keymap.set("n", "<C-t><C-\\>", ":Neotest output-panel<CR>", { noremap = true })
 
 -- debugging
 vim.keymap.set("n", "<C-'>", "", { noremap = true })

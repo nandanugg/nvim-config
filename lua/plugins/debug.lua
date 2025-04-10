@@ -10,10 +10,6 @@ local function clear_dap_log()
         print("DAP log cleared")
     end
 end
--- vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
-dap.listeners.before.event_initialized["clear_dap_log"] = function()
-    clear_dap_log()
-end
 -- < DEBUG
 -- > DEBUGGER UI
 local dapui = require("dapui")
@@ -33,6 +29,7 @@ dap.listeners.before.attach.dapui_config = function()
     dapui.open()
 end
 dap.listeners.before.launch.dapui_config = function()
+    clear_dap_log()
     dapui.open()
 end
 dap.listeners.before.event_terminated.dapui_config = function()
@@ -42,40 +39,95 @@ dap.listeners.before.event_exited.dapui_config = function()
     dapui.close()
 end
 -- < DEBUGGER UI
-
--- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
--- > DEBUG UI
 -- > GO DEBUG
-dap.adapters.go = {
-    type = "executable",
-    command = "node",
-    args = {
-        require("mason-registry").get_package("go-debug-adapter"):get_install_path()
-        .. "/extension/dist/debugAdapter.js",
-    },
-}
-dap.configurations.go = {
-    {
-        type = "go",
-        name = "Debug custom main.go path",
-        request = "launch",
-        showLog = true,
-        program = function()
-            return vim.fn.input("Path to main.go: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        dlvToolPath = vim.fn.exepath("dlv"),
-        env = {
-            HOME_DIR = os.getenv("HOME"),
+require('dap-go').setup {
+    -- :help dap-configuration
+    dap_configurations = {
+        {
+            type = "go",
+            name = "Attach remote",
+            mode = "remote",
+            request = "attach",
         },
     },
-    {
-        type = "go",
-        name = "Debug current cwd",
-        request = "launch",
-        showLog = true,
-        program = "${workspaceFolder}",
-        dlvToolPath = vim.fn.exepath("dlv"),
-        HOME_DIR = os.getenv("HOME"),
+    delve = {
+        path = "dlv",
+        -- time to wait for delve to initialize the debug session.
+        -- default to 20 seconds
+        initialize_timeout_sec = 20,
+        -- a string that defines the port to start delve debugger.
+        -- default to string "${port}" which instructs nvim-dap
+        -- to start the process in a random available port.
+        -- if you set a port in your debug configuration, its value will be
+        -- assigned dynamically.
+        port = "${port}",
+        -- additional args to pass to dlv
+        args = {},
+        -- the build flags that are passed to delve.
+        -- defaults to empty string, but can be used to provide flags
+        -- such as "-tags=unit" to make sure the test suite is
+        -- compiled during debugging, for example.
+        -- passing build flags using args is ineffective, as those are
+        -- ignored by delve in dap mode.
+        -- avaliable ui interactive function to prompt for arguments get_arguments
+        build_flags = {},
+        -- whether the dlv process to be created detached or not. there is
+        -- an issue on delve versions < 1.24.0 for Windows where this needs to be
+        -- set to false, otherwise the dlv server creation will fail.
+        -- avaliable ui interactive function to prompt for build flags: get_build_flags
+        detached = vim.fn.has("win32") == 0,
+        -- the current working directory to run dlv from, if other than
+        -- the current working directory.
+        cwd = nil,
     },
+    -- options related to running closest test
+    tests = {
+        -- enables verbosity when running the test.
+        verbose = false,
+    },
+}
+
+dap.adapters.delve = function(callback, config)
+    if config.mode == 'remote' and config.request == 'attach' then
+        callback({
+            type = 'server',
+            host = config.host or '127.0.0.1',
+            port = config.port or '38697'
+        })
+    else
+        callback({
+            type = 'server',
+            port = '${port}',
+            executable = {
+                command = 'dlv',
+                args = { 'dap', '-l', '127.0.0.1:${port}', '--log', '--log-output=dap' },
+                detached = vim.fn.has("win32") == 0,
+            }
+        })
+    end
+end
+
+dap.configurations.go = {
+    {
+        type = "delve",
+        name = "Debug",
+        request = "launch",
+        program = "${file}"
+    },
+    {
+        type = "delve",
+        name = "Debug test",
+        request = "launch",
+        mode = "test",
+        program = "${file}"
+    },
+    -- works with go.mod packages and sub packages
+    {
+        type = "delve",
+        name = "Debug test (go.mod)",
+        request = "launch",
+        mode = "test",
+        program = "./${relativeFileDirname}"
+    }
 }
 -- < GO DEBUG

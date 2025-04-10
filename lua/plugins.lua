@@ -99,7 +99,8 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter",
         },
     },
-    { "nvim-neotest/neotest-go" },
+    { "nvim-neotest/neotest-go" }, -- debug go tests
+    { "leoluz/nvim-dap-go" },      -- attach go debugger
     -- < debugger
     -- > autocomplete
     {

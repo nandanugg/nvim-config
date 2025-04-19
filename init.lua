@@ -1,6 +1,13 @@
 -- for nvimtree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+-- Set search to be case insensitive
+vim.opt.ignorecase = true
+
+-- Optional: Enable smartcase for smarter searching
+-- (Searches are case insensitive unless the pattern contains uppercase)
+vim.opt.smartcase = true
+
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

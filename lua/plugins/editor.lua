@@ -6,8 +6,18 @@ require("nvim-tree").setup({
         sorter = "case_sensitive",
     },
     view = {
-        side = "right",
-        width = 40,
+        float = {
+            enable = true,
+            quit_on_focus_loss = true,
+            open_win_config = {
+                relative = "editor",
+                border = "rounded",
+                width = 40,
+                height = 40,
+                row = 1,
+                col = 2,
+            },
+        },
     },
     renderer = {
         group_empty = true,

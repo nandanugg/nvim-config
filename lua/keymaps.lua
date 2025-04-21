@@ -20,7 +20,7 @@ end, { desc = "Write without formatting" })
 -- Explorer
 vim.keymap.set("n", "<Leader>ke", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<Leader>kk", "<Cmd>FzfLua files<CR>", {})
+vim.keymap.set("n", "<Leader><Leader>", "<Cmd>FzfLua files<CR>", {})
 vim.keymap.set("n", "<Leader>ko", "<Cmd>FzfLua oldfiles<CR>")
 vim.keymap.set("n", "<Leader>kg", "<cmd>FzfLua live_grep<CR>")
 vim.keymap.set("v", "<Leader>kf", "<cmd>FzfLua grep_cword<CR>")
@@ -148,6 +148,10 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+vim.keymap.set("n", "<Leader>\\\\", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>\\1", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>\\2", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>\\3", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("n", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("t", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("n", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })

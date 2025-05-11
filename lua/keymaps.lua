@@ -20,7 +20,7 @@ end, { desc = "Write without formatting" })
 -- Explorer
 vim.keymap.set("n", "<Leader>ke", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<Leader><Leader>", "<Cmd>FzfLua files<CR>", {})
+vim.keymap.set("n", "<Leader>kk", "<Cmd>FzfLua files<CR>", {})
 vim.keymap.set("n", "<Leader>ko", "<Cmd>FzfLua oldfiles<CR>")
 vim.keymap.set("n", "<Leader>kg", "<cmd>FzfLua live_grep<CR>")
 vim.keymap.set("v", "<Leader>kf", "<cmd>FzfLua grep_cword<CR>")

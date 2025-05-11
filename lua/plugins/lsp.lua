@@ -128,12 +128,8 @@ local server_configs = {
     },
 }
 
-require("mason-lspconfig").setup_handlers({
-    function(server_name)
-        -- Use custom config if available, otherwise use default
-        local config = server_configs[server_name] or { settings = {} }
-        lspconfig[server_name].setup(config)
-    end,
-})
+require("mason-lspconfig").setup {
+    automatic_enable = false
+}
 
 --  LANGUAGE SERVER PROTOCOL (LSP)

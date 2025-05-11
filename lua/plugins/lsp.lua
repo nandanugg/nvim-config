@@ -62,10 +62,24 @@ blinkCmp.setup({
 
 -- > LSP SETUP
 local lspconfig = require("lspconfig")
-require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls", "intelephense" },
+local mason_lspconfig = require("mason-lspconfig")
+
+-- Install servers via Mason
+mason_lspconfig.setup({
+    ensure_installed = {
+        "lua_ls",
+        "intelephense",
+        "gopls",
+        "ts_ls",
+        "eslint",
+        "terraformls",
+        "yamlls",
+        "docker_compose_language_service",
+    },
     automatic_installation = true,
 })
+
+-- Define your server-specific configurations
 local server_configs = {
     lua_ls = {
         filetypes = { "lua" },
@@ -110,11 +124,18 @@ local server_configs = {
             },
         },
     },
+    gopls = {}, -- You can add custom Go settings here if needed
+    ts_ls = {   -- Correct server name for TypeScript/JavaScript
+        filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+        root_dir = lspconfig.util.root_pattern("tsconfig.json", "jsconfig.json", ".git"),
+    },
+    eslint = {},
+    terraformls = {},
     yamlls = {
         settings = {
             yaml = {
                 schemas = {
-                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
                     "/docker-compose*.yml",
                 },
             },
@@ -128,8 +149,8 @@ local server_configs = {
     },
 }
 
-require("mason-lspconfig").setup {
-    automatic_enable = false
-}
-
+-- Apply configurations to each server
+for server, config in pairs(server_configs) do
+    lspconfig[server].setup(config)
+end
 --  LANGUAGE SERVER PROTOCOL (LSP)

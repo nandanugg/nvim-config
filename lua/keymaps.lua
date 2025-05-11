@@ -68,18 +68,18 @@ M.mappings = {
 }
 
 -- buffers
-vim.keymap.set("n", "<S-r>", ":resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-f>", ":resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-y>", ":vertical resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-u>", ":vertical resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-t>", ":enew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w><S-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w><S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w><S-o>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-w><S-v>", ":vsplit<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-k>", ":TSJSplit<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-r>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-f>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-y>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-u>", ":vertical resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><S-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><S-w>", ":Bdelete<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><S-o>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><S-v>", ":vsplit<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", ":TSJSplit<CR>", { noremap = true, silent = true })
 
 -- marks
 -- mx           Toggle mark 'x' and display it in the leftmost column
@@ -109,9 +109,36 @@ vim.keymap.set("n", "<S-k>", ":TSJSplit<CR>", { noremap = true, silent = true })
 -- m<BS>        Remove all markers
 
 -- lsp specific
+local function show_diagnostic_source()
+    local winnr = vim.api.nvim_get_current_win()
+    local bufnr = vim.api.nvim_win_get_buf(winnr)
+
+    -- Get all diagnostics for current buffer
+    local diagnostics = vim.diagnostic.get(bufnr)
+
+    -- Get cursor position (returns [row, col], both 1-based)
+    local pos = vim.api.nvim_win_get_cursor(winnr)
+    local lnum = pos[1] - 1 -- convert to 0-based line number
+
+    -- Find matching diagnostics at current line
+    local match_found = false
+    for _, diag in ipairs(diagnostics) do
+        if diag.lnum == lnum then
+            local client = vim.lsp.get_client_by_id(diag.source)
+            local source_name = client and client.name or diag.source
+            print(string.format("Diagnostic from LSP server: %s", source_name))
+            match_found = true
+        end
+    end
+
+    if not match_found then
+        print("No diagnostics found at current line.")
+    end
+end
 local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts)
 vim.keymap.set("n", "gD", ":FzfLua diagnostics_documentCR", opts)
+vim.keymap.set("n", "gs", show_diagnostic_source, opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)

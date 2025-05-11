@@ -26,11 +26,13 @@ require("conform").setup({
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
         javascript = { "prettierd", "prettierd", "eslint_d", "js_beautify", stop_after_first = true },
+        json = { "jq", stop_after_first = true },
     },
     default_format_opts = {
         lsp_format = "fallback",
     },
-    -- Format on save
+    notify_on_error = true,
+    notify_no_formatters = true,
     format_on_save = {
         timeout_ms = 5000,
         lsp_format = "fallback",

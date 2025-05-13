@@ -66,6 +66,7 @@ local mason_lspconfig = require("mason-lspconfig")
 
 -- Install servers via Mason
 mason_lspconfig.setup({
+    automatic_enable = true,
     ensure_installed = {
         "lua_ls",
         "intelephense",
@@ -76,7 +77,6 @@ mason_lspconfig.setup({
         "yamlls",
         "docker_compose_language_service",
     },
-    automatic_installation = true,
 })
 
 -- Define your server-specific configurations
@@ -151,6 +151,6 @@ local server_configs = {
 
 -- Apply configurations to each server
 for server, config in pairs(server_configs) do
-    lspconfig[server].setup(config)
+    vim.lsp.config(server, config)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)

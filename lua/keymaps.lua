@@ -175,10 +175,6 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-vim.keymap.set("n", "<Leader>\\\\", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>\\1", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>\\2", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>\\3", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("n", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("t", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("n", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
@@ -193,8 +189,9 @@ local neotest = require("neotest")
 vim.keymap.set("n", "<Leader>tt", function() neotest.run.run() end, { noremap = true })
 vim.keymap.set("n", "<Leader>ta", function() neotest.run.run(vim.fn.expand("%")) end, { noremap = true })
 vim.keymap.set("n", "<Leader>th", function() neotest.output.open({ enter = true }) end, { noremap = true })
-vim.keymap.set("n", "<Leader>tq", ":Neotest summary<CR>", { noremap = true })
-vim.keymap.set("n", "<Leader>tl", ":Neotest output-panel<CR>", { noremap = true })
+vim.keymap.set("n", "<Leader>te", ":Neotest summary<CR>", { noremap = true })
+vim.keymap.set("n", "<Leader>tl", function() neotest.output_panel.toggle() end, { noremap = true })
+-- vim.keymap.set("n", "<Leader>tl", ":Neotest output-panel<CR>", { noremap = true })
 
 -- debugging
 vim.keymap.set("n", "<Leader>ds", function()

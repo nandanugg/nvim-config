@@ -73,38 +73,6 @@ require("neoscroll").setup({
     },
 })
 -- > SYMBOLS
-local function filepath()
-    local fp = vim.fn.fnamemodify(vim.fn.expand("%"), ":p")
-    local cwd = vim.fn.getcwd() .. "/"
-
-    -- Remove the cwd from the beginning of the path if it exists
-    if vim.startswith(fp, cwd) then
-        fp = fp:sub(#cwd + 1)
-    end
-
-    -- Get available width (approximation)
-    local width = vim.o.columns - 100 -- Reserve space for other components
-
-    if #fp > width then
-        -- Split the path into parts
-        local parts = {}
-        for part in fp:gmatch("[^/]+") do
-            table.insert(parts, part)
-        end
-
-        -- Keep removing path components from the start until it fits
-        while #table.concat(parts, "/") > width and #parts > 1 do
-            table.remove(parts, 1)
-        end
-
-        -- Add ellipsis if we removed any components
-        if #parts < #fp:gmatch("[^/]+")() then
-            fp = ".../" .. table.concat(parts, "/")
-        end
-    end
-
-    return fp
-end
 -- Set up lualine using the same theme colors
 require("lualine").setup({
     options = {

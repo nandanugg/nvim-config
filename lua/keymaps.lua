@@ -3,9 +3,6 @@ local M = {}
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- mason
-vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
-
 -- basic functionality
 vim.keymap.set("n", "<C-q>", ':q<CR>', { noremap = true, silent = true })
 vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
@@ -18,17 +15,17 @@ vim.keymap.set("n", "<leader>wf", function()
 end, { desc = "Write without formatting" })
 
 -- Explorer
-vim.keymap.set("n", "<Leader>ke", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k><C-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 -- searching
-vim.keymap.set("n", "<Leader>kk", "<Cmd>FzfLua files<CR>", {})
-vim.keymap.set("n", "<Leader>ko", "<Cmd>FzfLua oldfiles<CR>")
-vim.keymap.set("n", "<Leader>kg", "<cmd>FzfLua live_grep<CR>")
-vim.keymap.set("v", "<Leader>kf", "<cmd>FzfLua grep_cword<CR>")
-vim.keymap.set("n", "<Leader>kb", "<Cmd>FzfLua buffers<CR>")
-vim.keymap.set("n", "<Leader>km", "<cmd>Telescope marks<CR>")
-vim.keymap.set("n", "<Leader>ks", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
-vim.keymap.set("n", "<Leader>kc", "<cmd>Telescope neoclip<CR>")
-vim.keymap.set("n", "<Leader>ku", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
+vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
+vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua live_grep<CR>")
+vim.keymap.set("v", "<C-k><C-f>", "<cmd>FzfLua grep_cword<CR>")
+vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
+vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
+vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
+vim.keymap.set("n", "<C-k><C-c>", "<cmd>Telescope neoclip<CR>")
+vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     treesitter = {
         incremental_selection_keymaps = {
@@ -185,6 +182,9 @@ vim.keymap.set("n", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, s
 vim.keymap.set("t", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("t", "<C-\\><C-2>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
 vim.keymap.set("t", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
+
+-- mason
+vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
 
 -- testing
 local neotest = require("neotest")

@@ -1,6 +1,7 @@
 local keymaps = require("keymaps")
 
--- > FILE EXPLORER
+require('leap').set_default_mappings()
+
 require("nvim-tree").setup({
     sort = {
         sorter = "case_sensitive",

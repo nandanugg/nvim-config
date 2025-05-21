@@ -17,9 +17,9 @@ require("lazy").setup({
     },
     -- < editing
     -- > terminal
-    { "akinsho/toggleterm.nvim",         version = "*",    config = true }, -- terminal
+    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
     {
-        "akinsho/bufferline.nvim",                                          -- tabs
+        "akinsho/bufferline.nvim",                                  -- tabs
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
@@ -41,10 +41,23 @@ require("lazy").setup({
     -- > marks
     { "kshenoy/vim-signature" }, -- makrs manager
     -- < marks
+    -- > mapping
+    { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
+    -- < mapping
     -- > editor
-    { "karb94/neoscroll.nvim" },                              -- smooth scroll
-    { "szw/vim-maximizer" },                                  -- window maximizer
-    { "nvim-tree/nvim-tree.lua" },                            -- file explorer
+    { "karb94/neoscroll.nvim" },   -- smooth scroll
+    { "szw/vim-maximizer" },       -- window maximizer
+    { "nvim-tree/nvim-tree.lua" }, -- file explorer
+    { "ggandor/leap.nvim" },       -- jump
+    {
+        'echasnovski/mini.nvim',
+        version = '*',
+        dependencies = {
+            { 'echasnovski/mini.icons',     version = '*' },
+            { 'echasnovski/mini.surround',  version = '*' },
+            { 'echasnovski/mini.splitjoin', version = '*' },
+        }
+    },
     { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
     {
         "roobert/tailwindcss-colorizer-cmp.nvim",             -- colors on tailwind classes
@@ -52,16 +65,7 @@ require("lazy").setup({
             "NvChad/nvim-colorizer.lua",
         },
     },
-    { "nvim-lualine/lualine.nvim" }, -- Decorate winbar & statusbar
-    -- {
-    --     "stevearc/aerial.nvim",      -- symbol search
-    --     opts = {},
-    --     -- Optional dependencies
-    --     dependencies = {
-    --         "nvim-treesitter/nvim-treesitter",
-    --         "nvim-tree/nvim-web-devicons",
-    --     },
-    -- },
+    { "nvim-lualine/lualine.nvim" },           -- Decorate winbar & statusbar
     {
         "lukas-reineke/indent-blankline.nvim", -- indent guides
         main = "ibl",

@@ -1,14 +1,14 @@
 -- Setup lazy.nvim
 require("lazy").setup({
     -- > editing
-    {
-        "kylechui/nvim-surround", -- surround text
-        version = "*",
-        event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup({})
-        end,
-    },
+    -- {
+    --     "kylechui/nvim-surround", -- surround text
+    --     version = "*",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("nvim-surround").setup({})
+    --     end,
+    -- },
     { "mbbill/undotree" },                                    -- show the undo history of a file
     { "famiu/bufdelete.nvim" },                               -- safely remove buffer without messing the layout
     {
@@ -101,10 +101,11 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
+            { "fredrikaverpil/neotest-golang", version = "*" },  -- debug go tests
+            "andythigpen/nvim-coverage",
         },
     },
-    { "nvim-neotest/neotest-go" }, -- debug go tests
-    { "leoluz/nvim-dap-go" },      -- attach go debugger
+    { "leoluz/nvim-dap-go" }, -- attach go debugger
     -- < debugger
     -- > autocomplete
     {

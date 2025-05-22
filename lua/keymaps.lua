@@ -14,6 +14,9 @@ vim.keymap.set("n", "<leader>wf", function()
     vim.g.disable_autoformat = false
 end, { desc = "Write without formatting" })
 
+vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
+vim.keymap.set({ 'n', 'x', 'o' }, '\\', '<Plug>(leap-anywhere)')
+
 -- Explorer
 vim.keymap.set("n", "<C-k><C-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 -- searching
@@ -66,7 +69,7 @@ M.mappings = {
 
 -- buffers
 vim.keymap.set("n", "<C-p>", ":resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-o>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-o>", ":esize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-p>", ":vertical resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-o>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
@@ -78,7 +81,6 @@ vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silen
 vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
 
 -- marks
 -- mx           Toggle mark 'x' and display it in the leftmost column
@@ -193,6 +195,17 @@ vim.keymap.set("n", "<Leader>ta", function() neotest.run.run(vim.fn.expand("%"))
 vim.keymap.set("n", "<Leader>th", function() neotest.output.open({ enter = true }) end, { noremap = true })
 vim.keymap.set("n", "<Leader>te", ":Neotest summary<CR>", { noremap = true })
 vim.keymap.set("n", "<Leader>tl", function() neotest.output_panel.toggle() end, { noremap = true })
+vim.keymap.set(
+    "n",
+    "<Leader>td",
+    function()
+        require("neotest").run.run({ nil, strategy = "dap" })
+    end,
+    { noremap = true }
+)
+-- vim.keymap.set("n", "<Leader>td",
+--     function() neotest.run.run({ require('neotest.client').get_nearest(vim.api.nvim_buf_get_name(0), vim.api.nvim_win_get_cursor(0)[1] - 1), strategy = "dap" }) end,
+--     { noremap = true })
 -- vim.keymap.set("n", "<Leader>tl", ":Neotest output-panel<CR>", { noremap = true })
 
 -- debugging
@@ -211,7 +224,6 @@ end)
 vim.keymap.set("n", "<Leader>dq", function()
     require("dap").terminate()
 end)
-vim.keymap.set("n", "<Leader>dt", function() neotest.run.run({ strategy = "dap" }) end, { noremap = true })
 vim.keymap.set("n", "<Leader>db", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
 vim.keymap.set("n", "<Leader>du", '<cmd>lua require("dapui").toggle()<CR>', {})
 vim.keymap.set("n", "<Leader>dh", '<cmd>lua require("dapui").eval()<CR>', {})

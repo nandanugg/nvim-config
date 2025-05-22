@@ -1,6 +1,7 @@
 local keymaps = require("keymaps")
 
-require('leap').set_default_mappings()
+require('mini.splitjoin').setup({})
+--require('mini.surround').setup({})
 
 require("nvim-tree").setup({
     sort = {
@@ -108,17 +109,17 @@ require("nvim-treesitter.configs").setup({
 local searchArgs = "--no-ignore --hidden"
 local function generateExcludeOpts()
     local excludeFolders = {
-        ".git",
         ".devenv",
         ".direnv",
+        ".git",
         ".terraform",
-        "node_modules",
-        "vendor",
-        "dist",
         "build",
-        "out",
         "coverage",
+        "dist",
+        "node_modules",
+        "out",
         "tmp",
+        "vendor",
     }
     local find_excludes = table.concat(
         vim.tbl_map(function(dir)

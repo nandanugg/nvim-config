@@ -18,7 +18,42 @@ vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = 
 vim.keymap.set({ 'n', 'x', 'o' }, '\\', '<Plug>(leap-anywhere)')
 
 -- Explorer
-vim.keymap.set("n", "<C-k><C-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+local minifiles_toggle = function(...)
+    if not MiniFiles.close() then
+        MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+        MiniFiles.reveal_cwd()
+    end
+end
+vim.keymap.set("n", "<C-k><C-e>", minifiles_toggle,
+    { noremap = true, silent = true })
+-- Set focused directory as current working directory
+local set_cwd = function()
+    local path = (MiniFiles.get_fs_entry() or {}).path
+    if path == nil then return vim.notify('Cursor is not on valid entry') end
+    vim.fn.chdir(vim.fs.dirname(path))
+end
+
+-- Yank in register full path of entry under cursor
+local yank_path = function()
+    local path = (MiniFiles.get_fs_entry() or {}).path
+    if path == nil then return vim.notify('Cursor is not on valid entry') end
+    vim.fn.setreg(vim.v.register, path)
+end
+
+-- Open path with system default handler (useful for non-text files)
+local ui_open = function() vim.ui.open(MiniFiles.get_fs_entry().path) end
+vim.api.nvim_create_autocmd('User', {
+    pattern = 'MiniFilesBufferCreate',
+    callback = function(args)
+        local b = args.data.buf_id
+        vim.keymap.set('n', '<CR>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
+        vim.keymap.set('n', '<Right>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
+        vim.keymap.set('n', '<Left>', function() MiniFiles.go_out() end, {})
+        vim.keymap.set('n', 'g~', set_cwd, { buffer = b, desc = 'Set cwd' })
+        vim.keymap.set('n', 'gX', ui_open, { buffer = b, desc = 'OS open' })
+        vim.keymap.set('n', 'gy', yank_path, { buffer = b, desc = 'Yank path' })
+    end,
+})
 -- searching
 vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
 vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
@@ -69,7 +104,7 @@ M.mappings = {
 
 -- buffers
 vim.keymap.set("n", "<C-p>", ":resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-o>", ":esize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-o>", ":resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-p>", ":vertical resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-o>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })

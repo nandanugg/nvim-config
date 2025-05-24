@@ -76,6 +76,7 @@ mason_lspconfig.setup({
         "terraformls",
         "yamlls",
         "docker_compose_language_service",
+        "astro",
     },
 })
 
@@ -124,8 +125,9 @@ local server_configs = {
             },
         },
     },
-    gopls = {}, -- You can add custom Go settings here if needed
-    ts_ls = {   -- Correct server name for TypeScript/JavaScript
+    gopls = {},
+    astro = {},
+    ts_ls = {
         filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
         root_dir = lspconfig.util.root_pattern("tsconfig.json", "jsconfig.json", ".git"),
     },

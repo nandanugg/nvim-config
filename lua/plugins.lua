@@ -45,10 +45,9 @@ require("lazy").setup({
     { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
     -- < mapping
     -- > editor
-    { "karb94/neoscroll.nvim" },   -- smooth scroll
-    { "szw/vim-maximizer" },       -- window maximizer
-    { "nvim-tree/nvim-tree.lua" }, -- file explorer
-    { "ggandor/leap.nvim" },       -- jump
+    { "karb94/neoscroll.nvim" }, -- smooth scroll
+    { "szw/vim-maximizer" },     -- window maximizer
+    { "ggandor/leap.nvim" },     -- jump
     {
         'echasnovski/mini.nvim',
         version = '*',
@@ -56,6 +55,7 @@ require("lazy").setup({
             { 'echasnovski/mini.icons',     version = '*' },
             { 'echasnovski/mini.surround',  version = '*' },
             { 'echasnovski/mini.splitjoin', version = '*' },
+            { 'echasnovski/mini.files',     version = '*' },
         }
     },
     { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
@@ -101,7 +101,7 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
-            { "fredrikaverpil/neotest-golang", version = "*" },  -- debug go tests
+            { "fredrikaverpil/neotest-golang", version = "*" }, -- debug go tests
             "andythigpen/nvim-coverage",
         },
     },

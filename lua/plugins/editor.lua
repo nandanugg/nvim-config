@@ -1,37 +1,49 @@
 local keymaps = require("keymaps")
 
 require('mini.splitjoin').setup({})
---require('mini.surround').setup({})
 
-require("nvim-tree").setup({
-    sort = {
-        sorter = "case_sensitive",
+
+require('mini.files').setup({
+    content = {
+        -- show all files, including dotfiles
+        filter = function(_) return true end
     },
-    view = {
-        float = {
-            enable = true,
-            quit_on_focus_loss = true,
-            open_win_config = {
-                relative = "editor",
-                border = "rounded",
-                width = 40,
-                height = 40,
-                row = 1,
-                col = 2,
-            },
-        },
+    -- Module mappings created only inside explorer.
+    -- Use `''` (empty string) to not create one.
+    mappings = {
+        close       = 'q',
+        go_in       = '',
+        go_in_plus  = 'l',
+        go_out      = 'h',
+        go_out_plus = 'H',
+        mark_goto   = "'",
+        mark_set    = 'm',
+        reset       = '<BS>',
+        reveal_cwd  = '@',
+        show_help   = 'g?',
+        synchronize = '=',
+        trim_left   = '<',
+        trim_right  = '>',
     },
-    renderer = {
-        group_empty = true,
-        highlight_opened_files = "icon",
+    -- General options
+    options = {
+        -- Whether to delete permanently or move into module-specific trash
+        permanent_delete = true,
+        -- Whether to use for editing directories
+        use_as_default_explorer = true,
     },
-    filters = {
-        dotfiles = false,
-    },
-    update_focused_file = {
-        enable = true,
+    -- Customization of explorer windows
+    windows = {
+        max_number = math.huge,
+        preview = false,
+        width_focus = 50,
+        width_nofocus = 15,
+        width_preview = 25,
     },
 })
+
+
+--require('mini.surround').setup({})
 -- < FILE EXPLORER
 -- > BUFFER TABS
 require("bufferline").setup({

@@ -25,8 +25,9 @@ require("conform").setup({
     log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
-        javascript = { "prettierd", "prettierd", "eslint_d", "js_beautify", stop_after_first = true },
-        json = { "jq", stop_after_first = true },
+        javascript = { "prettierd", "prettierd", "eslint_d", "js_beautify", stop_after_first = false },
+        json = { "jq" },
+        astro = { "astro" },
     },
     default_format_opts = {
         lsp_format = "fallback",

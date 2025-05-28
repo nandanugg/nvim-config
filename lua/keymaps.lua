@@ -62,7 +62,7 @@ vim.keymap.set("v", "<C-k><C-f>", "<cmd>FzfLua grep_cword<CR>")
 vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
-vim.keymap.set("n", "<C-k><C-c>", "<cmd>Telescope neoclip<CR>")
+vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     treesitter = {

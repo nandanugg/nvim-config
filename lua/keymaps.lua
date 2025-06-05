@@ -110,7 +110,7 @@ vim.keymap.set("n", "<C-S-o>", ":vertical resize -5<CR>", { noremap = true, sile
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-w>", ":Bdelete<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-w><C-o>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-w><C-S-w>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-v>", ":vsplit<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })

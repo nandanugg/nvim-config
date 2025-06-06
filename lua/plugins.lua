@@ -75,7 +75,7 @@ require("lazy").setup({
     },
     -- < editor
     -- > AI
-    { "github/copilot.vim" },
+    -- { "github/copilot.vim" },
     -- < AI
     -- > formatter
     { 'stevearc/conform.nvim' }, -- formatter

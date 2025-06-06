@@ -74,24 +74,7 @@ require("neoscroll").setup({
     },
 })
 -- > SYMBOLS
--- Set up lualine using the same theme colors
-local function get_current_function_treesitter()
-    local ts_utils = require('nvim-treesitter.ts_utils')
-    local current_node = ts_utils.get_node_at_cursor()
 
-    while current_node do
-        if current_node:type() == 'function_declaration' or
-            current_node:type() == 'method_definition' or
-            current_node:type() == 'function_definition' then
-            local name_node = current_node:field('name')[1]
-            if name_node then
-                local name = vim.treesitter.get_node_text(name_node, 0)
-                return name
-            end
-        end
-        current_node = current_node:parent()
-    end
-end
 require("lualine").setup({
     options = {
         globalstatus = true,
@@ -100,7 +83,9 @@ require("lualine").setup({
     },
     sections = {
         lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-        lualine_b = { "branch", "diff", get_current_function_treesitter, "filename" },
+        lualine_b = { "branch", function()
+            return vim.fn.expand('%')
+        end },
         lualine_c = { "aerial" },
         lualine_x = { "lsp_status", "encoding", "filetype" },
         lualine_y = {},

@@ -173,19 +173,19 @@ local function show_diagnostic_source()
 end
 local opts = { noremap = true, silent = true }
 -- diagnostics
-vim.keymap.set("n", "gdd", ":FzfLua diagnostics_document<CR>", opts)
-vim.keymap.set("n", "gds", show_diagnostic_source, opts)
-vim.keymap.set("n", "gdf", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+-- vim.keymap.set("n", "ges", show_diagnostic_source, opts)
+vim.keymap.set("n", "ge", ":FzfLua diagnostics_document<CR>", opts)
+vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
+vim.keymap.set("n", "]e", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+vim.keymap.set("n", "[e", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
 -- definitions
-vim.keymap.set("n", "gid", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
+vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
+vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 -- vim.keymap.set("n", "git" ":FzfLua lsp_typedefs<CR>", opts)   -- see the Type
 -- vim.keymap.set("n", "gii", ":FzfLua lsp_implementations<CR>", opts) -- somehow it's the same as typedefs
-vim.keymap.set("n", "giu", ":FzfLua lsp_references<CR>", opts) -- see the Usage
+vim.keymap.set("n", "gu", ":FzfLua lsp_references<CR>", opts) -- see the Usage
 vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
-vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 
 -- git
 vim.keymap.set("n", "<C-g><C-g>", ":Git<CR>", opts)

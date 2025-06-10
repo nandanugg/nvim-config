@@ -24,6 +24,14 @@ require("kanagawa").setup({
 -- setup must be called before loading
 vim.cmd("colorscheme kanagawa")
 
+require("codesnap").setup({
+    code_font_family = "Agave Nerd Font",
+    has_line_number = true,
+    bg_color = "#535c68",
+    bg_x_padding = 122,
+    bg_y_padding = 82,
+    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME") .. "/Pictures"),
+})
 require("ibl").setup({
     scope = {
         enabled = true,

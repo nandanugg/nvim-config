@@ -143,6 +143,7 @@ require("lazy").setup({
     -- < search
 
     -- theme
+    { "mistricky/codesnap.nvim",                build = "make" },
     { "tomasiser/vim-code-dark" }, -- theme
     {
         "rebelot/kanagawa.nvim",

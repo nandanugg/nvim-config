@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd('User', {
     pattern = 'MiniFilesBufferCreate',
     callback = function(args)
         local b = args.data.buf_id
+        vim.keymap.set('n', '<C-c>', function() MiniFiles.close() end, {})
         vim.keymap.set('n', '<CR>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
         vim.keymap.set('n', '<Right>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
         vim.keymap.set('n', '<Left>', function() MiniFiles.go_out() end, {})
@@ -71,30 +72,18 @@ M.mappings = {
             init_selection = "gnn",    -- Start selection
             node_incremental = "gna",  -- Increment to the next node
             scope_incremental = "gng", -- Increment to the next scop
-            node_decremental = "gnx",  -- Decrement the selectio
+            node_decremental = "gnx",  -- Decrement the selection
         },
     },
     telescope = {
         -- :h telescope.mappings
-        i = {},
-        n = {},
+        i = {
+            ["<C-c>"] = require('telescope.actions').close,
+        },
+        n = {
+            ["<C-c>"] = require('telescope.actions').close,
+        },
     },
-    -- neotree = {
-    -- 	-- :h neotree-mappings
-    -- 	["<C-y>"] = function(state)
-    -- 		local node = state.tree:get_node()
-    -- 		if node then
-    -- 			local full_path = node:get_id()
-    -- 			local cwd = vim.fn.getcwd()
-    -- 			local relative_path = vim.fn.fnamemodify(full_path, ":." .. cwd)
-    --
-    -- 			vim.fn.setreg("+", relative_path) -- Yank to the system clipboard
-    -- 			vim.notify("Yanked: " .. relative_path, vim.log.levels.INFO)
-    -- 		else
-    -- 			vim.notify("No file selected to yank", vim.log.levels.WARN)
-    -- 		end
-    -- 	end,
-    -- },
     -- zc - Close/fold the current block
     -- zo - Open/unfold the current block
     -- za - Toggle fold/unfold at the cursor
@@ -174,12 +163,12 @@ end
 local opts = { noremap = true, silent = true }
 -- diagnostics
 -- vim.keymap.set("n", "ges", show_diagnostic_source, opts)
-vim.keymap.set("n", "ge", ":FzfLua diagnostics_document<CR>", opts)
+vim.keymap.set("n", "gd", ":FzfLua diagnostics_document<CR>", opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "]e", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-vim.keymap.set("n", "[e", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
 -- definitions
-vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
+vim.keymap.set("n", "go", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 -- vim.keymap.set("n", "git" ":FzfLua lsp_typedefs<CR>", opts)   -- see the Type
 -- vim.keymap.set("n", "gii", ":FzfLua lsp_implementations<CR>", opts) -- somehow it's the same as typedefs

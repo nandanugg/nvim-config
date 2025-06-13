@@ -4,20 +4,17 @@
 
 make sure that all binaries are exists before installing
 
-- git
-- lazygit
-- imagemagick
-- w3m-img or ueberzug (for image previews)
-- gcc or clang (C compiler)
-- make (build tool)
-- node and npm
-- ripgrep (rg)
-- fd
-- bat (optional but recommended)
-- fzf
-- sqlite3
-- zoxide
-- gdb or lldb
+- `git`
+- `gcc` or `clang` (C compiler)
+- `make` (build tool)
+- `node` (for installing many lsp)
+- `go` (for go lsp)
+
+- ripgrep (for searching content of a file, like `grep` but faster)
+- fzf (for fuzzy searching)
+- fd (for searching file, like `find` but faster)
+- bat (syntax highlighting when previewing search)
+- sqlite3 (for saving sessions)
 - nerd font
 
 ### Installing

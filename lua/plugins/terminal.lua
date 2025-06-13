@@ -1,7 +1,7 @@
 -- terminal.lua contain configurations for terminal
 -- > TERMINAL
 require("toggleterm").setup({
-    open_mapping = [[<c-\><c-\>]],
+    -- open_mapping = [[<c-\><c-\>]],
     direction = "float", -- Default direction
     float_opts = {
         border = "curved",

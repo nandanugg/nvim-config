@@ -75,6 +75,12 @@ M.mappings = {
             node_decremental = "gnx",  -- Decrement the selection
         },
     },
+    blinkCmp = {
+        -- :h blink-cmp-config-keymap
+        ['<C-u>'] = { 'scroll_documentation_up' },
+        ['<C-d>'] = { 'scroll_documentation_down' },
+    },
+
     telescope = {
         -- :h telescope.mappings
         i = {

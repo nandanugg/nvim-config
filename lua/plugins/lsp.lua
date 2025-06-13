@@ -1,3 +1,4 @@
+local keymaps = require("keymaps")
 -- > MASON
 require("mason").setup({
     ui = {
@@ -24,7 +25,7 @@ blinkCmp.setup({
     -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
     -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
     -- See the full "keymap" documentation for information on defining your own keymap.
-    keymap = { preset = "enter" },
+    keymap = vim.tbl_deep_extend("force", { preset = "enter" }, keymaps.mappings.blinkCmp),
     completion = {
         documentation = {
             auto_show = true,

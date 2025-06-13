@@ -1,4 +1,4 @@
--- Setup lazy.nvim
+-- plugins.lua contain configurations for installed plugins
 require("lazy").setup({
     -- > editing
     -- {

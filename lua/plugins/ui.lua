@@ -1,3 +1,5 @@
+-- ui.lua contain configurations for display related modification
+
 -- theme
 require("kanagawa").setup({
     compile = true,   -- enable compiling the colorscheme
@@ -32,6 +34,7 @@ require("codesnap").setup({
     bg_y_padding = 82,
     save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME") .. "/Pictures"),
 })
+
 require("ibl").setup({
     scope = {
         enabled = true,

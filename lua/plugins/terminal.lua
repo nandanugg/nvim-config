@@ -1,3 +1,4 @@
+-- terminal.lua contain configurations for terminal
 -- > TERMINAL
 require("toggleterm").setup({
     open_mapping = [[<c-\><c-\>]],

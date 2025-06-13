@@ -1,4 +1,62 @@
+-- lsp.lua contain configurations for lsp / formatter configuration
+
 local keymaps = require("keymaps")
+-- > LANGUAGE PARSER
+require("nvim-treesitter.configs").setup({
+    ignore_install = {},
+    modules = {},
+    ensure_installed = {
+        -- web dev
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "astro",
+        "vue",
+        "svelte",
+        "graphql",
+        -- backend dev
+        "go",
+        "gomod",
+        "gosum",
+        "terraform",
+        "python",
+        "java",
+        "php",
+        "phpdoc",
+        "nginx",
+        "nix",
+        "dockerfile",
+        "sql",
+        "bash",
+        -- config dev
+        "lua",
+        "json",
+        "jsonc",
+        "yaml",
+        "csv",
+        "markdown",
+        "markdown_inline",
+        "git_config",
+        "regex",
+        "vim",
+        "tmux",
+        "ssh_config",
+    },
+    sync_install = false,
+    auto_install = false,
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+    incremental_selection = {
+        enable = true,
+        keymaps = keymaps.mappings.treesitter.incremental_selection_keymaps,
+    },
+})
+-- < LANGUAGE PARSER
+
 -- > MASON
 require("mason").setup({
     ui = {
@@ -206,3 +264,25 @@ for server, config in pairs(server_configs) do
     vim.lsp.config(server, config)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
+
+-- Format on save
+require("conform").setup({
+    -- Define formatters for specific filetypes
+    log_level = vim.log.levels.DEBUG,
+    formatters_by_ft = {
+        go = { "goimports", "gofumpt" },
+        javascript = { "prettierd", "prettierd", "eslint_d", "js_beautify", stop_after_first = false },
+        json = { "jq" },
+        astro = { "astro" },
+    },
+    default_format_opts = {
+        lsp_format = "fallback",
+    },
+    notify_on_error = true,
+    notify_no_formatters = true,
+    format_on_save = {
+        timeout_ms = 5000,
+        lsp_format = "fallback",
+    },
+})
+-- < FORMATTER

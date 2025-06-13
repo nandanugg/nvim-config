@@ -1,3 +1,4 @@
+-- keymaps.lua contain configurations for keymapping
 local M = {}
 
 vim.g.mapleader = " "

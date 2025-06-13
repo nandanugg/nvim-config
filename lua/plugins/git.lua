@@ -1,5 +1,2 @@
+-- git.lua contain configurations for git
 require("gitsigns").setup({})
--- > GIT UI
--- < GIT UI
--- > GIT BLAME
--- < GIT BLAME

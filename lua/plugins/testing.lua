@@ -1,3 +1,4 @@
+-- testing.lua contain configurations for code testing framework configuration
 -- Function to parse .envrc file and extract environment variables
 local function parse_envrc(file_path)
     local env_vars = {}
@@ -23,7 +24,7 @@ local function parse_envrc(file_path)
             -- More flexible pattern matching for different export formats
             local patterns = {
                 "^export%s+([%w_]+)%s*=%s*(.+)$", -- export KEY=value
-                "^([%w_]+)%s*=%s*(.+)$",  -- KEY=value (no export)
+                "^([%w_]+)%s*=%s*(.+)$",          -- KEY=value (no export)
             }
 
             for _, pattern in ipairs(patterns) do

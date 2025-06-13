@@ -137,11 +137,13 @@ mason_lspconfig.setup({
         "jsonls",
         "docker_compose_language_service",
         "astro",
+        "tailwindcss",
     },
 })
 
 -- Define your server-specific configurations
 local server_configs = {
+    tailwindcss = {},
     lua_ls = {
         filetypes = { "lua" },
         settings = {

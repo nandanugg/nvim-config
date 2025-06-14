@@ -1,14 +1,11 @@
 -- plugins.lua contain configurations for installed plugins
 require("lazy").setup({
     -- > editing
-    -- {
-    --     "kylechui/nvim-surround", -- surround text
-    --     version = "*",
-    --     event = "VeryLazy",
-    --     config = function()
-    --         require("nvim-surround").setup({})
-    --     end,
-    -- },
+    {
+        "kylechui/nvim-surround", -- surround text
+        version = "*",
+        event = "VeryLazy",
+    },
     { "mbbill/undotree" },                                    -- show the undo history of a file
     { "famiu/bufdelete.nvim" },                               -- safely remove buffer without messing the layout
     {
@@ -53,7 +50,6 @@ require("lazy").setup({
         version = '*',
         dependencies = {
             { 'echasnovski/mini.icons',     version = '*' },
-            { 'echasnovski/mini.surround',  version = '*' },
             { 'echasnovski/mini.splitjoin', version = '*' },
             { 'echasnovski/mini.files',     version = '*' },
         }
@@ -143,12 +139,15 @@ require("lazy").setup({
     -- < search
 
     -- theme
-    { "mistricky/codesnap.nvim",                build = "make" },
+    {
+        "mistricky/codesnap.nvim", -- screenshoot code
+        build = "make"
+    },
     { "tomasiser/vim-code-dark" }, -- theme
     {
-        "rebelot/kanagawa.nvim",
-        lazy = false,    -- Loads this plugin during startup
-        priority = 1000, -- Load before other plugins to ensure colors are set early
+        "rebelot/kanagawa.nvim",   -- theme
+        lazy = false,
+        priority = 1000,           -- Load before other plugins to ensure colors are set early
     },
 
     -- Automatically check for plugin updates

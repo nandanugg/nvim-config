@@ -43,9 +43,7 @@ require('mini.files').setup({
         width_preview = 25,
     },
 })
-
-
---require('mini.surround').setup({})
+require("nvim-surround").setup({})
 -- < FILE EXPLORER
 -- > BUFFER TABS
 require("bufferline").setup({

@@ -26,6 +26,12 @@ require("kanagawa").setup({
 -- setup must be called before loading
 vim.cmd("colorscheme kanagawa")
 
+-- TailwindCSS colorizer setup
+local tailwindcss = require("tailwindcss-colorizer-cmp")
+tailwindcss.setup({
+    color_square_width = 2,
+})
+
 require("codesnap").setup({
     code_font_family = "Agave Nerd Font",
     has_line_number = true,

@@ -1,5 +1,8 @@
 -- lsp.lua contain configurations for lsp / formatter configuration
 
+
+
+
 local keymaps = require("keymaps")
 -- > LANGUAGE PARSER
 require("nvim-treesitter.configs").setup({
@@ -69,12 +72,6 @@ require("mason").setup({
     },
 })
 -- < MASON
-
--- TailwindCSS colorizer setup
-local tailwindcss = require("tailwindcss-colorizer-cmp")
-tailwindcss.setup({
-    color_square_width = 2,
-})
 
 -- > CODE COMPLETIONS (CMP)
 local blinkCmp = require("blink.cmp")

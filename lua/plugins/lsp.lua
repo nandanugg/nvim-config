@@ -270,17 +270,22 @@ require("conform").setup({
     log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
-        javascript = { "prettierd", "prettierd", "eslint_d", "js_beautify", stop_after_first = false },
+        javascript = { "prettier", "eslint_d", stop_after_first = false },
+        astro = { "prettier", stop_after_first = false },
         json = { "jq" },
-        astro = { "astro" },
     },
     default_format_opts = {
         lsp_format = "fallback",
     },
+    formatters = {
+        prettier = {
+            prepend_args = { "-w" },
+        }
+    },
     notify_on_error = true,
     notify_no_formatters = true,
     format_on_save = {
-        timeout_ms = 5000,
+        timeout_ms = 10000,
         lsp_format = "fallback",
     },
 })

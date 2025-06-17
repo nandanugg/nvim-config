@@ -184,7 +184,7 @@ local function show_diagnostic_source()
 end
 local opts = { noremap = true, silent = true }
 -- diagnostics
--- vim.keymap.set("n", "ges", show_diagnostic_source, opts)
+vim.keymap.set("n", "gF", show_diagnostic_source, opts)
 vim.keymap.set("n", "gd", ":FzfLua diagnostics_document<CR>", opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)

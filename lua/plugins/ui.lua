@@ -92,6 +92,8 @@ require("neoscroll").setup({
 })
 -- > SYMBOLS
 
+local navic = require("nvim-navic")
+
 require("lualine").setup({
     options = {
         globalstatus = true,
@@ -101,6 +103,8 @@ require("lualine").setup({
     sections = {
         lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
         lualine_b = { "branch", function()
+            return navic.get_location()
+        end, function()
             return vim.fn.expand('%')
         end },
         lualine_c = { "aerial" },
@@ -121,3 +125,11 @@ vim.opt.autoread = true
 vim.cmd([[
   autocmd FocusGained,BufEnter * checktime
 ]])
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, args.buf)
+        end
+    end,
+})

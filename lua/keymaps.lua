@@ -1,4 +1,6 @@
 -- keymaps.lua contain configurations for keymapping
+local neotest = require("neotest")
+local gitsigns = require("gitsigns")
 local M = {}
 
 vim.g.mapleader = " "
@@ -18,6 +20,84 @@ end, { desc = "Write without formatting" })
 vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
 vim.keymap.set({ 'n', 'x', 'o' }, '\\', '<Plug>(leap-anywhere)')
 
+-- for buffer inspection
+local function inspect_current_buffer()
+    local buf = vim.api.nvim_get_current_buf()
+    local win = vim.api.nvim_get_current_win()
+
+    -- Get buffer info
+    local bufname = vim.api.nvim_buf_get_name(buf)
+    local buftype = vim.bo[buf].buftype
+    local filetype = vim.bo[buf].filetype
+    local syntax = vim.fn.getbufvar(buf, '&syntax')
+
+    -- Get window info
+    local wintype = vim.fn.win_gettype(win)
+
+    -- Get buffer variables (useful for plugin-specific vars)
+    local buf_vars = {}
+    local ok, vars = pcall(vim.api.nvim_buf_get_var, buf, '')
+    if ok then
+        for k, v in pairs(vars) do
+            if type(v) == 'string' or type(v) == 'number' or type(v) == 'boolean' then
+                buf_vars[k] = v
+            end
+        end
+    end
+
+    -- Get all buffer-local variables
+    local all_vars = vim.b[buf]
+    local filtered_vars = {}
+    for k, v in pairs(all_vars) do
+        if type(v) == 'string' or type(v) == 'number' or type(v) == 'boolean' then
+            filtered_vars[k] = v
+        end
+    end
+
+    -- Create info table
+    local info = {
+        buffer_id = buf,
+        window_id = win,
+        buffer_name = bufname,
+        buffer_type = buftype,
+        file_type = filetype,
+        syntax = syntax,
+        window_type = wintype,
+        buffer_vars = filtered_vars,
+        -- Additional useful info
+        is_listed = vim.bo[buf].buflisted,
+        is_modified = vim.bo[buf].modified,
+        is_readonly = vim.bo[buf].readonly,
+    }
+
+    -- Pretty print the info
+    print("=== BUFFER/WINDOW INFO ===")
+    print(string.format("Buffer ID: %d", info.buffer_id))
+    print(string.format("Window ID: %d", info.window_id))
+    print(string.format("Buffer Name: %s", info.buffer_name))
+    print(string.format("Buffer Type: %s", info.buffer_type))
+    print(string.format("File Type: %s", info.file_type))
+    print(string.format("Syntax: %s", info.syntax))
+    print(string.format("Window Type: %s", info.window_type))
+    print(string.format("Listed: %s", tostring(info.is_listed)))
+    print(string.format("Modified: %s", tostring(info.is_modified)))
+    print(string.format("Readonly: %s", tostring(info.is_readonly)))
+
+    if next(info.buffer_vars) then
+        print("\n=== BUFFER VARIABLES ===")
+        for k, v in pairs(info.buffer_vars) do
+            print(string.format("%s: %s", k, tostring(v)))
+        end
+    end
+
+    return info
+end
+vim.api.nvim_create_user_command('InspectBuffer', function()
+    inspect_current_buffer()
+end, { desc = 'Show detailed info about current buffer/window' })
+
+
+
 -- Explorer
 local minifiles_toggle = function(...)
     if not MiniFiles.close() then
@@ -27,14 +107,13 @@ local minifiles_toggle = function(...)
 end
 vim.keymap.set("n", "<C-k><C-e>", minifiles_toggle,
     { noremap = true, silent = true })
--- Set focused directory as current working directory
+
 local set_cwd = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
     if path == nil then return vim.notify('Cursor is not on valid entry') end
     vim.fn.chdir(vim.fs.dirname(path))
 end
 
--- Yank in register full path of entry under cursor
 local yank_path = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
     if path == nil then return vim.notify('Cursor is not on valid entry') end
@@ -43,11 +122,13 @@ end
 
 -- Open path with system default handler (useful for non-text files)
 local ui_open = function() vim.ui.open(MiniFiles.get_fs_entry().path) end
+
+
+-- popoup specific keymap
 vim.api.nvim_create_autocmd('User', {
     pattern = 'MiniFilesBufferCreate',
     callback = function(args)
         local b = args.data.buf_id
-        vim.keymap.set('n', '<C-c>', function() MiniFiles.close() end, {})
         vim.keymap.set('n', '<CR>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
         vim.keymap.set('n', '<Right>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
         vim.keymap.set('n', '<Left>', function() MiniFiles.go_out() end, {})
@@ -56,6 +137,37 @@ vim.api.nvim_create_autocmd('User', {
         vim.keymap.set('n', 'gy', yank_path, { buffer = b, desc = 'Yank path' })
     end,
 })
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'neotest-output',
+    callback = function(args)
+        local buf = args.buf
+        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+    end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'dapui_hover',
+    callback = function(args)
+        local buf = args.buf
+        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+    end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'dap-float',
+    callback = function(args)
+        local buf = args.buf
+        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+            { buffer = buf, noremap = true, silent = true })
+    end,
+})
+
 -- searching
 vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
 vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
@@ -68,13 +180,13 @@ vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     minifiles = {
-        close       = 'q',
+        close       = '<C-c>',
         go_in       = '',
         go_in_plus  = 'l',
         go_out      = 'h',
         go_out_plus = 'H',
-        mark_goto   = "'",
-        mark_set    = 'm',
+        mark_goto   = "",
+        mark_set    = '',
         reset       = '<BS>',
         reveal_cwd  = '@',
         show_help   = 'g?',
@@ -100,10 +212,8 @@ M.mappings = {
     telescope = {
         -- :h telescope.mappings
         i = {
-            ["<C-c>"] = require('telescope.actions').close,
         },
         n = {
-            ["<C-c>"] = require('telescope.actions').close,
         },
     },
     -- zc - Close/fold the current block
@@ -182,13 +292,14 @@ local function show_diagnostic_source()
         print("No diagnostics found at current line.")
     end
 end
+
 local opts = { noremap = true, silent = true }
 -- diagnostics
 vim.keymap.set("n", "gF", show_diagnostic_source, opts)
 vim.keymap.set("n", "gd", ":FzfLua diagnostics_document<CR>", opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -2, float = true }) end, opts)
 -- definitions
 vim.keymap.set("n", "go", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
@@ -203,7 +314,6 @@ vim.keymap.set("n", "<C-g><C-g>", ":Git<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-d>", ":Gvdiffsplit!<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-h>", ":diffget //2<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-l>", ":diffget //3<CR>", opts)
-local gitsigns = require("gitsigns")
 vim.keymap.set("n", "<C-g><C-h>", gitsigns.preview_hunk, opts)
 vim.keymap.set("n", "<C-g><C-r>", gitsigns.reset_hunk, opts)
 vim.keymap.set("n", "<C-g><C-b>", gitsigns.blame, opts)
@@ -238,7 +348,6 @@ vim.keymap.set("t", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, s
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
 
 -- testing
-local neotest = require("neotest")
 vim.keymap.set("n", "<Leader>tt", function() neotest.run.run() end, { noremap = true })
 vim.keymap.set("n", "<Leader>ta", function() neotest.run.run(vim.fn.expand("%")) end, { noremap = true })
 vim.keymap.set("n", "<Leader>th", function() neotest.output.open({ enter = true }) end, { noremap = true })
@@ -248,14 +357,10 @@ vim.keymap.set(
     "n",
     "<Leader>td",
     function()
-        require("neotest").run.run({ nil, strategy = "dap" })
+        neotest.run.run({ nil, strategy = "dap" })
     end,
     { noremap = true }
 )
--- vim.keymap.set("n", "<Leader>td",
---     function() neotest.run.run({ require('neotest.client').get_nearest(vim.api.nvim_buf_get_name(0), vim.api.nvim_win_get_cursor(0)[1] - 1), strategy = "dap" }) end,
---     { noremap = true })
--- vim.keymap.set("n", "<Leader>tl", ":Neotest output-panel<CR>", { noremap = true })
 
 -- debugging
 vim.keymap.set("n", "<Leader>ds", function()
@@ -274,13 +379,12 @@ vim.keymap.set("n", "<Leader>dq", function()
     require("dap").terminate()
 end)
 vim.keymap.set("n", "<Leader>db", '<cmd>lua require("dap").toggle_breakpoint()<CR>', {})
-vim.keymap.set("n", "<Leader>du", '<cmd>lua require("dapui").toggle()<CR>', {})
-vim.keymap.set("n", "<Leader>dh", '<cmd>lua require("dapui").eval()<CR>', {})
-vim.keymap.set("n", "<Leader>di", ":Telescope dap list_breakpoints<CR>", {})
-vim.keymap.set("n", "<Leader>df", ":Telescope dap frames<CR>", {})
-vim.keymap.set("n", "<Leader>dl", ":DapShowLog<CR>", {})
-vim.keymap.set("n", "<Leader>dw", function()
+vim.keymap.set("n", "<Leader>dl", '<cmd>lua require("dapui").toggle()<CR>', {})
+vim.keymap.set("n", "<Leader>de", ":Telescope dap list_breakpoints<CR>", {})
+vim.keymap.set("n", "<Leader>ds", ":Telescope dap frames<CR>", {})
+vim.keymap.set("n", "<Leader>dh", function()
     require("dap.ui.widgets").hover()
 end)
+vim.keymap.set("n", "<Leader>dH", '<cmd>lua require("dapui").eval()<CR>', {})
 
 return M

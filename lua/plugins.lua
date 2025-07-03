@@ -61,9 +61,10 @@ require("lazy").setup({
             "NvChad/nvim-colorizer.lua",
         },
     },
-    { "nvim-lualine/lualine.nvim" },           -- Decorate winbar & statusbar
+    { "nvim-lualine/lualine.nvim" },                                                    -- Decorate winbar & statusbar
+    { "SmiteshP/nvim-navic",             dependencies = { "neovim/nvim-lspconfig" }, }, -- add current cursor context at winbar
     {
-        "lukas-reineke/indent-blankline.nvim", -- indent guides
+        "lukas-reineke/indent-blankline.nvim",                                          -- indent guides
         main = "ibl",
     },
     {

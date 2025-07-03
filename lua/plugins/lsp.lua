@@ -272,7 +272,7 @@ require("conform").setup({
         go = { "goimports", "gofumpt" },
         javascript = { "prettier", "eslint_d", stop_after_first = false },
         astro = { "prettier", stop_after_first = false },
-        json = { "jq" },
+        json = { "fixjson" },
     },
     default_format_opts = {
         lsp_format = "fallback",

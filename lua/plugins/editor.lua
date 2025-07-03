@@ -34,15 +34,11 @@ require("nvim-surround").setup({})
 -- > BUFFER TABS
 require("bufferline").setup({
     options = {
-        diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
+        -- diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
         themable = true,
         separator_style = "slant",
         tab_size = 13,
         show_buffer_close_icons = false,
-        diagnostics_indicator = function(count, level, diagnostics_dict, context)
-            local icon = level:match("error") and " " or " "
-            return " " .. icon .. count
-        end,
     },
     highlights = {},
 })

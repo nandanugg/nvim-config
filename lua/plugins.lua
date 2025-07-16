@@ -12,14 +12,14 @@ require("lazy").setup({
         'Wansmer/treesj',                                     -- collapse or make one liner of a arguments or objects
         dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
     },
-    -- < editing
-    -- > terminal
-    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
     {
-        "akinsho/bufferline.nvim",                                  -- tabs
+        "akinsho/bufferline.nvim", -- tabs
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
+    -- < editing
+    -- > terminal
+    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
     -- < terminal
     -- > git
     {

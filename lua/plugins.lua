@@ -42,9 +42,10 @@ require("lazy").setup({
     { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
     -- < mapping
     -- > editor
-    { "karb94/neoscroll.nvim" }, -- smooth scroll
-    { "szw/vim-maximizer" },     -- window maximizer
-    { "ggandor/leap.nvim" },     -- jump
+    { "arthurxavierx/vim-caser" }, -- transform text case
+    { "karb94/neoscroll.nvim" },   -- smooth scroll
+    { "szw/vim-maximizer" },       -- window maximizer
+    { "ggandor/leap.nvim" },       -- jump
     {
         'echasnovski/mini.nvim',
         version = '*',

@@ -6,19 +6,34 @@ local M = {}
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- basic functionality
-vim.keymap.set("n", "<C-q>", ':q<CR>', { noremap = true, silent = true })
-vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
-vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
-vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>wf", function()
-    vim.g.disable_autoformat = true
-    vim.cmd("write")
-    vim.g.disable_autoformat = false
-end, { desc = "Write without formatting" })
 
-vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set({ 'n', 'x', 'o' }, '\\', '<Plug>(leap-anywhere)')
+-- lsp specific
+local function show_diagnostic_source()
+    local winnr = vim.api.nvim_get_current_win()
+    local bufnr = vim.api.nvim_win_get_buf(winnr)
+
+    -- Get all diagnostics for current buffer
+    local diagnostics = vim.diagnostic.get(bufnr)
+
+    -- Get cursor position (returns [row, col], both 1-based)
+    local pos = vim.api.nvim_win_get_cursor(winnr)
+    local lnum = pos[1] - 1 -- convert to 0-based line number
+
+    -- Find matching diagnostics at current line
+    local match_found = false
+    for _, diag in ipairs(diagnostics) do
+        if diag.lnum == lnum then
+            local client = vim.lsp.get_client_by_id(diag.source)
+            local source_name = client and client.name or diag.source
+            print(string.format("Diagnostic from LSP server: %s", source_name))
+            match_found = true
+        end
+    end
+
+    if not match_found then
+        print("No diagnostics found at current line.")
+    end
+end
 
 -- for buffer inspection
 local function inspect_current_buffer()
@@ -105,8 +120,6 @@ local minifiles_toggle = function(...)
         MiniFiles.reveal_cwd()
     end
 end
-vim.keymap.set("n", "<C-p><C-e>", minifiles_toggle,
-    { noremap = true, silent = true })
 
 local set_cwd = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
@@ -123,6 +136,8 @@ end
 -- Open path with system default handler (useful for non-text files)
 local ui_open = function() vim.ui.open(MiniFiles.get_fs_entry().path) end
 
+vim.keymap.set("n", "<C-p><C-e>", minifiles_toggle,
+    { noremap = true, silent = true })
 
 -- popoup specific keymap
 vim.api.nvim_create_autocmd('User', {
@@ -167,6 +182,21 @@ vim.api.nvim_create_autocmd('FileType', {
             { buffer = buf, noremap = true, silent = true })
     end,
 })
+
+-- basic functionality
+vim.keymap.set("n", "<C-q>", ':q<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
+vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
+vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wf", function()
+    vim.g.disable_autoformat = true
+    vim.cmd("write")
+    vim.g.disable_autoformat = false
+end, { desc = "Write without formatting" })
+
+vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
+vim.keymap.set("n", "<S-c><S-u>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
+vim.keymap.set({ 'n', 'x', 'o' }, '<C-/>', '<Plug>(leap-anywhere)')
 
 -- searching
 vim.keymap.set("n", "<C-p><C-p>", "<Cmd>FzfLua files<CR>", {})
@@ -224,15 +254,16 @@ M.mappings = {
 }
 
 -- buffers
-vim.keymap.set("n", "<C-p>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-i>", ":resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-o>", ":resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-p>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-i>", ":vertical resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-o>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-w>", ":Bdelete<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-w><C-S-w>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-v>", ":vsplit<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><C-s>", ":split<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-S-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true })
@@ -265,33 +296,6 @@ vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, sile
 -- m?           Open location list and display markers from current buffer
 -- m<BS>        Remove all markers
 
--- lsp specific
-local function show_diagnostic_source()
-    local winnr = vim.api.nvim_get_current_win()
-    local bufnr = vim.api.nvim_win_get_buf(winnr)
-
-    -- Get all diagnostics for current buffer
-    local diagnostics = vim.diagnostic.get(bufnr)
-
-    -- Get cursor position (returns [row, col], both 1-based)
-    local pos = vim.api.nvim_win_get_cursor(winnr)
-    local lnum = pos[1] - 1 -- convert to 0-based line number
-
-    -- Find matching diagnostics at current line
-    local match_found = false
-    for _, diag in ipairs(diagnostics) do
-        if diag.lnum == lnum then
-            local client = vim.lsp.get_client_by_id(diag.source)
-            local source_name = client and client.name or diag.source
-            print(string.format("Diagnostic from LSP server: %s", source_name))
-            match_found = true
-        end
-    end
-
-    if not match_found then
-        print("No diagnostics found at current line.")
-    end
-end
 
 local opts = { noremap = true, silent = true }
 -- diagnostics

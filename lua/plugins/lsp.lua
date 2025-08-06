@@ -124,11 +124,11 @@ local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
     automatic_enable = true,
     ensure_installed = {
+        "eslint",
         "lua_ls",
         "intelephense",
         "gopls",
         "ts_ls",
-        "eslint",
         "terraformls",
         "yamlls",
         "jsonls",
@@ -140,6 +140,7 @@ mason_lspconfig.setup({
 
 -- Define your server-specific configurations
 local server_configs = {
+    eslint = {},
     tailwindcss = {},
     lua_ls = {
         filetypes = { "lua" },
@@ -189,7 +190,6 @@ local server_configs = {
     ts_ls = {
         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
     },
-    eslint = {},
     terraformls = {},
     jsonls = {
         filetypes = { "json", "jsonc" },
@@ -272,6 +272,7 @@ require("conform").setup({
         go = { "goimports", "gofumpt" },
         javascript = { "prettier", "eslint_d", stop_after_first = false },
         astro = { "prettier", stop_after_first = false },
+        html = { "prettier", stop_after_first = false },
         json = { "fixjson" },
     },
     default_format_opts = {

@@ -149,59 +149,30 @@ mason_lspconfig.setup({
     },
 })
 
--- Define your server-specific configurations
+-- Define your server-specific configurations (ordered like ensure_installed)
 local server_configs = {
+    -- web dev
     eslint = {},
-    tailwindcss = {},
-    lua_ls = {
-        filetypes = { "lua" },
-        settings = {
-            Lua = {
-                runtime = {
-                    version = "LuaJIT",
-                },
-                diagnostics = {
-                    globals = { "vim", "require" },
-                },
-                workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                },
-                telemetry = {
-                    enable = false,
-                },
-            },
-        },
-    },
-    intelephense = {
-        filetypes = { "php" },
-        settings = {
-            intelephense = {
-                files = {
-                    maxSize = 5000000,
-                    exclude = {
-                        "**/node_modules/**",
-                        "**/vendor/**",
-                    },
-                },
-                diagnostics = {
-                    enable = true,
-                    undefinedTypes = false,
-                    undefinedMethods = false,
-                    undefinedProperties = false,
-                    undefinedFunctions = false,
-                },
-                telemetry = {
-                    enable = false,
-                },
-            },
-        },
-    },
-    gopls = {},
-    astro = {},
+    eslint_d = {},
+    prettier = {},
     ts_ls = {
         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
     },
-    terraformls = {},
+    astro = {},
+    tailwindcss = {},
+
+    -- config files
+    fixjson = {},
+    yamlls = {
+        settings = {
+            yaml = {
+                schemas = {
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
+                    "/docker-compose*.yml",
+                },
+            },
+        },
+    },
     jsonls = {
         filetypes = { "json", "jsonc" },
         settings = {
@@ -251,16 +222,61 @@ local server_configs = {
             }
         }
     },
-    yamlls = {
+    lua_ls = {
+        filetypes = { "lua" },
         settings = {
-            yaml = {
-                schemas = {
-                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
-                    "/docker-compose*.yml",
+            Lua = {
+                runtime = {
+                    version = "LuaJIT",
+                },
+                diagnostics = {
+                    globals = { "vim", "require" },
+                },
+                workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = {
+                    enable = false,
                 },
             },
         },
     },
+
+    -- php
+    intelephense = {
+        filetypes = { "php" },
+        settings = {
+            intelephense = {
+                files = {
+                    maxSize = 5000000,
+                    exclude = {
+                        "**/node_modules/**",
+                        "**/vendor/**",
+                    },
+                },
+                diagnostics = {
+                    enable = true,
+                    undefinedTypes = false,
+                    undefinedMethods = false,
+                    undefinedProperties = false,
+                    undefinedFunctions = false,
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    },
+
+    -- backend dev
+    gopls = {},
+    goimports = {},
+    gofumpt = {},
+
+    -- infra dev
+    terraformls = {},
+
+    -- docker
     docker_compose_language_service = {
         filetypes = { "yaml" },
         root_dir = function(fname)
@@ -271,7 +287,7 @@ local server_configs = {
 
 -- Apply configurations to each server
 for server, config in pairs(server_configs) do
-    vim.lsp.config(server, config)
+    lspconfig[server].setup(config)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
 

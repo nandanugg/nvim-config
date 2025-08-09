@@ -126,13 +126,10 @@ mason_lspconfig.setup({
     ensure_installed = {
         -- web dev
         "eslint",
-        "eslint_d",
-        "prettier",
         "ts_ls",
         "astro",
         "tailwindcss",
         -- config files
-        "fixjson",
         "yamlls",
         "jsonls",
         "lua_ls",
@@ -140,8 +137,6 @@ mason_lspconfig.setup({
         "intelephense",
         -- backend dev
         "gopls",
-        "goimports",
-        "gofumpt",
         -- infra dev
         "terraformls",
         -- docker
@@ -153,8 +148,6 @@ mason_lspconfig.setup({
 local server_configs = {
     -- web dev
     eslint = {},
-    eslint_d = {},
-    prettier = {},
     ts_ls = {
         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
     },
@@ -162,7 +155,6 @@ local server_configs = {
     tailwindcss = {},
 
     -- config files
-    fixjson = {},
     yamlls = {
         settings = {
             yaml = {
@@ -270,8 +262,6 @@ local server_configs = {
 
     -- backend dev
     gopls = {},
-    goimports = {},
-    gofumpt = {},
 
     -- infra dev
     terraformls = {},

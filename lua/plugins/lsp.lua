@@ -124,17 +124,28 @@ local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
     automatic_enable = true,
     ensure_installed = {
+        -- web dev
         "eslint",
-        "lua_ls",
-        "intelephense",
-        "gopls",
+        "eslint_d",
+        "prettier",
         "ts_ls",
-        "terraformls",
-        "yamlls",
-        "jsonls",
-        "docker_compose_language_service",
         "astro",
         "tailwindcss",
+        -- config files
+        "fixjson",
+        "yamlls",
+        "jsonls",
+        "lua_ls",
+        -- php
+        "intelephense",
+        -- backend dev
+        "gopls",
+        "goimports",
+        "gofumpt",
+        -- infra dev
+        "terraformls",
+        -- docker
+        "docker_compose_language_service",
     },
 })
 

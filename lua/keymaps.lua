@@ -195,8 +195,7 @@ vim.keymap.set("n", "<leader>wf", function()
 end, { desc = "Write without formatting" })
 
 vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set("n", "<S-c><S-u>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set({ 'n', 'x', 'o' }, '<C-/>', '<Plug>(leap-anywhere)')
+vim.keymap.set({ 'n', 'x', 'o' }, '<leader><leader>', '<Plug>(leap-anywhere)')
 
 -- searching
 vim.keymap.set("n", "<C-p><C-p>", "<Cmd>FzfLua files<CR>", {})

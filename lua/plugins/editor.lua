@@ -97,6 +97,9 @@ end
 local ignoredPath = generateExcludeOpts()
 
 -- > SEARCH
+local leap = require('leap')
+leap.opts.labels = 'sfnjklhodweimbuyvrgtaqpcxz'
+
 require("fzf-lua").setup({
     "telescope",
     files = {

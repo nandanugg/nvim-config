@@ -127,6 +127,7 @@ mason_lspconfig.setup({
         -- web dev
         "eslint",
         "ts_ls",
+        "vtsls", -- enhanced typescript support
         "astro",
         "tailwindcss",
         -- config files
@@ -149,7 +150,10 @@ local server_configs = {
     -- web dev
     eslint = {},
     ts_ls = {
-        filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
+        filetypes = { "javascriptreact", "javascript.jsx", "typescriptreact", "typescript.tsx" }
+    },
+    vtsls = {
+        filetypes = { "javascript", "typescript", }
     },
     astro = {},
     tailwindcss = {},

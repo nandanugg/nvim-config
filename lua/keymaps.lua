@@ -310,6 +310,7 @@ vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 -- vim.keymap.set("n", "gii", ":FzfLua lsp_implementations<CR>", opts) -- somehow it's the same as typedefs
 vim.keymap.set("n", "gu", ":FzfLua lsp_references<CR>", opts) -- see the Usage
 vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
+vim.keymap.set("i", "<C-g><C-a>", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 
 -- git

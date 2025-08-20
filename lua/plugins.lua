@@ -31,8 +31,8 @@ require("lazy").setup({
     -- < git
     -- > session
     {
-        "rmagatti/auto-session", -- save and restore session in open and close
-        lazy = false,
+        "folke/persistence.nvim",
+        event = "BufReadPre", -- this will only start session saving when an actual file was opened
     },
     -- < session
     -- > marks

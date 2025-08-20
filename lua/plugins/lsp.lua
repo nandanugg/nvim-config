@@ -124,51 +124,73 @@ local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
     automatic_enable = true,
     ensure_installed = {
-        -- web dev
         "eslint",
+        "lua_ls",
+        "intelephense",
+        "gopls",
         "ts_ls",
-        "vtsls", -- enhanced typescript support
-        "astro",
-        "tailwindcss",
-        -- config files
+        "terraformls",
         "yamlls",
         "jsonls",
-        "lua_ls",
-        -- php
-        "intelephense",
-        -- backend dev
-        "gopls",
-        -- infra dev
-        "terraformls",
-        -- docker
         "docker_compose_language_service",
+        "astro",
+        "tailwindcss",
     },
 })
 
--- Define your server-specific configurations (ordered like ensure_installed)
+-- Define your server-specific configurations
 local server_configs = {
-    -- web dev
     eslint = {},
-    ts_ls = {
-        filetypes = { "javascriptreact", "javascript.jsx", "typescriptreact", "typescript.tsx" }
-    },
-    vtsls = {
-        filetypes = { "javascript", "typescript", }
-    },
-    astro = {},
     tailwindcss = {},
-
-    -- config files
-    yamlls = {
+    lua_ls = {
+        filetypes = { "lua" },
         settings = {
-            yaml = {
-                schemas = {
-                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
-                    "/docker-compose*.yml",
+            Lua = {
+                runtime = {
+                    version = "LuaJIT",
+                },
+                diagnostics = {
+                    globals = { "vim", "require" },
+                },
+                workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = {
+                    enable = false,
                 },
             },
         },
     },
+    intelephense = {
+        filetypes = { "php" },
+        settings = {
+            intelephense = {
+                files = {
+                    maxSize = 5000000,
+                    exclude = {
+                        "**/node_modules/**",
+                        "**/vendor/**",
+                    },
+                },
+                diagnostics = {
+                    enable = true,
+                    undefinedTypes = false,
+                    undefinedMethods = false,
+                    undefinedProperties = false,
+                    undefinedFunctions = false,
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    },
+    gopls = {},
+    astro = {},
+    ts_ls = {
+        filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
+    },
+    terraformls = {},
     jsonls = {
         filetypes = { "json", "jsonc" },
         settings = {
@@ -218,59 +240,16 @@ local server_configs = {
             }
         }
     },
-    lua_ls = {
-        filetypes = { "lua" },
+    yamlls = {
         settings = {
-            Lua = {
-                runtime = {
-                    version = "LuaJIT",
-                },
-                diagnostics = {
-                    globals = { "vim", "require" },
-                },
-                workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                },
-                telemetry = {
-                    enable = false,
+            yaml = {
+                schemas = {
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
+                    "/docker-compose*.yml",
                 },
             },
         },
     },
-
-    -- php
-    intelephense = {
-        filetypes = { "php" },
-        settings = {
-            intelephense = {
-                files = {
-                    maxSize = 5000000,
-                    exclude = {
-                        "**/node_modules/**",
-                        "**/vendor/**",
-                    },
-                },
-                diagnostics = {
-                    enable = true,
-                    undefinedTypes = false,
-                    undefinedMethods = false,
-                    undefinedProperties = false,
-                    undefinedFunctions = false,
-                },
-                telemetry = {
-                    enable = false,
-                },
-            },
-        },
-    },
-
-    -- backend dev
-    gopls = {},
-
-    -- infra dev
-    terraformls = {},
-
-    -- docker
     docker_compose_language_service = {
         filetypes = { "yaml" },
         root_dir = function(fname)
@@ -281,7 +260,7 @@ local server_configs = {
 
 -- Apply configurations to each server
 for server, config in pairs(server_configs) do
-    lspconfig[server].setup(config)
+    vim.lsp.config(server, config)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
 

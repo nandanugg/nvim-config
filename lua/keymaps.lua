@@ -195,7 +195,8 @@ vim.keymap.set("n", "<leader>wf", function()
 end, { desc = "Write without formatting" })
 
 vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set({ 'n', 'x', 'o' }, '<leader><leader>', '<Plug>(leap-anywhere)')
+vim.keymap.set("n", "<S-c><S-u>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
+vim.keymap.set({ 'n', 'x', 'o' }, '<C-/>', '<Plug>(leap-anywhere)')
 
 -- searching
 vim.keymap.set("n", "<C-p><C-p>", "<Cmd>FzfLua files<CR>", {})
@@ -310,7 +311,6 @@ vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
 -- vim.keymap.set("n", "gii", ":FzfLua lsp_implementations<CR>", opts) -- somehow it's the same as typedefs
 vim.keymap.set("n", "gu", ":FzfLua lsp_references<CR>", opts) -- see the Usage
 vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
-vim.keymap.set("i", "<C-g><C-a>", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 
 -- git

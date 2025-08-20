@@ -20,26 +20,5 @@ make sure that all binaries are exists before installing
 ### Installing
 
 1. Install [ NeoVim ](https://github.com/neovim/neovim/blob/master/INSTALL.md)
-2. Clone this repo
-```bash
-git clone https://github.com/nandanugg/nvim-config ~/.config/nvim/
-```
-3. Launch
-
-
-### Tips
-It's generally better to increase the repeat rate
-
-for MacOS
-```bash
-# the repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 1
-# the delay before repeating
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
-```
-
-```bash
-# default value
-defaults write NSGlobalDomain KeyRepeat -int 15
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
-```
+2. Install [lazy.nvim](https://www.lazyvim.org/installation)
+   Done, after this all of the plugin will be installed, it will take some time

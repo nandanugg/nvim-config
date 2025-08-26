@@ -195,8 +195,41 @@ vim.keymap.set("n", "<leader>wf", function()
 end, { desc = "Write without formatting" })
 
 vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set("n", "<S-c><S-u>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set({ 'n', 'x', 'o' }, '<C-/>', '<Plug>(leap-anywhere)')
+vim.keymap.set({ 'n', 'x', 'o' }, '<leader><leader>', '<Plug>(leap-anywhere)')
+
+-- casing
+-- gsp{motion}                                        *gsp* *caser-pascal*
+-- gsm{motion}                                        *gsm* *caser-mixed*
+-- {Visual}gsp             Make {motion} or highlighted text `PascalCase`/`MixedCase`
+-- {Visual}gsm             (for {Visual} see |Visual-mode|).
+-- gsc{motion}                                        *gsc* *caser-camel*
+-- {Visual}gsc             Make {motion} or highlighted text `camelCase`
+--                         (for {Visual} see |Visual-mode|).
+-- gs_{motion}                                        *gs_* *caser-snake*
+-- {Visual}gs_             Make {motion} or highlighted text `snake_case`
+--                         (for {Visual} see |Visual-mode|).
+-- gsu{motion}                                        *gsu*
+-- gsU{motion}                                        *gsU* *caser-upper*
+-- {Visual}gsu             Make {motion} or highlighted text `UPPER_CASE`
+-- {Visual}gsU             (for {Visual} see |Visual-mode|).
+-- gst{motion}                                        *gst* *caser-title*
+-- {Visual}gst             Make {motion} or highlighted text `Title Case`
+--                         (for {Visual} see |Visual-mode|).
+-- gss{motion}                                        *gss* *caser-sentence*
+-- {Visual}gss             Make {motion} or highlighted text `Sentence case`
+--                         (for {Visual} see |Visual-mode|).
+-- gs<space>{motion}                                  *gs<space>* *caser-space*
+-- {Visual}gs<space>       Make {motion} or highlighted text `space case`
+--                         (for {Visual} see |Visual-mode|).
+-- gs-{motion}                                        *gs-* *caser-dash*
+-- gsk{motion}                                        *gsk* *caser-kebab*
+-- gsK{motion}                                        *gsK* *caser-title-kebab*
+-- {Visual}gs-             Make {motion} or highlighted text `dash-case`/`kebab-case`
+-- {Visual}gsk             (for {Visual} see |Visual-mode|).
+-- {Visual}gsK
+-- gs.{motion}                                        *gs.* *caser-dot*
+-- {Visual}gs.             Make {motion} or highlighted text `dot.case`
+--                       (for {Visual} see |Visual-mode|).
 
 -- searching
 vim.keymap.set("n", "<C-p><C-p>", "<Cmd>FzfLua files<CR>", {})

@@ -1,8 +1,5 @@
 -- lsp.lua contain configurations for lsp / formatter configuration
 
-
-
-
 local keymaps = require("keymaps")
 -- > LANGUAGE PARSER
 require("nvim-treesitter.configs").setup({
@@ -135,6 +132,7 @@ mason_lspconfig.setup({
         "docker_compose_language_service",
         "astro",
         "tailwindcss",
+        "jdtls",
     },
 })
 
@@ -230,6 +228,12 @@ local server_configs = {
                     },
                     {
                         fileMatch = {
+                            "biome.json",
+                        },
+                        url = "https://biomejs.dev/schemas/2.2.2/schema.json"
+                    },
+                    {
+                        fileMatch = {
                             ".stylelintrc",
                             ".stylelintrc.json",
                             "stylelint.config.json"
@@ -256,11 +260,75 @@ local server_configs = {
             return lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml")(fname)
         end,
     },
+    jdtls = {
+        filetypes = { "java" },
+        settings = {
+            java = {
+                configuration = {
+                    runtimes = {
+                        {
+                            name = "JavaSE-17",
+                            path = "/usr/lib/jvm/java-17-openjdk/", -- Adjust path as needed
+                        },
+                    },
+                },
+                eclipse = {
+                    downloadSources = true,
+                },
+                maven = {
+                    downloadSources = true,
+                },
+                implementationsCodeLens = {
+                    enabled = true,
+                },
+                referencesCodeLens = {
+                    enabled = true,
+                },
+                references = {
+                    includeDecompiledSources = true,
+                },
+                format = {
+                    enabled = true,
+                },
+                signatureHelp = { enabled = true },
+                completion = {
+                    favoriteStaticMembers = {
+                        "org.hamcrest.MatcherAssert.assertThat",
+                        "org.hamcrest.Matchers.*",
+                        "org.hamcrest.CoreMatchers.*",
+                        "org.junit.jupiter.api.Assertions.*",
+                        "java.util.Objects.requireNonNull",
+                        "java.util.Objects.requireNonNullElse",
+                        "org.mockito.Mockito.*"
+                    },
+                    importOrder = {
+                        "java",
+                        "javax",
+                        "com",
+                        "org"
+                    },
+                },
+                sources = {
+                    organizeImports = {
+                        starThreshold = 9999,
+                        staticStarThreshold = 9999,
+                    },
+                },
+                codeGeneration = {
+                    toString = {
+                        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
+                    },
+                    useBlocks = true,
+                },
+            }
+        }
+    },
 }
 
 -- Apply configurations to each server
 for server, config in pairs(server_configs) do
     vim.lsp.config(server, config)
+    vim.lsp.enable(server)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
 
@@ -270,10 +338,12 @@ require("conform").setup({
     log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
-        javascript = { "prettier", "eslint_d", stop_after_first = false },
-        astro = { "prettier", stop_after_first = false },
-        html = { "prettier", stop_after_first = false },
+        javascript = { "biome", "prettier", "eslint_d", stop_after_first = false },
+        typescript = { "biome", "prettier", "eslint_d", stop_after_first = false },
+        astro = { "prettier", "biome", stop_after_first = false },
+        html = { "prettier", "biome", stop_after_first = false },
         json = { "fixjson" },
+        java = { "google-java-format" },
     },
     default_format_opts = {
         lsp_format = "fallback",

@@ -21,6 +21,7 @@ require('mini.files').setup({
         use_as_default_explorer = true,
     },
     -- Customization of explorer windows
+    max_name_length = 22,
     windows = {
         max_number = math.huge,
         preview = false,
@@ -34,7 +35,7 @@ require("nvim-surround").setup({})
 -- > BUFFER TABS
 require("bufferline").setup({
     options = {
-        -- diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
+        diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
         themable = true,
         separator_style = "slant",
         tab_size = 13,

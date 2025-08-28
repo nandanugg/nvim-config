@@ -130,7 +130,17 @@ end
 local yank_path = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
     if path == nil then return vim.notify('Cursor is not on valid entry') end
-    vim.fn.setreg(vim.v.register, path)
+
+    -- Get relative path from current working directory
+    local relative_path = vim.fn.fnamemodify(path, ':.')
+
+    -- Yank to both default register and system clipboard
+    vim.fn.setreg(vim.v.register, relative_path)
+    vim.fn.setreg('+', relative_path) -- System clipboard (PRIMARY)
+    vim.fn.setreg('*', relative_path) -- System clipboard (CLIPBOARD)
+
+    -- Show notification with the yanked path
+    vim.notify('Yanked path: ' .. relative_path)
 end
 
 -- Open path with system default handler (useful for non-text files)

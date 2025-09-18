@@ -9,6 +9,7 @@ make sure that all binaries are exists before installing
 - `make` (build tool)
 - `node` (for installing many lsp)
 - `go` (for go lsp)
+- `npm install -g @vtsls/language-server` (for vtsls)
 
 - ripgrep (for searching content of a file, like `grep` but faster)
 - fzf (for fuzzy searching)

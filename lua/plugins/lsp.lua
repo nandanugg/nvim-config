@@ -125,7 +125,7 @@ mason_lspconfig.setup({
         "lua_ls",
         "intelephense",
         "gopls",
-        "ts_ls",
+        "vtsls",
         "terraformls",
         "yamlls",
         "jsonls",
@@ -185,7 +185,7 @@ local server_configs = {
     },
     gopls = {},
     astro = {},
-    ts_ls = {
+    vtsls = {
         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
     },
     terraformls = {},
@@ -331,15 +331,17 @@ for server, config in pairs(server_configs) do
     vim.lsp.enable(server)
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
-
+require("mason-conform").setup({
+    ignore_install = { 'prettier' } -- List of formatters to ignore during install
+})
 -- Format on save
 require("conform").setup({
     -- Define formatters for specific filetypes
     log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
         go = { "goimports", "gofumpt" },
-        javascript = { "biome", "prettier", "eslint_d", stop_after_first = false },
-        typescript = { "biome", "prettier", "eslint_d", stop_after_first = false },
+        javascript = { "biome", "prettier", stop_after_first = false },
+        typescript = { "biome", "prettier", stop_after_first = false },
         astro = { "prettier", "biome", stop_after_first = false },
         html = { "prettier", "biome", stop_after_first = false },
         json = { "fixjson" },
@@ -351,6 +353,9 @@ require("conform").setup({
     formatters = {
         prettier = {
             prepend_args = { "-w" },
+        },
+        biome = {
+            command = vim.fn.stdpath("data") .. "/mason/bin/biome",
         }
     },
     notify_on_error = true,

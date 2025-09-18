@@ -81,6 +81,7 @@ require("lazy").setup({
     -- > lsp
     { "williamboman/mason.nvim" },           -- programming language plugin manager
     { "williamboman/mason-lspconfig.nvim" }, -- lsp intergration with plugin manager
+    { "zapling/mason-conform.nvim", },       -- lsp intergration with formatter
     { "neovim/nvim-lspconfig" },             -- lsp intergration to nvim
     -- < lsp
     -- > debugger

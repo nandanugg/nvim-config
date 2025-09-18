@@ -345,6 +345,7 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "gF", show_diagnostic_source, opts)
 vim.keymap.set("n", "gd", ":FzfLua diagnostics_document<CR>", opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
+vim.keymap.set("n", "ge", ":Telescope diagnostics bufnr=0<CR>", opts)
 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -2, float = true }) end, opts)
 -- definitions

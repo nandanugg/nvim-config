@@ -121,6 +121,7 @@ local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
     automatic_enable = true,
     ensure_installed = {
+        "biome",
         "eslint",
         "lua_ls",
         "intelephense",
@@ -138,6 +139,7 @@ mason_lspconfig.setup({
 
 -- Define your server-specific configurations
 local server_configs = {
+    biome = {},
     eslint = {},
     tailwindcss = {},
     lua_ls = {

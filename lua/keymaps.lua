@@ -146,7 +146,7 @@ end
 -- Open path with system default handler (useful for non-text files)
 local ui_open = function() vim.ui.open(MiniFiles.get_fs_entry().path) end
 
-vim.keymap.set("n", "<C-p><C-e>", minifiles_toggle,
+vim.keymap.set("n", "<C-k><C-e>", minifiles_toggle,
     { noremap = true, silent = true })
 
 -- popoup specific keymap
@@ -242,15 +242,15 @@ vim.keymap.set({ 'n', 'x', 'o' }, '<leader><leader>', '<Plug>(leap-anywhere)')
 --                       (for {Visual} see |Visual-mode|).
 
 -- searching
-vim.keymap.set("n", "<C-p><C-p>", "<Cmd>FzfLua files<CR>", {})
-vim.keymap.set("n", "<C-p><C-o>", "<Cmd>FzfLua oldfiles<CR>")
-vim.keymap.set("n", "<C-p><C-g>", "<cmd>FzfLua live_grep<CR>")
-vim.keymap.set("n", "<C-p><C-w>", "<cmd>FzfLua grep_cword<CR>")
-vim.keymap.set("n", "<C-p><C-b>", "<Cmd>FzfLua buffers<CR>")
-vim.keymap.set("n", "<C-p><C-m>", "<cmd>Telescope marks<CR>")
-vim.keymap.set("n", "<C-p><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
-vim.keymap.set("n", "<C-p><C-x>", "<cmd>Telescope neoclip<CR>")
-vim.keymap.set("n", "<C-p><C-u>", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", "<C-k><C-k>", "<Cmd>FzfLua files<CR>", {})
+vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
+vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua live_grep<CR>")
+vim.keymap.set("n", "<C-k><C-w>", "<cmd>FzfLua grep_cword<CR>")
+vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
+vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
+vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
+vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
+vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     minifiles = {
         close       = '<C-c>',

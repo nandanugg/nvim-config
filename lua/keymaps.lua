@@ -166,9 +166,7 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = 'neotest-output',
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
-            { buffer = buf, noremap = true, silent = true })
-        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+        vim.keymap.set('n', 'q', ":q<CR>",
             { buffer = buf, noremap = true, silent = true })
     end,
 })
@@ -176,9 +174,7 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = 'dapui_hover',
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
-            { buffer = buf, noremap = true, silent = true })
-        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+        vim.keymap.set('n', 'q', ":q<CR>",
             { buffer = buf, noremap = true, silent = true })
     end,
 })
@@ -186,9 +182,7 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = 'dap-float',
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', '<C-c>', "<CMD>q<CR>",
-            { buffer = buf, noremap = true, silent = true })
-        vim.keymap.set('n', '<Esc>', "<CMD>q<CR>",
+        vim.keymap.set('n', 'q', ":q<CR>",
             { buffer = buf, noremap = true, silent = true })
     end,
 })
@@ -253,7 +247,7 @@ vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 M.mappings = {
     minifiles = {
-        close       = '<C-c>',
+        close       = 'q',
         go_in       = '',
         go_in_plus  = 'l',
         go_out      = 'h',
@@ -297,10 +291,10 @@ M.mappings = {
 }
 
 -- buffers
-vim.keymap.set("n", "<C-i>", ":resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-o>", ":resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-i>", ":vertical resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-o>", ":vertical resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-o>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-i>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-o>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-S-i>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-w>", ":Bdelete<CR>", { noremap = true, silent = true })

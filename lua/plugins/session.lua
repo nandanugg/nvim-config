@@ -1,15 +1,15 @@
 -- session.lua contain configurations for code sessions
 -- > SESSION
-    local persistence = require("persistence")
+local persistence = require("persistence")
 persistence.setup({
-  dir = vim.fn.stdpath("state") .. "/sessions/",
-  options = { "buffers", "curdir", "tabpages", "winsize" },
+    dir = vim.fn.stdpath("state") .. "/sessions/",
+    options = { "buffers", "curdir", "tabpages", "winsize" },
 })
 
 vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
         if vim.fn.argc() == 0 then
-    persistence.load()
+            persistence.load()
         end
     end,
 })

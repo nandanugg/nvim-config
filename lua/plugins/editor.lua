@@ -37,8 +37,9 @@ require("bufferline").setup({
     options = {
         diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
         themable = true,
-        separator_style = "slant",
-        tab_size = 13,
+        separator_style = "thin",
+        tab_size = 11,
+        persist_buffer_sort = false, -- whether or not custom sorted buffers should persist
         show_buffer_close_icons = false,
     },
     highlights = {},

@@ -147,11 +147,22 @@ require("lazy").setup({
         build = "make"
     },
     { "tomasiser/vim-code-dark" }, -- theme
+    -- {
+    --     "vague-theme/vague.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    -- },
     {
-        "rebelot/kanagawa.nvim",   -- theme
+        "bluz71/vim-moonfly-colors",
+        name = "moonfly",
         lazy = false,
-        priority = 1000,           -- Load before other plugins to ensure colors are set early
+        priority = 1000
     },
+    -- {
+    --     "rebelot/kanagawa.nvim", -- theme
+    --     lazy = false,
+    --     priority = 1000,         -- Load before other plugins to ensure colors are set early
+    -- },
 
     -- Automatically check for plugin updates
     checker = { enabled = true },

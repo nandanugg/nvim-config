@@ -33,9 +33,10 @@ require("lazy").setup({
         "lukas-reineke/indent-blankline.nvim",                                          -- indent guides
         main = "ibl",
     },
-    { "famiu/bufdelete.nvim" },  -- safely remove buffer without messing the layout
-    { "karb94/neoscroll.nvim" }, -- smooth scroll
-    { "szw/vim-maximizer" },     -- window maximizer
+    { "famiu/bufdelete.nvim" },      -- safely remove buffer without messing the layout
+    { "karb94/neoscroll.nvim" },     -- smooth scroll
+    { "szw/vim-maximizer" },         -- window maximizer
+    { "sphamba/smear-cursor.nvim" }, -- cursor animation
 
     -- === NAVIGATION
     {
@@ -56,7 +57,7 @@ require("lazy").setup({
             "MunifTanjim/nui.nvim",
 
         },
-    },    --  symbol navigator
+    }, --  symbol navigator
     {
         'echasnovski/mini.nvim',
         version = '*',

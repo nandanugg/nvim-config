@@ -1,35 +1,48 @@
 -- ui.lua contain configurations for display related modification
 
 -- theme
--- require("kanagawa").setup({
---     compile = true,   -- enable compiling the colorscheme
---     undercurl = true, -- enable undercurls
---     commentStyle = { italic = true },
---     functionStyle = {},
---     keywordStyle = { italic = true },
---     statementStyle = { bold = true },
---     typeStyle = {},
---     transparent = false,   -- do not set background color
---     dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
---     terminalColors = true, -- define vim.g.terminal_color_{0,17}
---     colors = {             -- add/modify theme and palette colors
---         palette = {},
---         theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
---     },
---     overrides = function(colors) -- add/modify highlights
---         return {}
---     end,
---     background = {     -- map the value of 'background' option to a theme
---         dark = "wave", -- wave / lotus / dragon
---     },
--- })
--- setup must be called before loading
--- vim.cmd("colorscheme kanagawa")
+require("kanagawa").setup({
+    compile = true,   -- enable compiling the colorscheme
+    undercurl = true, -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = {},
+    keywordStyle = { italic = true },
+    statementStyle = { bold = true },
+    typeStyle = {},
+    transparent = false,   -- do not set background color
+    dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
+    terminalColors = true, -- define vim.g.terminal_color_{0,17}
+    colors = {             -- add/modify theme and palette colors
+        palette = {},
+        theme = {
+            wave = {},
+            lotus = {},
+            dragon = {},
+            all = {
 
--- require("vague").setup({
--- })
+                ui = {
+                    bg = "#000000",
+                    bg_gutter = "#000000",
+                },
+            }
+        },
+    },
+    overrides = function(colors) -- add/modify highlights
+        return {}
+    end,
+    background = {     -- map the value of 'background' option to a theme
+        dark = "wave", -- wave / lotus / dragon
+    },
+})
+-- setup must be called before loading
+vim.cmd("colorscheme kanagawa")
+require("colorizer").setup({})
+
+-- require("vague").setup({ })
 -- vim.cmd("colorscheme vague")
-vim.cmd("colorscheme moonfly")
+
+-- vim.cmd("colorscheme moonfly")
+-- vim.cmd("colorscheme midnight")
 
 -- TailwindCSS colorizer setup
 local tailwindcss = require("tailwindcss-colorizer-cmp")
@@ -98,6 +111,7 @@ require("neoscroll").setup({
 -- > SYMBOLS
 
 local navic = require("nvim-navic")
+local navbuddy = require("nvim-navbuddy")
 
 require("lualine").setup({
     options = {
@@ -135,6 +149,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if client and client.server_capabilities.documentSymbolProvider then
             navic.attach(client, args.buf)
+            navbuddy.attach(client, args.buf)
         end
     end,
 })

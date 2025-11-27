@@ -129,6 +129,7 @@ require("fzf-lua").setup({
             .. ignoredPath.rg
             .. "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
     },
+    mappings = keymaps.mappings.fzflua,
 })
 require("telescope").setup({
     defaults = {

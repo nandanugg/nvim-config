@@ -242,9 +242,10 @@ vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua live_grep<CR>")
 vim.keymap.set("n", "<C-k><C-w>", "<cmd>FzfLua grep_cword<CR>")
 vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
-vim.keymap.set("n", "<C-k><C-s>", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Find Symbols" })
+vim.keymap.set("n", "<C-k><C-s>", "<cmd>Navbuddy<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
+local telescopeActions = require('telescope.actions')
 M.mappings = {
     minifiles = {
         close       = 'q',
@@ -274,13 +275,26 @@ M.mappings = {
         -- :h blink-cmp-config-keymap
         ['<C-u>'] = { 'scroll_documentation_up' },
         ['<C-d>'] = { 'scroll_documentation_down' },
+        ['<C-j>'] = { 'select_next', 'fallback' },
+        ['<C-k>'] = { 'select_prev', 'fallback' },
     },
 
     telescope = {
         -- :h telescope.mappings
         i = {
+            ["<C-j>"] = telescopeActions.move_selection_next,
+            ["<C-k>"] = telescopeActions.move_selection_previous,
         },
         n = {
+            ["<C-j>"] = telescopeActions.move_selection_next,
+            ["<C-k>"] = telescopeActions.move_selection_previous,
+        },
+    },
+    fzflua = {
+        -- :h fzf-lua-customization
+        builtin = {
+            ["<C-j>"] = "down",
+            ["<C-k>"] = "up",
         },
     },
     -- zc - Close/fold the current block

@@ -47,13 +47,16 @@ require("lazy").setup({
         "ibhagwan/fzf-lua", -- main search plugin
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
-    { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } },       -- search recent opened files
-    { "SmiteshP/nvim-navbuddy",                 dependencies = {
+    { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
+    {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = {
             "neovim/nvim-lspconfig",
-        "SmiteshP/nvim-navic",
-        "MunifTanjim/nui.nvim",
+            "SmiteshP/nvim-navic",
+            "MunifTanjim/nui.nvim",
 
-    }, }, --  symbol navigator
+        },
+    },    --  symbol navigator
     {
         'echasnovski/mini.nvim',
         version = '*',
@@ -131,7 +134,7 @@ require("lazy").setup({
     },
     { "arthurxavierx/vim-caser" }, -- transform text case
     {
-        "folke/persistence.nvim",
+        "rmagatti/auto-session",
         -- event = "BufReadPre", -- this will only start session saving when an actual file was opened
     },
 

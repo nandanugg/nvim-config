@@ -75,7 +75,7 @@ require("ibl").setup({
 })
 
 require("smear_cursor").setup({
-    stiffness = 0.9,
+    stiffness = 0.95,
     trailing_stiffness = 0.9,
     damping = 1,
 })
@@ -117,7 +117,12 @@ require("neoscroll").setup({
 
 local navic = require("nvim-navic")
 local navbuddy = require("nvim-navbuddy")
-
+require('triforce').setup({
+    keymap = {
+        show_profile = '<leader>tp', -- Open profile with <leader>tp
+    },
+})
+local triforce = require('triforce.lualine').components()
 require("lualine").setup({
     options = {
         globalstatus = true,
@@ -132,7 +137,15 @@ require("lualine").setup({
             return vim.fn.expand('%')
         end },
         lualine_c = { "aerial" },
-        lualine_x = { "lsp_status", "encoding", "filetype" },
+        lualine_x = {
+            triforce.session_time,
+            triforce.streak,
+            triforce.achievements,
+            triforce.level,
+            "lsp_status",
+            "encoding",
+            "filetype"
+        },
         lualine_y = {},
         lualine_z = { { "selectioncount", separator = { right = "" }, left_padding = 2 } },
     },

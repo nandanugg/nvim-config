@@ -100,6 +100,10 @@ require("lazy").setup({
 
     -- === TYPING HELPER
     {
+        'gisketch/triforce.nvim',
+        dependencies = { 'nvzone/volt' }, -- gamifiying code
+    },
+    {
         'Wansmer/treesj',                                     -- collapse or make one liner of a arguments or objects
         dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
     },

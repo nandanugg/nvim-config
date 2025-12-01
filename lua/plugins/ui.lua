@@ -75,7 +75,7 @@ require("ibl").setup({
 })
 
 require("smear_cursor").setup({
-    stiffness = 0.95,
+    stiffness = 0.9,
     trailing_stiffness = 0.9,
     damping = 1,
 })

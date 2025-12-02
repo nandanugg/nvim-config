@@ -127,7 +127,7 @@ require("fzf-lua").setup({
             .. searchArgs
             .. " "
             .. ignoredPath.rg
-            .. "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+            .. "--silent --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
     },
     mappings = keymaps.mappings.fzflua,
 })

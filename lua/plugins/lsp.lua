@@ -96,7 +96,7 @@ blinkCmp.setup({
     },
     signature = { enabled = true },
     fuzzy = {
-        use_frecency = true,
+        frecency = { enabled = true },
         use_proximity = true,
     },
     appearance = {

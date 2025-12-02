@@ -6,7 +6,6 @@ local M = {}
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-
 -- lsp specific
 local function show_diagnostic_source()
     local winnr = vim.api.nvim_get_current_win()
@@ -44,17 +43,17 @@ local function inspect_current_buffer()
     local bufname = vim.api.nvim_buf_get_name(buf)
     local buftype = vim.bo[buf].buftype
     local filetype = vim.bo[buf].filetype
-    local syntax = vim.fn.getbufvar(buf, '&syntax')
+    local syntax = vim.fn.getbufvar(buf, "&syntax")
 
     -- Get window info
     local wintype = vim.fn.win_gettype(win)
 
     -- Get buffer variables (useful for plugin-specific vars)
     local buf_vars = {}
-    local ok, vars = pcall(vim.api.nvim_buf_get_var, buf, '')
+    local ok, vars = pcall(vim.api.nvim_buf_get_var, buf, "")
     if ok then
         for k, v in pairs(vars) do
-            if type(v) == 'string' or type(v) == 'number' or type(v) == 'boolean' then
+            if type(v) == "string" or type(v) == "number" or type(v) == "boolean" then
                 buf_vars[k] = v
             end
         end
@@ -64,7 +63,7 @@ local function inspect_current_buffer()
     local all_vars = vim.b[buf]
     local filtered_vars = {}
     for k, v in pairs(all_vars) do
-        if type(v) == 'string' or type(v) == 'number' or type(v) == 'boolean' then
+        if type(v) == "string" or type(v) == "number" or type(v) == "boolean" then
             filtered_vars[k] = v
         end
     end
@@ -107,11 +106,9 @@ local function inspect_current_buffer()
 
     return info
 end
-vim.api.nvim_create_user_command('InspectBuffer', function()
+vim.api.nvim_create_user_command("InspectBuffer", function()
     inspect_current_buffer()
-end, { desc = 'Show detailed info about current buffer/window' })
-
-
+end, { desc = "Show detailed info about current buffer/window" })
 
 -- Explorer
 local minifiles_toggle = function(...)
@@ -123,72 +120,80 @@ end
 
 local set_cwd = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
-    if path == nil then return vim.notify('Cursor is not on valid entry') end
+    if path == nil then
+        return vim.notify("Cursor is not on valid entry")
+    end
     vim.fn.chdir(vim.fs.dirname(path))
 end
 
 local yank_path = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
-    if path == nil then return vim.notify('Cursor is not on valid entry') end
+    if path == nil then
+        return vim.notify("Cursor is not on valid entry")
+    end
 
     -- Get relative path from current working directory
-    local relative_path = vim.fn.fnamemodify(path, ':.')
+    local relative_path = vim.fn.fnamemodify(path, ":.")
 
     -- Yank to both default register and system clipboard
     vim.fn.setreg(vim.v.register, relative_path)
-    vim.fn.setreg('+', relative_path) -- System clipboard (PRIMARY)
-    vim.fn.setreg('*', relative_path) -- System clipboard (CLIPBOARD)
+    vim.fn.setreg("+", relative_path) -- System clipboard (PRIMARY)
+    vim.fn.setreg("*", relative_path) -- System clipboard (CLIPBOARD)
 
     -- Show notification with the yanked path
-    vim.notify('Yanked path: ' .. relative_path)
+    vim.notify("Yanked path: " .. relative_path)
 end
 
 -- Open path with system default handler (useful for non-text files)
-local ui_open = function() vim.ui.open(MiniFiles.get_fs_entry().path) end
+local ui_open = function()
+    vim.ui.open(MiniFiles.get_fs_entry().path)
+end
 
-vim.keymap.set("n", "<C-k><C-e>", minifiles_toggle,
-    { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k><C-e>", minifiles_toggle, { noremap = true, silent = true })
 
 -- popoup specific keymap
-vim.api.nvim_create_autocmd('User', {
-    pattern = 'MiniFilesBufferCreate',
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
     callback = function(args)
         local b = args.data.buf_id
-        vim.keymap.set('n', '<CR>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
-        vim.keymap.set('n', '<Right>', function() MiniFiles.go_in({ close_on_file = true }) end, {})
-        vim.keymap.set('n', '<Left>', function() MiniFiles.go_out() end, {})
-        vim.keymap.set('n', 'g~', set_cwd, { buffer = b, desc = 'Set cwd' })
-        vim.keymap.set('n', 'gX', ui_open, { buffer = b, desc = 'OS open' })
-        vim.keymap.set('n', 'gy', yank_path, { buffer = b, desc = 'Yank path' })
+        vim.keymap.set("n", "<CR>", function()
+            MiniFiles.go_in({ close_on_file = true })
+        end, {})
+        vim.keymap.set("n", "<Right>", function()
+            MiniFiles.go_in({ close_on_file = true })
+        end, {})
+        vim.keymap.set("n", "<Left>", function()
+            MiniFiles.go_out()
+        end, {})
+        vim.keymap.set("n", "g~", set_cwd, { buffer = b, desc = "Set cwd" })
+        vim.keymap.set("n", "gX", ui_open, { buffer = b, desc = "OS open" })
+        vim.keymap.set("n", "gy", yank_path, { buffer = b, desc = "Yank path" })
     end,
 })
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'neotest-output',
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "neotest-output",
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', 'q', ":q<CR>",
-            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set("n", "q", ":q<CR>", { buffer = buf, noremap = true, silent = true })
     end,
 })
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'dapui_hover',
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "dapui_hover",
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', 'q', ":q<CR>",
-            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set("n", "q", ":q<CR>", { buffer = buf, noremap = true, silent = true })
     end,
 })
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'dap-float',
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "dap-float",
     callback = function(args)
         local buf = args.buf
-        vim.keymap.set('n', 'q', ":q<CR>",
-            { buffer = buf, noremap = true, silent = true })
+        vim.keymap.set("n", "q", ":q<CR>", { buffer = buf, noremap = true, silent = true })
     end,
 })
 
 -- basic functionality
-vim.keymap.set("n", "<C-q>", ':q<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<C-q>", ":q<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })
@@ -198,8 +203,10 @@ vim.keymap.set("n", "<leader>wf", function()
     vim.g.disable_autoformat = false
 end, { desc = "Write without formatting" })
 
-vim.keymap.set("n", "<S-k>", function() MiniSplitjoin.toggle() end, { noremap = true, silent = true, })
-vim.keymap.set({ 'n', 'x', 'o' }, '<leader><leader>', '<Plug>(leap-anywhere)')
+vim.keymap.set("n", "<S-k>", function()
+    MiniSplitjoin.toggle()
+end, { noremap = true, silent = true })
+vim.keymap.set({ "n", "x", "o" }, "<leader><leader>", "<Plug>(leap-anywhere)")
 
 -- casing
 -- gsp{motion}                                        *gsp* *caser-pascal*
@@ -245,38 +252,38 @@ vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>Navbuddy<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
-local telescopeActions = require('telescope.actions')
+local telescopeActions = require("telescope.actions")
 M.mappings = {
     minifiles = {
-        close       = 'q',
-        go_in       = '',
-        go_in_plus  = 'l',
-        go_out      = 'h',
-        go_out_plus = 'H',
-        mark_goto   = "",
-        mark_set    = '',
-        reset       = '<BS>',
-        reveal_cwd  = '@',
-        show_help   = 'g?',
-        synchronize = '=',
-        trim_left   = '<',
-        trim_right  = '>',
+        close = "q",
+        go_in = "",
+        go_in_plus = "l",
+        go_out = "h",
+        go_out_plus = "H",
+        mark_goto = "",
+        mark_set = "",
+        reset = "<BS>",
+        reveal_cwd = "@",
+        show_help = "g?",
+        synchronize = "=",
+        trim_left = "<",
+        trim_right = ">",
     },
     treesitter = {
         incremental_selection_keymaps = {
             -- h: nvim-treesitter-incremental-selection-mod
-            init_selection = "gnn",    -- Start selection
-            node_incremental = "gna",  -- Increment to the next node
+            init_selection = "gnn", -- Start selection
+            node_incremental = "gna", -- Increment to the next node
             scope_incremental = "gng", -- Increment to the next scop
-            node_decremental = "gnx",  -- Decrement the selection
+            node_decremental = "gnx", -- Decrement the selection
         },
     },
     blinkCmp = {
         -- :h blink-cmp-config-keymap
-        ['<C-u>'] = { 'scroll_documentation_up' },
-        ['<C-d>'] = { 'scroll_documentation_down' },
-        ['<C-j>'] = { 'select_next', 'fallback' },
-        ['<C-k>'] = { 'select_prev', 'fallback' },
+        ["<C-u>"] = { "scroll_documentation_up" },
+        ["<C-d>"] = { "scroll_documentation_down" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "fallback" },
     },
 
     telescope = {
@@ -347,15 +354,18 @@ vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, sile
 -- m?           Open location list and display markers from current buffer
 -- m<BS>        Remove all markers
 
-
 local opts = { noremap = true, silent = true }
 -- diagnostics
 vim.keymap.set("n", "gF", show_diagnostic_source, opts)
 vim.keymap.set("n", "gd", ":FzfLua diagnostics_document<CR>", opts)
 vim.keymap.set("n", "gf", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "ge", ":Telescope diagnostics bufnr=0<CR>", opts)
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -2, float = true }) end, opts)
+vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, opts)
+vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({ count = -2, float = true })
+end, opts)
 -- definitions
 vim.keymap.set("n", "go", ":FzfLua lsp_definitions<CR>", opts) -- see the Definitions
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
@@ -404,19 +414,22 @@ vim.keymap.set("t", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, s
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })
 
 -- testing
-vim.keymap.set("n", "<Leader>tt", function() neotest.run.run() end, { noremap = true })
-vim.keymap.set("n", "<Leader>ta", function() neotest.run.run(vim.fn.expand("%")) end, { noremap = true })
-vim.keymap.set("n", "<Leader>th", function() neotest.output.open({ enter = true }) end, { noremap = true })
+vim.keymap.set("n", "<Leader>tt", function()
+    neotest.run.run()
+end, { noremap = true })
+vim.keymap.set("n", "<Leader>ta", function()
+    neotest.run.run(vim.fn.expand("%"))
+end, { noremap = true })
+vim.keymap.set("n", "<Leader>th", function()
+    neotest.output.open({ enter = true })
+end, { noremap = true })
 vim.keymap.set("n", "<Leader>te", ":Neotest summary<CR>", { noremap = true })
-vim.keymap.set("n", "<Leader>tl", function() neotest.output_panel.toggle() end, { noremap = true })
-vim.keymap.set(
-    "n",
-    "<Leader>tx",
-    function()
-        neotest.run.run({ nil, strategy = "dap" })
-    end,
-    { noremap = true }
-)
+vim.keymap.set("n", "<Leader>tl", function()
+    neotest.output_panel.toggle()
+end, { noremap = true })
+vim.keymap.set("n", "<Leader>tx", function()
+    neotest.run.run({ nil, strategy = "dap" })
+end, { noremap = true })
 
 -- debugging
 vim.keymap.set("n", "<C-x><C-s>", function()

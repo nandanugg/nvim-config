@@ -1,7 +1,7 @@
 -- plugins.lua contain configurations for installed plugins
 require("lazy").setup({
     -- === TERMINAL
-    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
+    { "akinsho/toggleterm.nvim", version = "*", config = true }, -- terminal
 
     -- === GIT
     {
@@ -22,20 +22,20 @@ require("lazy").setup({
     },
     { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
     {
-        "roobert/tailwindcss-colorizer-cmp.nvim",             -- colors on tailwind classes
+        "roobert/tailwindcss-colorizer-cmp.nvim", -- colors on tailwind classes
         dependencies = {
             "NvChad/nvim-colorizer.lua",
         },
     },
-    { "nvim-lualine/lualine.nvim" },                                                    -- Decorate winbar & statusbar
-    { "SmiteshP/nvim-navic",             dependencies = { "neovim/nvim-lspconfig" }, }, --  winbar
+    { "nvim-lualine/lualine.nvim" }, -- Decorate winbar & statusbar
+    { "SmiteshP/nvim-navic", dependencies = { "neovim/nvim-lspconfig" } }, --  winbar
     {
-        "lukas-reineke/indent-blankline.nvim",                                          -- indent guides
+        "lukas-reineke/indent-blankline.nvim", -- indent guides
         main = "ibl",
     },
-    { "famiu/bufdelete.nvim" },      -- safely remove buffer without messing the layout
-    { "karb94/neoscroll.nvim" },     -- smooth scroll
-    { "szw/vim-maximizer" },         -- window maximizer
+    { "famiu/bufdelete.nvim" }, -- safely remove buffer without messing the layout
+    { "karb94/neoscroll.nvim" }, -- smooth scroll
+    { "szw/vim-maximizer" }, -- window maximizer
     { "sphamba/smear-cursor.nvim" }, -- cursor animation
 
     -- === NAVIGATION
@@ -55,61 +55,77 @@ require("lazy").setup({
             "neovim/nvim-lspconfig",
             "SmiteshP/nvim-navic",
             "MunifTanjim/nui.nvim",
-
         },
     }, --  symbol navigator
     {
-        'echasnovski/mini.nvim',
-        version = '*',
+        "echasnovski/mini.nvim",
+        version = "*",
         dependencies = {
-            { 'echasnovski/mini.icons',     version = '*' },
-            { 'echasnovski/mini.splitjoin', version = '*' },
-            { 'echasnovski/mini.files',     version = '*' },
-        }
+            { "echasnovski/mini.icons", version = "*" },
+            { "echasnovski/mini.splitjoin", version = "*" },
+            { "echasnovski/mini.files", version = "*" },
+        },
     },
-    { "ggandor/leap.nvim" },     -- jump
+    { "ggandor/leap.nvim" }, -- jump
     { "kshenoy/vim-signature" }, -- makrs manager
 
     -- === LSP
-    { "williamboman/mason.nvim" },           -- programming language plugin manager
+    { "williamboman/mason.nvim" }, -- programming language plugin manager
     { "williamboman/mason-lspconfig.nvim" }, -- lsp intergration with plugin manager
-    { "zapling/mason-conform.nvim", },       -- lsp intergration with formatter
-    { "neovim/nvim-lspconfig" },             -- lsp intergration to nvim
+    { "zapling/mason-conform.nvim" }, -- lsp intergration with formatter
+    { "neovim/nvim-lspconfig" }, -- lsp intergration to nvim
 
     -- === DEBUGGER
     { "mfussenegger/nvim-dap" }, -- debugging
     {
-        "rcarriga/nvim-dap-ui",  -- debugging ui
+        "rcarriga/nvim-dap-ui", -- debugging ui
         dependencies = {
             "mfussenegger/nvim-dap",
         },
     },
     { "nvim-telescope/telescope-dap.nvim" }, -- debug integration with search
     {
-        "nvim-neotest/neotest",              -- debug tests
+        "nvim-neotest/neotest", -- debug tests
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
-            { "fredrikaverpil/neotest-golang", version = "*" }, -- debug go tests
             "andythigpen/nvim-coverage",
         },
     },
+    {
+        "fredrikaverpil/neotest-golang",
+        version = "*",
+        branch = "main",
+        build = function()
+            vim.cmd(":TSUpdate go")
+        end,
+        dependencies = {
+            {
+                "tree-sitter/tree-sitter-go",
+                version = "*",
+                build = function()
+                    vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
+                end,
+            },
+        },
+    }, -- debug go tests
     { "leoluz/nvim-dap-go" }, -- attach go debugger
 
     -- === TYPING HELPER
     {
-        'gisketch/triforce.nvim',
-        dependencies = { 'nvzone/volt' }, -- gamifiying code
+        "nandanugg/triforce.nvim",
+        branch = "patch-1",
+        dependencies = { "nvzone/volt" }, -- gamifiying code
     },
     {
-        'Wansmer/treesj',                                     -- collapse or make one liner of a arguments or objects
-        dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+        "Wansmer/treesj", -- collapse or make one liner of a arguments or objects
+        dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
     },
-    { "mbbill/undotree" },                                    -- show the undo history of a file
+    { "mbbill/undotree" }, -- show the undo history of a file
     {
-        "kylechui/nvim-surround",                             -- surround text
+        "kylechui/nvim-surround", -- surround text
         version = "*",
         event = "VeryLazy",
     },
@@ -123,14 +139,14 @@ require("lazy").setup({
         -- build = 'cargo build --release',
         opts_extend = { "sources.default" },
     },
-    { 'stevearc/conform.nvim' },        -- formatter
+    { "stevearc/conform.nvim" }, -- formatter
     {
-        "editorconfig/editorconfig-vim" -- apply .editorconfig
+        "editorconfig/editorconfig-vim", -- apply .editorconfig
     },
     {
         "AckslD/nvim-neoclip.lua", -- search clipboard
         dependencies = {
-            { "kkharji/sqlite.lua",           module = "sqlite" },
+            { "kkharji/sqlite.lua", module = "sqlite" },
             { "nvim-telescope/telescope.nvim" },
         },
         config = function()
@@ -149,12 +165,12 @@ require("lazy").setup({
     },
     {
         "mistricky/codesnap.nvim", -- screenshoot code
-        build = "make"
+        build = "make",
     },
     {
         "rebelot/kanagawa.nvim", -- theme
         lazy = false,
-        priority = 1000,         -- Load before other plugins to ensure colors are set early
+        priority = 1000, -- Load before other plugins to ensure colors are set early
     },
 
     -- Automatically check for plugin updates

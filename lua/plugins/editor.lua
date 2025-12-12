@@ -2,13 +2,14 @@
 
 local keymaps = require("keymaps")
 
-require('mini.splitjoin').setup({})
+require("mini.splitjoin").setup({})
 
-
-require('mini.files').setup({
+require("mini.files").setup({
     content = {
         -- show all files, including dotfiles
-        filter = function(_) return true end
+        filter = function(_)
+            return true
+        end,
     },
     -- Module mappings created only inside explorer.
     -- Use `''` (empty string) to not create one.
@@ -135,10 +136,10 @@ require("telescope").setup({
     defaults = {
         find_command = { "rg", "--files" },
         -- sorting_strategy = "ascending", -- Options: "ascending" or "descending"
-        layout_strategy = "vertical",   -- Choose "horizontal", "vertical", "center", "flex"
+        layout_strategy = "vertical", -- Choose "horizontal", "vertical", "center", "flex"
         layout_config = {
-            width = 0.8,                -- Width as a proportion of the screen (e.g., 80% of the screen)
-            height = 0.9,               -- Height as a proportion of the screen
+            width = 0.8, -- Width as a proportion of the screen (e.g., 80% of the screen)
+            height = 0.9, -- Height as a proportion of the screen
             prompt_position = "bottom", -- Position of the prompt; can be "top" or "bottom"
 
             -- horizontal = {
@@ -179,21 +180,21 @@ require("telescope").setup({
             "--line-number",
             "--column",
             "--smart-case",
-            "--hidden",    -- Include hidden files in the search
+            "--hidden", -- Include hidden files in the search
             "--no-ignore", -- Don't respect .gitignore files
         },
     },
     pickers = {
         find_files = {
-            hidden = true,    -- This will include dotfiles
+            hidden = true, -- This will include dotfiles
             no_ignore = true, -- This will not respect .gitignore files
         },
     },
     extensions = {},
 })
 -- breaking down line into multiple lines
-require('treesj').setup({})
+require("treesj").setup({})
 
 require("telescope").load_extension("frecency") -- recent opened file
-require("telescope").load_extension("neoclip")  -- clipboard
+require("telescope").load_extension("neoclip") -- clipboard
 -- < SEARCH

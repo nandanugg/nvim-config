@@ -24,7 +24,7 @@ local function parse_envrc(file_path)
             -- More flexible pattern matching for different export formats
             local patterns = {
                 "^export%s+([%w_]+)%s*=%s*(.+)$", -- export KEY=value
-                "^([%w_]+)%s*=%s*(.+)$",          -- KEY=value (no export)
+                "^([%w_]+)%s*=%s*(.+)$", -- KEY=value (no export)
             }
 
             for _, pattern in ipairs(patterns) do
@@ -111,10 +111,12 @@ require("neotest").setup({
             end
 
             return args
-        end
+        end,
     },
     adapters = {
-        require("neotest-golang")({})
+        require("neotest-golang")({
+            -- runner = "gotestsum",
+        }),
     },
 })
 

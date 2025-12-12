@@ -1,4 +1,6 @@
 -- plugins.lua contain configurations for installed plugins
+-- local keymaps = require("lua.keymaps");
+
 require("lazy").setup({
     -- === TERMINAL
     { "akinsho/toggleterm.nvim", version = "*", config = true }, -- terminal
@@ -20,7 +22,7 @@ require("lazy").setup({
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
-    { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- language parser
+    { "nvim-treesitter/nvim-treesitter", version = "v0.9.3", run = ":TSUpdate" }, -- language parser
     {
         "roobert/tailwindcss-colorizer-cmp.nvim", -- colors on tailwind classes
         dependencies = {
@@ -66,7 +68,14 @@ require("lazy").setup({
             { "echasnovski/mini.files", version = "*" },
         },
     },
-    { "ggandor/leap.nvim" }, -- jump
+    -- { "ggandor/leap.nvim" }, -- jump
+    {
+        "folke/flash.nvim", -- jump
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        -- keymaps = keymaps.flash,
+    },
     { "kshenoy/vim-signature" }, -- makrs manager
 
     -- === LSP
@@ -90,28 +99,18 @@ require("lazy").setup({
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
-            "nvim-treesitter/nvim-treesitter",
             "andythigpen/nvim-coverage",
+            {
+                "fredrikaverpil/neotest-golang",
+                version = "v1.15.1",
+                -- version = "*",
+                -- build = function()
+                --     vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
+                -- end,
+            }, -- debug go tests
+            { "leoluz/nvim-dap-go" }, -- attach go debugger
         },
     },
-    {
-        "fredrikaverpil/neotest-golang",
-        version = "*",
-        branch = "main",
-        build = function()
-            vim.cmd(":TSUpdate go")
-        end,
-        dependencies = {
-            {
-                "tree-sitter/tree-sitter-go",
-                version = "*",
-                build = function()
-                    vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
-                end,
-            },
-        },
-    }, -- debug go tests
-    { "leoluz/nvim-dap-go" }, -- attach go debugger
 
     -- === TYPING HELPER
     {
@@ -121,7 +120,6 @@ require("lazy").setup({
     },
     {
         "Wansmer/treesj", -- collapse or make one liner of a arguments or objects
-        dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
     },
     { "mbbill/undotree" }, -- show the undo history of a file
     {

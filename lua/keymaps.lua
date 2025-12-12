@@ -206,7 +206,7 @@ end, { desc = "Write without formatting" })
 vim.keymap.set("n", "<S-k>", function()
     MiniSplitjoin.toggle()
 end, { noremap = true, silent = true })
-vim.keymap.set({ "n", "x", "o" }, "<leader><leader>", "<Plug>(leap-anywhere)")
+-- vim.keymap.set({ "n", "x", "o" }, "<leader><leader>", "<Plug>(leap-anywhere)")
 
 -- casing
 -- gsp{motion}                                        *gsp* *caser-pascal*
@@ -253,6 +253,23 @@ vim.keymap.set("n", "<C-k><C-s>", "<cmd>Navbuddy<CR>", { desc = "Find Symbols" }
 vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
 local telescopeActions = require("telescope.actions")
+
+vim.keymap.set({ "o" }, "r", function()
+    require("flash").remote()
+end)
+vim.keymap.set({ "x", "o" }, "R", function()
+    require("flash").treesitter_search()
+end)
+vim.keymap.set({ "n", "x", "o" }, "s", function()
+    require("flash").jump()
+end)
+vim.keymap.set({ "n", "x", "o" }, "S", function()
+    require("flash").treesitter()
+end)
+vim.keymap.set({ "c" }, "<c-s>", function()
+    require("flash").toggle()
+end)
+
 M.mappings = {
     minifiles = {
         close = "q",
@@ -280,10 +297,11 @@ M.mappings = {
     },
     blinkCmp = {
         -- :h blink-cmp-config-keymap
-        ["<C-u>"] = { "scroll_documentation_up" },
-        ["<C-d>"] = { "scroll_documentation_down" },
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
+        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<C-k>"] = { "select_prev", "fallback_to_mappings" },
+        ["<C-j>"] = { "select_next", "fallback_to_mappings" },
+        ["<C-S-k>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-S-j>"] = { "scroll_documentation_down", "fallback" },
     },
 
     telescope = {

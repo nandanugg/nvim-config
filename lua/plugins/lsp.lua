@@ -84,14 +84,13 @@ blinkCmp.setup({
             auto_show_delay_ms = 200,
             treesitter_highlighting = true,
         },
-        menu = {
-            auto_show = function(ctx)
-                return ctx.mode ~= "cmdline"
-            end,
+        ghost_text = { enabled = true },
+        list = {
+            preselect = true,
+            auto_insert = true,
         },
-        accept = {},
         trigger = {
-            show_on_insert_on_trigger_character = true
+            show_on_insert_on_trigger_character = true,
         },
     },
     signature = { enabled = true },
@@ -188,7 +187,14 @@ local server_configs = {
     gopls = {},
     astro = {},
     vtsls = {
-        filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
+        filetypes = {
+            "javascript",
+            "javascriptreact",
+            "javascript.jsx",
+            "typescript",
+            "typescriptreact",
+            "typescript.tsx",
+        },
     },
     terraformls = {},
     jsonls = {
@@ -198,60 +204,59 @@ local server_configs = {
                 schemas = {
                     {
                         fileMatch = { "package.json" },
-                        url = "https://json.schemastore.org/package.json"
+                        url = "https://json.schemastore.org/package.json",
                     },
                     {
                         fileMatch = { "tsconfig*.json" },
-                        url = "https://json.schemastore.org/tsconfig.json"
+                        url = "https://json.schemastore.org/tsconfig.json",
                     },
                     {
                         fileMatch = {
                             ".prettierrc",
                             ".prettierrc.json",
-                            "prettier.config.json"
+                            "prettier.config.json",
                         },
-                        url = "https://json.schemastore.org/prettierrc.json"
+                        url = "https://json.schemastore.org/prettierrc.json",
                     },
                     {
                         fileMatch = { ".eslintrc", ".eslintrc.json" },
-                        url = "https://json.schemastore.org/eslintrc.json"
+                        url = "https://json.schemastore.org/eslintrc.json",
                     },
                     {
                         fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
-                        url = "https://json.schemastore.org/babelrc.json"
+                        url = "https://json.schemastore.org/babelrc.json",
                     },
                     {
                         fileMatch = { "lerna.json" },
-                        url = "https://json.schemastore.org/lerna.json"
+                        url = "https://json.schemastore.org/lerna.json",
                     },
                     {
                         fileMatch = { "now.json", "vercel.json" },
-                        url = "https://json.schemastore.org/now.json"
+                        url = "https://json.schemastore.org/now.json",
                     },
                     {
                         fileMatch = {
                             "biome.json",
                         },
-                        url = "https://biomejs.dev/schemas/2.2.2/schema.json"
+                        url = "https://biomejs.dev/schemas/2.2.2/schema.json",
                     },
                     {
                         fileMatch = {
                             ".stylelintrc",
                             ".stylelintrc.json",
-                            "stylelint.config.json"
+                            "stylelint.config.json",
                         },
-                        url = "http://json.schemastore.org/stylelintrc.json"
-                    }
-                }
-            }
-        }
+                        url = "http://json.schemastore.org/stylelintrc.json",
+                    },
+                },
+            },
+        },
     },
     yamlls = {
         settings = {
             yaml = {
                 schemas = {
-                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
-                    "/docker-compose*.yml",
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] = "/docker-compose*.yml",
                 },
             },
         },
@@ -301,13 +306,13 @@ local server_configs = {
                         "org.junit.jupiter.api.Assertions.*",
                         "java.util.Objects.requireNonNull",
                         "java.util.Objects.requireNonNullElse",
-                        "org.mockito.Mockito.*"
+                        "org.mockito.Mockito.*",
                     },
                     importOrder = {
                         "java",
                         "javax",
                         "com",
-                        "org"
+                        "org",
                     },
                 },
                 sources = {
@@ -318,12 +323,12 @@ local server_configs = {
                 },
                 codeGeneration = {
                     toString = {
-                        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
+                        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
                     },
                     useBlocks = true,
                 },
-            }
-        }
+            },
+        },
     },
 }
 
@@ -334,7 +339,7 @@ for server, config in pairs(server_configs) do
 end
 --  LANGUAGE SERVER PROTOCOL (LSP)
 require("mason-conform").setup({
-    ignore_install = { 'prettier' } -- List of formatters to ignore during install
+    ignore_install = { "prettier" }, -- List of formatters to ignore during install
 })
 -- Format on save
 require("conform").setup({
@@ -358,7 +363,7 @@ require("conform").setup({
         },
         biome = {
             command = vim.fn.stdpath("data") .. "/mason/bin/biome",
-        }
+        },
     },
     notify_on_error = true,
     notify_no_formatters = true,

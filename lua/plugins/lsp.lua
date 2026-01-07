@@ -2,60 +2,60 @@
 
 local keymaps = require("keymaps")
 -- > LANGUAGE PARSER
-require("nvim-treesitter.configs").setup({
-    ignore_install = {},
-    modules = {},
-    ensure_installed = {
-        -- web dev
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "tsx",
-        "astro",
-        "vue",
-        "svelte",
-        "graphql",
-        -- backend dev
-        "go",
-        "gomod",
-        "gosum",
-        "terraform",
-        "hcl",
-        "python",
-        "java",
-        "php",
-        "phpdoc",
-        "nginx",
-        "nix",
-        "dockerfile",
-        "sql",
-        "bash",
-        -- config dev
-        "lua",
-        "json",
-        "jsonc",
-        "yaml",
-        "csv",
-        "markdown",
-        "markdown_inline",
-        "git_config",
-        "regex",
-        "vim",
-        "tmux",
-        "ssh_config",
-    },
-    sync_install = false,
-    auto_install = false,
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-    },
-    incremental_selection = {
-        enable = true,
-        keymaps = keymaps.mappings.treesitter.incremental_selection_keymaps,
-    },
-})
+-- require("nvim-treesitter.configs").setup({
+--     ignore_install = {},
+--     modules = {},
+--     ensure_installed = {
+--         -- web dev
+--         "html",
+--         "css",
+--         "javascript",
+--         "typescript",
+--         "tsx",
+--         "astro",
+--         "vue",
+--         "svelte",
+--         "graphql",
+--         -- backend dev
+--         "go",
+--         "gomod",
+--         "gosum",
+--         "terraform",
+--         "hcl",
+--         "python",
+--         "java",
+--         "php",
+--         "phpdoc",
+--         "nginx",
+--         "nix",
+--         "dockerfile",
+--         "sql",
+--         "bash",
+--         -- config dev
+--         "lua",
+--         "json",
+--         "jsonc",
+--         "yaml",
+--         "csv",
+--         "markdown",
+--         "markdown_inline",
+--         "git_config",
+--         "regex",
+--         "vim",
+--         "tmux",
+--         "ssh_config",
+--     },
+--     sync_install = false,
+--     auto_install = false,
+--     highlight = {
+--         enable = true,
+--         additional_vim_regex_highlighting = false,
+--     },
+--     incremental_selection = {
+--         enable = true,
+--         keymaps = keymaps.mappings.treesitter.incremental_selection_keymaps,
+--     },
+-- })
 -- < LANGUAGE PARSER
 
 -- > MASON
@@ -126,7 +126,7 @@ mason_lspconfig.setup({
         "intelephense",
         "gopls",
         "vtsls",
-        "terraformls",
+        -- "terraformls",
         "yamlls",
         "jsonls",
         "docker_compose_language_service",
@@ -256,7 +256,8 @@ local server_configs = {
         settings = {
             yaml = {
                 schemas = {
-                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] = "/docker-compose*.yml",
+                    ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json "] =
+                    "/docker-compose*.yml",
                 },
             },
         },

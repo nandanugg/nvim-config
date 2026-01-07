@@ -206,7 +206,6 @@ end, { desc = "Write without formatting" })
 vim.keymap.set("n", "<S-k>", function()
     MiniSplitjoin.toggle()
 end, { noremap = true, silent = true })
--- vim.keymap.set({ "n", "x", "o" }, "<leader><leader>", "<Plug>(leap-anywhere)")
 
 -- casing
 -- gsp{motion}                                        *gsp* *caser-pascal*
@@ -289,10 +288,10 @@ M.mappings = {
     treesitter = {
         incremental_selection_keymaps = {
             -- h: nvim-treesitter-incremental-selection-mod
-            init_selection = "gnn", -- Start selection
-            node_incremental = "gna", -- Increment to the next node
+            init_selection = "gnn",    -- Start selection
+            node_incremental = "gna",  -- Increment to the next node
             scope_incremental = "gng", -- Increment to the next scop
-            node_decremental = "gnx", -- Decrement the selection
+            node_decremental = "gnx",  -- Decrement the selection
         },
     },
     blinkCmp = {
@@ -347,7 +346,7 @@ vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, sile
 
 -- marks
 -- mx           Toggle mark 'x' and display it in the leftmost column
--- dmx          Remove mark 'x' where x is a-zA-Z
+-- dmx          Remove mark 'x' where x is a-zC-Z
 --
 -- m,           Place the next available mark
 -- m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
@@ -371,6 +370,16 @@ vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, sile
 -- [=           Jump to prev line having a marker of any type
 -- m?           Open location list and display markers from current buffer
 -- m<BS>        Remove all markers
+
+
+-- flash.nvim
+-- s                    jump
+-- ctrl+o (after jump)  go to original cursor location
+-- ctrl+1 (after jump)  go to destination cursor location
+-- S                    block surround
+-- ; (after block)      expand surround
+-- , (after block)      reduce surround
+-- surround can be chained using d (delete) / y (yank)
 
 local opts = { noremap = true, silent = true }
 -- diagnostics

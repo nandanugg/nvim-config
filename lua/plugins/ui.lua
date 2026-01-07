@@ -2,17 +2,17 @@
 
 -- theme
 require("kanagawa").setup({
-    compile = true, -- enable compiling the colorscheme
+    compile = true,   -- enable compiling the colorscheme
     undercurl = true, -- enable undercurls
     commentStyle = { italic = true },
     functionStyle = {},
     keywordStyle = { italic = true },
     statementStyle = { bold = true },
     typeStyle = {},
-    transparent = false, -- do not set background color
-    dimInactive = false, -- dim inactive window `:h hl-NormalNC`
+    transparent = false,   -- do not set background color
+    dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
     terminalColors = true, -- define vim.g.terminal_color_{0,17}
-    colors = { -- add/modify theme and palette colors
+    colors = {             -- add/modify theme and palette colors
         palette = {},
         theme = {
             wave = {},
@@ -30,7 +30,7 @@ require("kanagawa").setup({
     overrides = function(colors) -- add/modify highlights
         return {}
     end,
-    background = { -- map the value of 'background' option to a theme
+    background = {     -- map the value of 'background' option to a theme
         dark = "wave", -- wave / lotus / dragon
     },
 })
@@ -38,25 +38,10 @@ require("kanagawa").setup({
 vim.cmd("colorscheme kanagawa")
 require("colorizer").setup({})
 
--- require("vague").setup({ })
--- vim.cmd("colorscheme vague")
-
--- vim.cmd("colorscheme moonfly")
--- vim.cmd("colorscheme midnight")
-
 -- TailwindCSS colorizer setup
 local tailwindcss = require("tailwindcss-colorizer-cmp")
 tailwindcss.setup({
     color_square_width = 2,
-})
-
-require("codesnap").setup({
-    code_font_family = "Agave Nerd Font",
-    has_line_number = true,
-    bg_color = "#535c68",
-    bg_x_padding = 122,
-    bg_y_padding = 82,
-    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME") .. "/Pictures"),
 })
 
 require("ibl").setup({
@@ -100,15 +85,15 @@ require("neoscroll").setup({
         "zz",
         "zb",
     },
-    hide_cursor = false, -- Hide cursor while scrolling
-    stop_eof = true, -- Stop at <EOF> when scrolling downwards
-    respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+    hide_cursor = false,         -- Hide cursor while scrolling
+    stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+    respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
     cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-    easing = "quadratic", -- Default easing function
-    pre_hook = nil, -- Function to run before the scrolling animation starts
-    post_hook = nil, -- Function to run after the scrolling animation ends
-    performance_mode = true, -- Disable "Performance Mode" on all buffers.
-    ignored_events = { -- Events ignored while scrolling
+    easing = "quadratic",        -- Default easing function
+    pre_hook = nil,              -- Function to run before the scrolling animation starts
+    post_hook = nil,             -- Function to run after the scrolling animation ends
+    performance_mode = true,     -- Disable "Performance Mode" on all buffers.
+    ignored_events = {           -- Events ignored while scrolling
         "WinScrolled",
         "CursorMoved",
     },

@@ -299,8 +299,8 @@ M.mappings = {
         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<C-k>"] = { "select_prev", "fallback_to_mappings" },
         ["<C-j>"] = { "select_next", "fallback_to_mappings" },
-        ["<C-S-k>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-S-j>"] = { "scroll_documentation_down", "fallback" },
+        ["<C-A-k>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-A-j>"] = { "scroll_documentation_down", "fallback" },
     },
 
     telescope = {
@@ -331,18 +331,18 @@ M.mappings = {
 -- buffers
 vim.keymap.set("n", "<C-o>", ":resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-i>", ":resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-o>", ":vertical resize +5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-i>", ":vertical resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-A-o>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-A-i>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-t>", ":enew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-z>", ":MaximizerToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-w>", ":Bdelete<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-w><C-S-w>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-A-w><C-A-w>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-v>", ":vsplit<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-s>", ":split<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-S-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-A-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-A-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true })
 
 -- marks
 -- mx           Toggle mark 'x' and display it in the leftmost column

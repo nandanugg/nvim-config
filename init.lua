@@ -12,6 +12,11 @@ vim.g.clipboard = {
     cache_enabled = 0,
 }
 
+vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.tabstop = 2      -- Number of spaces a tab counts for
+vim.opt.shiftwidth = 2   -- Number of spaces for indentation
+vim.opt.softtabstop = 2  -- Number of spaces for <Tab> key
+
 -- for nvimtree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

@@ -126,7 +126,7 @@ mason_lspconfig.setup({
         "intelephense",
         "gopls",
         "vtsls",
-        -- "terraformls",
+        "terraformls",
         "yamlls",
         "jsonls",
         "docker_compose_language_service",

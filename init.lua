@@ -11,6 +11,9 @@ vim.g.clipboard = {
     },
     cache_enabled = 0,
 }
+-- if clip.exe has error, run:
+-- sudo sh -c 'echo :WSLInterop:M::MZ::/init:PF > /usr/lib/binfmt.d/WSLInterop.conf'
+-- sudo systemctl restart systemd-binfmt
 
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.tabstop = 3      -- Number of spaces a tab counts for

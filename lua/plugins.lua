@@ -15,7 +15,15 @@ require("lazy").setup({
 
     -- === TOOLS
     { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
-
+    {                                            -- renders markdown
+        "MeanderingProgrammer/render-markdown.nvim",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons',
+            'nvim-mini/mini.icons'
+        },
+        opts = {}
+    },
     -- === UI DECORATION
     {
         "akinsho/bufferline.nvim", -- tabs for buffers

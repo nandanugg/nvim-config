@@ -427,15 +427,11 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-vim.keymap.set("n", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("t", "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 
-vim.keymap.set("n", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("n", "<C-\\><C-2>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("n", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("t", "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("t", "<C-\\><C-2>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set("t", "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-q>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-w>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-e>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 
 -- mason
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })

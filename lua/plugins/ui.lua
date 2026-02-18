@@ -19,7 +19,6 @@ require("kanagawa").setup({
             lotus = {},
             dragon = {},
             all = {
-
                 ui = {
                     bg = "#000000",
                     bg_gutter = "#000000",
@@ -35,7 +34,7 @@ require("kanagawa").setup({
     },
 })
 -- setup must be called before loading
-vim.cmd("colorscheme kanagawa")
+vim.cmd("colorscheme kanagawa-wave")
 require("colorizer").setup({})
 
 -- TailwindCSS colorizer setup

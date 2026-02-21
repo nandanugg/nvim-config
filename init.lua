@@ -2,8 +2,10 @@
 vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
-        ['+'] = 'clip.exe',
-        ['*'] = 'clip.exe',
+        ['+'] =
+        'powershell.exe -c [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $input | Set-Clipboard',
+        ['*'] =
+        'powershell.exe -c [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $input | Set-Clipboard',
     },
     paste = {
         ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',

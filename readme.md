@@ -21,5 +21,9 @@ make sure that all binaries are exists before installing
 ### Installing
 
 1. Install [ NeoVim ](https://github.com/neovim/neovim/blob/master/INSTALL.md)
-2. Install [lazy.nvim](https://www.lazyvim.org/installation)
-   Done, after this all of the plugin will be installed, it will take some time
+2. Clone this by:
+```bash
+git clone git@github.com:nandanugg/nvim-config.git ~/.config/nvim
+```
+3. Done, run `nvim` and all the config will get installed
+

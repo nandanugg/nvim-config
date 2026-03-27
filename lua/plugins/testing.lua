@@ -116,6 +116,12 @@ require("neotest").setup({
     adapters = {
         require("neotest-golang")({
             -- runner = "gotestsum",
+            testify_enabled = true,
+            warn_test_name_dupes = false,
+            go_test_args = { "-v", "-race", "-count=1" },
+            env = {
+                GOARCH="amd64"
+            }
         }),
     },
 })

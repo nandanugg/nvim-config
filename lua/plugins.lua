@@ -101,8 +101,7 @@ require("lazy").setup({
             "andythigpen/nvim-coverage",
             {
                 "fredrikaverpil/neotest-golang",
-                version = "v1.15.1",
-                -- version = "*",
+                version = "*",
                 -- build = function()
                 --     vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
                 -- end,

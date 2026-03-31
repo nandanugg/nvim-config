@@ -156,9 +156,9 @@ require("lazy").setup({
     },
 
     -- === THEME
-    {
-        "norcalli/nvim-colorizer.lua",
-    },
+    -- {
+    --     "norcalli/nvim-colorizer.lua",
+    -- },
     {
         "rebelot/kanagawa.nvim", -- theme
         lazy = false,

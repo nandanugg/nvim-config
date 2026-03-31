@@ -32,10 +32,7 @@ blinkCmp.setup({
             treesitter_highlighting = true,
         },
         ghost_text = { enabled = true },
-        list = {
-            preselect = true,
-            auto_insert = true,
-        },
+        list = { },
         trigger = {
             show_on_insert_on_trigger_character = true,
         },

@@ -35,7 +35,7 @@ require("kanagawa").setup({
 })
 -- setup must be called before loading
 vim.cmd("colorscheme kanagawa-wave")
-require("colorizer").setup({})
+-- require("colorizer").setup({})
 
 -- TailwindCSS colorizer setup
 local tailwindcss = require("tailwindcss-colorizer-cmp")

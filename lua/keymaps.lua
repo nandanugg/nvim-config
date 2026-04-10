@@ -404,6 +404,7 @@ vim.keymap.set("n", "gr", vim.lsp.buf.rename, opts)
 
 -- git
 vim.keymap.set("n", "<C-g><C-g>", ":Git<CR>", opts)
+vim.keymap.set("n", "<C-g><C-d><C-q>", ":only<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-d>", ":Gvdiffsplit!<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-h>", ":diffget //2<CR>", opts)
 vim.keymap.set("n", "<C-g><C-d><C-l>", ":diffget //3<CR>", opts)

@@ -1,6 +1,6 @@
 -- session.lua contain configurations for code sessions
 require("auto-session").setup({
-    auto_restore_last_session = true,
+    -- auto_restore_last_session = true,
     cwd_change_handling = true
 })
 -- local persistence = require("persistence")

@@ -271,7 +271,7 @@ end)
 
 M.mappings = {
     minifiles = {
-        close = "q",
+        close = "<C-c>",
         go_in = "",
         go_in_plus = "l",
         go_out = "h",
@@ -430,9 +430,9 @@ end
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 vim.keymap.set({ "n", "t" }, "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })
 
-vim.keymap.set({ "n", "t" }, "<C-\\><C-q>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set({ "n", "t" }, "<C-\\><C-w>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
-vim.keymap.set({ "n", "t" }, "<C-\\><C-e>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-1>", [[<Cmd>1ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-2>", [[<Cmd>2ToggleTerm<CR>]], { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<C-\\><C-3>", [[<Cmd>3ToggleTerm<CR>]], { noremap = true, silent = true })
 
 -- mason
 vim.keymap.set("n", "<Leader>cm", ":Mason<CR>", { noremap = true, silent = true })

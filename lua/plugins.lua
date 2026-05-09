@@ -14,6 +14,7 @@ require("lazy").setup({
     },
 
     -- === TOOLS
+    { "mistricky/codesnap.nvim",    tag = "v2.0.0" }, -- code screenshot
     { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
     {                                            -- renders markdown
         "MeanderingProgrammer/render-markdown.nvim",
@@ -128,13 +129,19 @@ require("lazy").setup({
     {
         "saghen/blink.cmp", -- autocomplete
         -- optional: provides snippets for the snippet source
-        dependencies = "rafamadriz/friendly-snippets",
+        dependencies = {
+            'saghen/blink.lib',
+            -- optional: provides snippets for the snippet source
+            'rafamadriz/friendly-snippets',
+        },
+
 
         -- use a release tag to download pre-built binaries
         version = "*",
         -- build = 'cargo build --release',
         opts_extend = { "sources.default" },
     },
+
     { "stevearc/conform.nvim" },         -- formatter
     {
         "editorconfig/editorconfig-vim", -- apply .editorconfig

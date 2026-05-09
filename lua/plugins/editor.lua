@@ -231,6 +231,7 @@ require('nvim-treesitter').install {
     'scala',
     'sql',
     'ssh_config',
+    'starlark',
     'svelte',
     'swift',
     'terraform',

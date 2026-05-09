@@ -1,5 +1,4 @@
 -- ui.lua contain configurations for display related modification
-
 -- theme
 require("kanagawa").setup({
     compile = true,   -- enable compiling the colorscheme

@@ -41,6 +41,7 @@ blinkCmp.setup({
     fuzzy = {
         frecency = { enabled = true },
         use_proximity = true,
+        implementation = "lua",
     },
     appearance = {
         -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'

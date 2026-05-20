@@ -271,7 +271,7 @@ end)
 
 M.mappings = {
     minifiles = {
-        close = "<C-c>",
+        close = "q",
         go_in = "",
         go_in_plus = "l",
         go_out = "h",

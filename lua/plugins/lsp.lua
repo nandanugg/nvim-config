@@ -86,6 +86,11 @@ local server_configs = {
     biome = {},
     eslint = {},
     tailwindcss = {},
+    tilt = {
+        cmd = { "tilt", "lsp", "start" },
+        filetypes = { "tiltfile" },
+        root_markers = { ".git" },
+    },
     lua_ls = {
         filetypes = { "lua" },
         settings = {

@@ -1,100 +1,116 @@
 -- plugins.lua contain configurations for installed plugins
--- local keymaps = require("lua.keymaps");
 
 require("lazy").setup({
-    -- === TERMINAL
-    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
-
-    -- === GIT
+    -- === UI
     {
-        "tpope/vim-fugitive", -- git toolkit
+        "rebelot/kanagawa.nvim", -- theme
+        lazy = false,
+        priority = 1000,
     },
-    {
-        "lewis6991/gitsigns.nvim", -- git changes
-    },
-
-    -- === TOOLS
-    { "mistricky/codesnap.nvim",    tag = "v2.0.0" }, -- code screenshot
-    { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
-    {                                            -- renders markdown
-        "MeanderingProgrammer/render-markdown.nvim",
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter',
-            'nvim-tree/nvim-web-devicons',
-            'nvim-mini/mini.icons'
-        },
-        opts = {}
-    },
-    -- === UI DECORATION
     {
         "akinsho/bufferline.nvim", -- tabs for buffers
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
-    { "nvim-treesitter/nvim-treesitter" },        -- language parser
+    { "nvim-lualine/lualine.nvim" },                                                  -- statusbar
+    { "SmiteshP/nvim-navic",            dependencies = { "neovim/nvim-lspconfig" } }, -- winbar
+    {
+        "SmiteshP/nvim-navbuddy",                                                     -- symbol navigator
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "SmiteshP/nvim-navic",
+            "MunifTanjim/nui.nvim",
+        },
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim", -- indent guides
+        main = "ibl",
+    },
+    { "karb94/neoscroll.nvim" },     -- smooth scroll
+    { "sphamba/smear-cursor.nvim" }, -- cursor animation
+    { "szw/vim-maximizer" },         -- window maximizer
+    { "famiu/bufdelete.nvim" },      -- safely remove buffer without messing the layout
+    { "echasnovski/mini.icons",      version = "*" }, -- icons for files
+
+    -- === TOOLS
+    { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
+    { "meznaric/key-analyzer.nvim", opts = {} },                    -- key analyzer (find available keys)
+    { "mistricky/codesnap.nvim",    tag = "v2.0.0" },               -- code screenshot
+    { "mbbill/undotree" },                                           -- show the undo history of a file
+    { "rmagatti/auto-session" },                                     -- auto session
+    {
+        "AckslD/nvim-neoclip.lua", -- search clipboard
+        dependencies = {
+            { "kkharji/sqlite.lua",           module = "sqlite" },
+            { "nvim-telescope/telescope.nvim" },
+        },
+        config = function()
+            require("neoclip").setup()
+        end,
+    },
+    { "kshenoy/vim-signature" },                     -- marks manager
+    { "editorconfig/editorconfig-vim" },             -- apply .editorconfig
+    { "tpope/vim-fugitive" },                        -- git toolkit
+    { "lewis6991/gitsigns.nvim" },                   -- git changes
+    {
+        "nvim-telescope/telescope.nvim", -- main search plugin
+        tag = "0.1.4",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
+        "ibhagwan/fzf-lua", -- fuzzy finder
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
+    { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
+    { "echasnovski/mini.files",                 version = "*" },                          -- file explorer
+    {
+        "folke/flash.nvim", -- jump
+        event = "VeryLazy",
+        opts = {},
+    },
+
+    -- === EDITOR
+    { "nvim-treesitter/nvim-treesitter" },           -- language parser
+    { "williamboman/mason.nvim" },                   -- programming language plugin manager
+    { "williamboman/mason-lspconfig.nvim" },         -- lsp integration with plugin manager
+    { "zapling/mason-conform.nvim" },                -- lsp integration with formatter
+    { "neovim/nvim-lspconfig" },                     -- lsp integration to nvim
+    { "stevearc/conform.nvim" },                     -- formatter
+    {
+        "saghen/blink.cmp", -- autocomplete
+        dependencies = {
+            'saghen/blink.lib',
+            'rafamadriz/friendly-snippets',
+        },
+        version = "*",
+        opts_extend = { "sources.default" },
+    },
     {
         "roobert/tailwindcss-colorizer-cmp.nvim", -- colors on tailwind classes
         dependencies = {
             "NvChad/nvim-colorizer.lua",
         },
     },
-    { "nvim-lualine/lualine.nvim" },                                                  -- Decorate winbar & statusbar
-    { "SmiteshP/nvim-navic",            dependencies = { "neovim/nvim-lspconfig" } }, --  winbar
     {
-        "lukas-reineke/indent-blankline.nvim",                                        -- indent guides
-        main = "ibl",
-    },
-    { "famiu/bufdelete.nvim" },      -- safely remove buffer without messing the layout
-    { "karb94/neoscroll.nvim" },     -- smooth scroll
-    { "szw/vim-maximizer" },         -- window maximizer
-    { "sphamba/smear-cursor.nvim" }, -- cursor animation
-
-    -- === NAVIGATION
-    {
-        "nvim-telescope/telescope.nvim", -- secondary search
-        tag = "0.1.4",
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
-    {
-        "ibhagwan/fzf-lua", -- main search plugin
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
-    { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
-    {
-        "SmiteshP/nvim-navbuddy",
-        dependencies = {
-            "neovim/nvim-lspconfig",
-            "SmiteshP/nvim-navic",
-            "MunifTanjim/nui.nvim",
-        },
-    },                                                           --  symbol navigator
-    { "echasnovski/mini.icons",                 version = "*" }, -- Icons for files
-    { "echasnovski/mini.splitjoin",             version = "*" }, -- Flatten code
-    { "echasnovski/mini.files",                 version = "*" }, -- File explorer
-    {
-        "folke/flash.nvim",                                      -- jump
+        "kylechui/nvim-surround", -- surround text
+        version = "*",
         event = "VeryLazy",
-        opts = {},
     },
-    { "kshenoy/vim-signature" }, -- makrs manager
-
-    -- === LSP
-    { "williamboman/mason.nvim" },           -- programming language plugin manager
-    { "williamboman/mason-lspconfig.nvim" }, -- lsp intergration with plugin manager
-    { "zapling/mason-conform.nvim" },        -- lsp intergration with formatter
-    { "neovim/nvim-lspconfig" },             -- lsp intergration to nvim
+    { "arthurxavierx/vim-caser" },  -- transform text case
+    { "Wansmer/treesj" },           -- collapse or expand arguments or objects
+    { "echasnovski/mini.splitjoin", version = "*" }, -- flatten code
 
     -- === DEBUGGER
     { "mfussenegger/nvim-dap" }, -- debugging
     {
-        "rcarriga/nvim-dap-ui",  -- debugging ui
+        "rcarriga/nvim-dap-ui", -- debugging ui
         dependencies = {
             "mfussenegger/nvim-dap",
         },
     },
     { "nvim-telescope/telescope-dap.nvim" }, -- debug integration with search
     {
-        "nvim-neotest/neotest",              -- debug tests
+        "nvim-neotest/neotest", -- test runner
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
@@ -106,70 +122,9 @@ require("lazy").setup({
                 -- build = function()
                 --     vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
                 -- end,
-            },                        -- debug go tests
+            },                        -- go test runner
             { "leoluz/nvim-dap-go" }, -- attach go debugger
         },
-    },
-
-    -- === TYPING HELPER
-    {
-        "nandanugg/triforce.nvim",
-        branch = "patch-1",
-        dependencies = { "nvzone/volt" }, -- gamifiying code
-    },
-    {
-        "Wansmer/treesj",         -- collapse or make one liner of a arguments or objects
-    },
-    { "mbbill/undotree" },        -- show the undo history of a file
-    {
-        "kylechui/nvim-surround", -- surround text
-        version = "*",
-        event = "VeryLazy",
-    },
-    {
-        "saghen/blink.cmp", -- autocomplete
-        -- optional: provides snippets for the snippet source
-        dependencies = {
-            'saghen/blink.lib',
-            -- optional: provides snippets for the snippet source
-            'rafamadriz/friendly-snippets',
-        },
-
-
-        -- use a release tag to download pre-built binaries
-        version = "*",
-        -- build = 'cargo build --release',
-        opts_extend = { "sources.default" },
-    },
-
-    { "stevearc/conform.nvim" },         -- formatter
-    {
-        "editorconfig/editorconfig-vim", -- apply .editorconfig
-    },
-    {
-        "AckslD/nvim-neoclip.lua", -- search clipboard
-        dependencies = {
-            { "kkharji/sqlite.lua",           module = "sqlite" },
-            { "nvim-telescope/telescope.nvim" },
-        },
-        config = function()
-            require("neoclip").setup()
-        end,
-    },
-    { "arthurxavierx/vim-caser" }, -- transform text case
-    {
-        "rmagatti/auto-session",
-        -- event = "BufReadPre", -- this will only start session saving when an actual file was opened
-    },
-
-    -- === THEME
-    -- {
-    --     "norcalli/nvim-colorizer.lua",
-    -- },
-    {
-        "rebelot/kanagawa.nvim", -- theme
-        lazy = false,
-        priority = 1000,         -- Load before other plugins to ensure colors are set early
     },
 
     -- Automatically check for plugin updates

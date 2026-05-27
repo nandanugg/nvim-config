@@ -1,5 +1,5 @@
 -- ui.lua contain configurations for display related modification
--- theme
+
 require("kanagawa").setup({
     compile = true,   -- enable compiling the colorscheme
     undercurl = true, -- enable undercurls
@@ -34,13 +34,6 @@ require("kanagawa").setup({
 })
 -- setup must be called before loading
 vim.cmd("colorscheme kanagawa-wave")
--- require("colorizer").setup({})
-
--- TailwindCSS colorizer setup
-local tailwindcss = require("tailwindcss-colorizer-cmp")
-tailwindcss.setup({
-    color_square_width = 2,
-})
 
 require("ibl").setup({
     scope = {
@@ -65,15 +58,6 @@ require("ibl").setup({
 
 require("neoscroll").setup({
     mappings = {
-        -- <C-b>: Scroll one screen backward.
-        -- <C-f>: Scroll one screen forward.
-        -- <C-d>: Scroll half a screen downward.
-        -- <C-u>: Scroll half a screen upward.
-        -- <C-e>: Scroll the screen downward by one line.
-        -- <C-y>: Scroll the screen upward by one line.
-        -- zz: Center the current line in the middle of the screen.
-        -- zt: Move the current line to the top of the screen.
-        -- zb: Move the current line to the bottom of the screen.
         "<C-u>",
         "<C-d>",
         "<C-b>",
@@ -97,24 +81,17 @@ require("neoscroll").setup({
         "CursorMoved",
     },
 })
--- > SYMBOLS
 
 local navic = require("nvim-navic")
 local navbuddy = require("nvim-navbuddy")
-require("triforce").setup({
-    keymap = {
-        show_profile = "<leader>tp", -- Open profile with <leader>tp
-    },
-})
-local triforce = require("triforce.lualine").components()
 require("lualine").setup({
     options = {
         globalstatus = true,
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
     },
     sections = {
-        lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
+        lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
         lualine_b = {
             "branch",
             function()
@@ -126,25 +103,32 @@ require("lualine").setup({
         },
         lualine_c = { "aerial" },
         lualine_x = {
-            triforce.session_time,
-            triforce.streak,
-            triforce.achievements,
-            triforce.level,
             "lsp_status",
             "encoding",
             "filetype",
         },
         lualine_y = {},
-        lualine_z = { { "selectioncount", separator = { right = "" }, left_padding = 2 } },
+        lualine_z = { { "selectioncount", separator = { right = "" }, left_padding = 2 } },
     },
 })
--- < SYMBOLS
--- < UI EHANCEMENT
+
+require("bufferline").setup({
+    options = {
+        diagnostics = "nvim_lsp", -- Show LSP diagnostics in the bufferline
+        themable = true,
+        separator_style = "thin",
+        tab_size = 11,
+        persist_buffer_sort = false,
+        show_buffer_close_icons = false,
+    },
+    highlights = {},
+})
+
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = false
 vim.opt.relativenumber = true
-vim.opt.autoindent = true -- Copy indent from the current line when starting a new one
+vim.opt.autoindent = true
 vim.opt.number = true
 vim.opt.autoread = true
 vim.cmd([[

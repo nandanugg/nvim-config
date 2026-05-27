@@ -1,40 +1,3 @@
--- for WSL
--- vim.g.clipboard = {
---     name = 'WslClipboard',
---     copy = {
---         ['+'] =
---         'powershell.exe -c [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $input | Set-Clipboard',
---         ['*'] =
---         'powershell.exe -c [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $input | Set-Clipboard',
---     },
---     paste = {
---         ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
---         ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
---     },
---     cache_enabled = 0,
--- }
--- if clip.exe has error, run:
--- sudo sh -c 'echo :WSLInterop:M::MZ::/init:PF > /usr/lib/binfmt.d/WSLInterop.conf'
--- sudo systemctl restart systemd-binfmt
---
-vim.o.cmdheight = 0
-
-vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.tabstop = 3      -- Number of spaces a tab counts for
-vim.opt.shiftwidth = 3   -- Number of spaces for indentation
-vim.opt.softtabstop = 3  -- Number of spaces for <Tab> key
-
--- for nvimtree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
--- Set search to be case insensitive
-vim.opt.ignorecase = true
-
--- Optional: Enable smartcase for smarter searching
--- (Searches are case insensitive unless the pattern contains uppercase)
-vim.opt.smartcase = true
-
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -49,14 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lua")
 
--- Load keymaps and plugins
 require("plugins")
+require("options")
 require("keymaps")
 require("plugins.ui")
-require("plugins.lsp")
+require("plugins.tools")
 require("plugins.editor")
-require("plugins.terminal")
-require("plugins.git")
-require("plugins.debug")
-require("plugins.testing")
-require("plugins.session")
+require("plugins.debugger")

@@ -1,5 +1,113 @@
--- testing.lua contain configurations for code testing framework configuration
--- Function to parse .envrc file and extract environment variables
+-- debugger.lua contain configurations for debugging and testing
+
+-- > DAP
+local dap = require("dap")
+dap.set_log_level("TRACE")
+local function clear_dap_log()
+    local log_path = vim.fn.stdpath("cache") .. "/dap.log"
+    local f = io.open(log_path, "w")
+    if f then
+        f:write("")
+        f:close()
+        print("DAP log cleared")
+    end
+end
+
+local dapui = require("dapui")
+dapui.setup({
+    layouts = {
+        {
+            elements = {
+                "scopes",
+            },
+            size = 10,
+            position = "bottom",
+        },
+    },
+})
+require("telescope").load_extension("dap")
+dap.listeners.before.attach.dapui_config = function()
+    dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+    clear_dap_log()
+    dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+    dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+    dapui.close()
+end
+
+require('dap-go').setup {
+    dap_configurations = {
+        {
+            type = "go",
+            name = "Attach remote",
+            mode = "remote",
+            request = "attach",
+        },
+    },
+    delve = {
+        path = "dlv",
+        initialize_timeout_sec = 20,
+        port = "${port}",
+        args = {},
+        build_flags = {},
+        detached = vim.fn.has("win32") == 0,
+        cwd = nil,
+    },
+    tests = {
+        verbose = false,
+    },
+}
+
+dap.adapters.delve = function(callback, config)
+    if config.mode == 'remote' and config.request == 'attach' then
+        callback({
+            type = 'server',
+            host = config.host or '127.0.0.1',
+            port = config.port or '38697'
+        })
+    else
+        callback({
+            type = 'server',
+            port = '${port}',
+            executable = {
+                command = 'dlv',
+                args = { 'dap', '-l', '127.0.0.1:${port}', '--log', '--log-output=dap' },
+                detached = vim.fn.has("win32") == 0,
+            }
+        })
+    end
+end
+
+dap.configurations.go = {
+    {
+        type = "delve",
+        name = "Debug",
+        request = "launch",
+        program = "${file}"
+    },
+    {
+        type = "delve",
+        name = "Debug test",
+        request = "launch",
+        mode = "test",
+        program = "${file}"
+    },
+    {
+        type = "delve",
+        name = "Debug test (go.mod)",
+        request = "launch",
+        mode = "test",
+        program = "./${relativeFileDirname}"
+    }
+}
+-- < DAP
+
+-- > NEOTEST
 local function parse_envrc(file_path)
     local env_vars = {}
 
@@ -16,28 +124,21 @@ local function parse_envrc(file_path)
     end
 
     for line in content:gmatch("[^\r\n]+") do
-        -- Trim whitespace
         line = line:match("^%s*(.-)%s*$")
 
-        -- Skip empty lines and comments
         if line ~= "" and not line:match("^#") then
-            -- More flexible pattern matching for different export formats
             local patterns = {
-                "^export%s+([%w_]+)%s*=%s*(.+)$", -- export KEY=value
-                "^([%w_]+)%s*=%s*(.+)$", -- KEY=value (no export)
+                "^export%s+([%w_]+)%s*=%s*(.+)$",
+                "^([%w_]+)%s*=%s*(.+)$",
             }
 
             for _, pattern in ipairs(patterns) do
                 local key, value = line:match(pattern)
                 if key and value then
-                    -- Handle different quote styles and expansion
                     value = value:match('^"(.*)"$') or value:match("^'(.*)'$") or value
-
-                    -- Basic variable expansion (e.g., $HOME)
                     value = value:gsub("%$([%w_]+)", function(var)
                         return os.getenv(var) or ("$" .. var)
                     end)
-
                     env_vars[key] = value
                     break
                 end
@@ -48,24 +149,20 @@ local function parse_envrc(file_path)
     return env_vars
 end
 
--- Function to find .envrc file in current working directory or test file directory
 local function find_envrc(test_path)
     local cwd = vim.fn.getcwd()
     local test_dir = vim.fn.fnamemodify(test_path, ":h")
 
-    -- Try current working directory first
     local envrc_path = cwd .. "/.envrc"
     if vim.fn.filereadable(envrc_path) == 1 then
         return envrc_path
     end
 
-    -- Try test file directory
     envrc_path = test_dir .. "/.envrc"
     if vim.fn.filereadable(envrc_path) == 1 then
         return envrc_path
     end
 
-    -- Try walking up from test directory to find .envrc
     local current_dir = test_dir
     while current_dir ~= "/" and current_dir ~= "" do
         envrc_path = current_dir .. "/.envrc"
@@ -83,25 +180,18 @@ require("neotest").setup({
     run = {
         enabled = true,
         augment = function(tree, args)
-            -- Get the test file path
             local test_path = tree:data().path
-
-            -- Find .envrc file
             local envrc_path = find_envrc(test_path)
 
             if envrc_path then
-                -- Parse environment variables from .envrc
                 local envrc_vars = parse_envrc(envrc_path)
-
-                -- Merge with existing env vars (existing ones take precedence)
                 args.env = args.env or {}
                 for key, value in pairs(envrc_vars) do
-                    if not args.env[key] then -- Don't override existing env vars
+                    if not args.env[key] then
                         args.env[key] = value
                     end
                 end
 
-                -- Optional: Print loaded env vars for debugging
                 if next(envrc_vars) then
                     print("Loaded env vars from " .. envrc_path .. ":")
                     for key, value in pairs(envrc_vars) do
@@ -120,7 +210,7 @@ require("neotest").setup({
             warn_test_name_dupes = false,
             go_test_args = { "-v", "-race", "-count=1" },
             env = {
-                GOARCH="amd64"
+                GOARCH = "amd64"
             }
         }),
     },
@@ -129,3 +219,4 @@ require("neotest").setup({
 require("coverage").setup({
     autoreload = true,
 })
+-- < NEOTEST

@@ -35,7 +35,19 @@ require("lazy").setup({
     -- === TOOLS
     { "akinsho/toggleterm.nvim",    version = "*", config = true }, -- terminal
     { "meznaric/key-analyzer.nvim", opts = {} },                    -- key analyzer (find available keys)
-    { "mistricky/codesnap.nvim",    tag = "v2.0.0" },               -- code screenshot
+    {
+        "mistricky/codesnap.nvim", -- code screenshot
+        tag = "v2.0.0",
+        config = function()
+            require("codesnap").setup({
+                snapshot_config = {
+                    window = {
+                        border = { width = 0, color = "#ffffff00" },
+                    },
+                },
+            })
+        end,
+    },
     { "mbbill/undotree" },                                           -- show the undo history of a file
     { "rmagatti/auto-session" },                                     -- auto session
     {

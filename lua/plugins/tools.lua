@@ -19,7 +19,11 @@ require("toggleterm").setup({
 })
 
 require("auto-session").setup({
-    cwd_change_handling = true
+    auto_restore_last_session = false,
+    cwd_change_handling = true,
+    pre_cwd_changed_cmds = {
+        "silent %bwipeout!",
+    },
 })
 
 require("mini.files").setup({

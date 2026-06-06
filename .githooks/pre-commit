@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+if command -v stylua >/dev/null 2>&1; then
+    STYLUA="$(command -v stylua)"
+elif [ -x "$HOME/.local/share/nvim/mason/bin/stylua" ]; then
+    STYLUA="$HOME/.local/share/nvim/mason/bin/stylua"
+else
+    echo "pre-commit: stylua is required to format Lua files." >&2
+    echo "Install it with :MasonInstall stylua or add stylua to PATH." >&2
+    exit 1
+fi
+
+git diff --cached --name-only --diff-filter=ACMR -- '*.lua' | while IFS= read -r file; do
+    [ -f "$file" ] || continue
+    "$STYLUA" "$file"
+    git add "$file"
+done

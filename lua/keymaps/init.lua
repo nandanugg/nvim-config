@@ -5,11 +5,10 @@ local gitsigns = require("gitsigns")
 local telescopeActions = require("telescope.actions")
 local lsp = require("keymaps.lsp")
 
--- unset q (V BLOCK) for tmux
-pcall(vim.keymap.del, "n", "<C-q>")
-pcall(vim.keymap.del, "x", "<C-q>")
-pcall(vim.keymap.del, "v", "<C-q>")
-pcall(vim.keymap.del, "i", "<C-q>")
+-- Disable Vim's built-in CTRL-Q (= CTRL-V / visual block) so it can be used as
+-- a tmux prefix. This must be mapped to <Nop>; keymap.del() only removes user
+-- mappings and cannot delete built-in Normal-mode commands.
+vim.keymap.set({ "n", "x", "i" }, "<C-q>", "<Nop>", { noremap = true, silent = true })
 
 local M = {}
 

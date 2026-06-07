@@ -5,6 +5,11 @@ local gitsigns = require("gitsigns")
 local telescopeActions = require("telescope.actions")
 local lsp = require("keymaps.lsp")
 
+-- unset q (V BLOCK) for tmux
+vim.keymap.del("n", "<C-q>")
+vim.keymap.del("v", "<C-q>")
+vim.keymap.del("i", "<C-q>")
+
 local M = {}
 
 vim.g.mapleader = " "

@@ -34,7 +34,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- basic
-vim.keymap.set("n", "<C-q>", ":q<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-q>", ":q<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-y>", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "<S-y>", '"+y', { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", ":noh<CR><Esc>", { noremap = true, silent = true })

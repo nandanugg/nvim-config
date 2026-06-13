@@ -17,12 +17,16 @@
 -- sudo sh -c 'echo :WSLInterop:M::MZ::/init:PF > /usr/lib/binfmt.d/WSLInterop.conf'
 -- sudo systemctl restart systemd-binfmt
 --
+if vim.fn.has("mac") == 1 and vim.fn.isdirectory("/opt/homebrew/bin") == 1 then
+    vim.env.PATH = "/opt/homebrew/bin:" .. vim.env.PATH
+end
+
 vim.o.cmdheight = 0
 
 vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.tabstop = 3      -- Number of spaces a tab counts for
-vim.opt.shiftwidth = 3   -- Number of spaces for indentation
-vim.opt.softtabstop = 3  -- Number of spaces for <Tab> key
+vim.opt.tabstop = 3 -- Number of spaces a tab counts for
+vim.opt.shiftwidth = 3 -- Number of spaces for indentation
+vim.opt.softtabstop = 3 -- Number of spaces for <Tab> key
 
 -- for nvimtree
 vim.g.loaded_netrw = 1

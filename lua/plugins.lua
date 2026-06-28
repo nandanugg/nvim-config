@@ -64,6 +64,10 @@ require("lazy").setup({
     { "tpope/vim-fugitive" }, -- git toolkit
     { "lewis6991/gitsigns.nvim" }, -- git changes
     {
+        "sindrets/diffview.nvim", -- git diff & file history viewer
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
         "nvim-telescope/telescope.nvim", -- main search plugin
         tag = "0.1.4",
         dependencies = { "nvim-lua/plenary.nvim" },

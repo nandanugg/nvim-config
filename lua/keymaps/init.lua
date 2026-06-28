@@ -124,6 +124,11 @@ vim.keymap.set("n", "<C-g><C-r>", gitsigns.reset_hunk, opts)
 vim.keymap.set("n", "<C-g><C-b>", gitsigns.blame, opts)
 vim.keymap.set("n", "]h", "<cmd>Gitsigns next_hunk<CR>", {})
 vim.keymap.set("n", "[h", "<cmd>Gitsigns prev_hunk<CR>", {})
+-- diffview
+vim.keymap.set("n", "<leader>dd", ":DiffviewOpen<CR>", opts)
+vim.keymap.set("n", "<leader>dq", ":DiffviewClose<CR>", opts)
+vim.keymap.set("n", "<leader>dbf", ":DiffviewFileHistory %<CR>", opts)
+vim.keymap.set("n", "<leader>dba", ":DiffviewFileHistory<CR>", opts)
 
 -- terminal
 vim.keymap.set({ "n", "t" }, "<C-\\><C-\\>", [[<Cmd>ToggleTerm<CR>]], { noremap = true, silent = true })

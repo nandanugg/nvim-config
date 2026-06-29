@@ -85,7 +85,11 @@ require("lazy").setup({
     },
 
     -- === EDITOR
-    { "nvim-treesitter/nvim-treesitter" }, -- language parser
+    {
+        "nvim-treesitter/nvim-treesitter", -- language parser
+        lazy = false,
+        build = ":TSUpdate",
+    },
     {
         "MeanderingProgrammer/render-markdown.nvim", -- markdown renderer
         dependencies = {

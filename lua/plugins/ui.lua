@@ -1,17 +1,17 @@
 -- ui.lua contain configurations for display related modification
 
 require("kanagawa").setup({
-    compile = true,   -- enable compiling the colorscheme
+    compile = true, -- enable compiling the colorscheme
     undercurl = true, -- enable undercurls
     commentStyle = { italic = true },
     functionStyle = {},
     keywordStyle = { italic = true },
     statementStyle = { bold = true },
     typeStyle = {},
-    transparent = false,   -- do not set background color
-    dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
+    transparent = false, -- do not set background color
+    dimInactive = false, -- dim inactive window `:h hl-NormalNC`
     terminalColors = true, -- define vim.g.terminal_color_{0,17}
-    colors = {             -- add/modify theme and palette colors
+    colors = { -- add/modify theme and palette colors
         palette = {},
         theme = {
             wave = {},
@@ -28,7 +28,7 @@ require("kanagawa").setup({
     overrides = function(colors) -- add/modify highlights
         return {}
     end,
-    background = {     -- map the value of 'background' option to a theme
+    background = { -- map the value of 'background' option to a theme
         dark = "wave", -- wave / lotus / dragon
     },
 })
@@ -68,15 +68,15 @@ require("neoscroll").setup({
         "zz",
         "zb",
     },
-    hide_cursor = false,         -- Hide cursor while scrolling
-    stop_eof = true,             -- Stop at <EOF> when scrolling downwards
-    respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+    hide_cursor = false, -- Hide cursor while scrolling
+    stop_eof = true, -- Stop at <EOF> when scrolling downwards
+    respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
     cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-    easing = "quadratic",        -- Default easing function
-    pre_hook = nil,              -- Function to run before the scrolling animation starts
-    post_hook = nil,             -- Function to run after the scrolling animation ends
-    performance_mode = false,    -- Disable "Performance Mode" on all buffers.
-    ignored_events = {           -- Events ignored while scrolling
+    easing = "quadratic", -- Default easing function
+    pre_hook = nil, -- Function to run before the scrolling animation starts
+    post_hook = nil, -- Function to run after the scrolling animation ends
+    performance_mode = false, -- Disable "Performance Mode" on all buffers.
+    ignored_events = { -- Events ignored while scrolling
         "WinScrolled",
         "CursorMoved",
     },
@@ -127,7 +127,7 @@ require("bufferline").setup({
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = false
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.autoindent = true
 vim.opt.number = true
 vim.opt.autoread = true

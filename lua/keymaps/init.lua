@@ -3,6 +3,7 @@
 local neotest = require("neotest")
 local gitsigns = require("gitsigns")
 local telescopeActions = require("telescope.actions")
+local navbuddyActions = require("nvim-navbuddy.actions")
 local lsp = require("keymaps.lsp")
 
 -- Disable Vim's built-in CTRL-Q (= CTRL-V / visual block) so it can be used as
@@ -15,7 +16,7 @@ local M = {}
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-require("keymaps.explorer")
+local explorer = require("keymaps.explorer")
 require("keymaps.terminal")
 
 -- autocmds for popup windows
@@ -58,10 +59,30 @@ vim.keymap.set("n", "<C-k><C-o>", "<Cmd>FzfLua oldfiles<CR>")
 vim.keymap.set("n", "<C-k><C-g>", "<cmd>FzfLua live_grep<CR>")
 vim.keymap.set("n", "<C-k><C-w>", "<cmd>FzfLua grep_cword<CR>")
 vim.keymap.set("n", "<C-k><C-b>", "<Cmd>FzfLua buffers<CR>")
+vim.keymap.set("n", "<C-k><C-e>", explorer.minifiles_toggle, { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k><C-m>", "<cmd>Telescope marks<CR>")
 vim.keymap.set("n", "<C-k><C-s>", "<cmd>Navbuddy<CR>", { desc = "Find Symbols" })
 vim.keymap.set("n", "<C-k><C-x>", "<cmd>Telescope neoclip<CR>")
 vim.keymap.set("n", "<C-k><C-u>", vim.cmd.UndotreeToggle)
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
+    callback = function(args)
+        local b = args.data.buf_id
+        vim.keymap.set("n", "<CR>", function()
+            MiniFiles.go_in({ close_on_file = true })
+        end, { buffer = b })
+        vim.keymap.set("n", "<Right>", function()
+            MiniFiles.go_in({ close_on_file = true })
+        end, { buffer = b })
+        vim.keymap.set("n", "<Left>", function()
+            MiniFiles.go_out()
+        end, { buffer = b })
+        vim.keymap.set("n", "g~", explorer.set_cwd, { buffer = b, desc = "Set cwd" })
+        vim.keymap.set("n", "gX", explorer.ui_open, { buffer = b, desc = "OS open" })
+        vim.keymap.set("n", "gy", explorer.yank_path, { buffer = b, desc = "Yank path" })
+    end,
+})
 
 -- flash
 vim.keymap.set({ "o" }, "r", function()
@@ -223,6 +244,9 @@ M.mappings = {
             ["<C-j>"] = telescopeActions.move_selection_next,
             ["<C-k>"] = telescopeActions.move_selection_previous,
         },
+    },
+    navbuddy = {
+        ["<C-c>"] = navbuddyActions.close(),
     },
     fzflua = {
         builtin = {

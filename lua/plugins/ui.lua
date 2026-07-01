@@ -82,8 +82,14 @@ require("neoscroll").setup({
     },
 })
 
+local keymaps = require("keymaps")
 local navic = require("nvim-navic")
 local navbuddy = require("nvim-navbuddy")
+
+navbuddy.setup({
+    mappings = keymaps.mappings.navbuddy,
+})
+
 require("lualine").setup({
     options = {
         globalstatus = true,
@@ -101,7 +107,7 @@ require("lualine").setup({
                 return vim.fn.expand("%")
             end,
         },
-        lualine_c = { "aerial" },
+        lualine_c = {},
         lualine_x = {
             "lsp_status",
             "encoding",

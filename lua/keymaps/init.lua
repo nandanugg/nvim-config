@@ -106,6 +106,11 @@ vim.keymap.set({ "c" }, "<c-s>", function()
 end)
 
 -- buffers / windows
+-- Ctrl+Arrow resizes splits, matching the Zellij resize keys outside Neovim.
+vim.keymap.set("n", "<C-Up>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Down>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Right>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Left>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-o>", ":resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-i>", ":resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-A-o>", ":vertical resize +5<CR>", { noremap = true, silent = true })

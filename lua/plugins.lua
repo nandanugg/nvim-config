@@ -1,5 +1,17 @@
 -- plugins.lua contain configurations for installed plugins
 
+local function move_pane(direction)
+    return function()
+        local current_window = vim.api.nvim_get_current_win()
+        local neolij = require("neolij")
+
+        neolij.move(direction)
+        if current_window == vim.api.nvim_get_current_win() then
+            neolij.zellij_action("move-focus " .. direction)
+        end
+    end
+end
+
 require("lazy").setup({
     -- === UI
     {
@@ -34,6 +46,17 @@ require("lazy").setup({
     -- === TOOLS
     { "akinsho/toggleterm.nvim", version = "*", config = true }, -- terminal
     { "meznaric/key-analyzer.nvim", opts = {} }, -- key analyzer (find available keys)
+    {
+        "y2w8/neolij.nvim", -- seamless Neovim/Zellij pane navigation
+        event = "VeryLazy",
+        opts = {},
+        keys = {
+            { "<C-h>", move_pane("left"), mode = { "n", "t" }, desc = "Move to pane on the left", silent = true },
+            { "<C-j>", move_pane("down"), mode = { "n", "t" }, desc = "Move to pane below", silent = true },
+            { "<C-k>", move_pane("up"), mode = { "n", "t" }, desc = "Move to pane above", silent = true },
+            { "<C-l>", move_pane("right"), mode = { "n", "t" }, desc = "Move to pane on the right", silent = true },
+        },
+    },
     {
         "mistricky/codesnap.nvim", -- code screenshot
         tag = "v2.0.0",

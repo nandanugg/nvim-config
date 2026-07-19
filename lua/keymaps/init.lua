@@ -115,8 +115,6 @@ vim.keymap.set("n", "<C-w><C-w>", ":Bdelete<CR>", { noremap = true, silent = tru
 vim.keymap.set("n", "<C-A-w><C-A-w>", ":BufferLineCloseOthers<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-d>", ":vsplit<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><C-s>", ":split<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-A-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-A-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true })
 

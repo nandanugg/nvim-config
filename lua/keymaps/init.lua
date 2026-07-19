@@ -106,6 +106,10 @@ vim.keymap.set({ "c" }, "<c-s>", function()
 end)
 
 -- buffers / windows
+-- Ctrl+h/l cycle buffers, Ctrl+j cycles tab pages; Ctrl+k stays the fzf prefix.
+vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-j>", ":tabnext<CR>", { noremap = true, silent = true })
 -- Ctrl+Arrow resizes splits, matching the Zellij resize keys outside Neovim.
 vim.keymap.set("n", "<C-Up>", ":resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-Down>", ":resize -5<CR>", { noremap = true, silent = true })

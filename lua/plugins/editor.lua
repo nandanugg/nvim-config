@@ -53,7 +53,6 @@ require("nvim-treesitter").install({
     "svelte",
     "swift",
     "terraform",
-    "tmux",
     "tsx",
     "typescript",
     "yaml",

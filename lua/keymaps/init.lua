@@ -6,6 +6,7 @@ local telescopeActions = require("telescope.actions")
 local navbuddyActions = require("nvim-navbuddy.actions")
 local git = require("keymaps.git")
 local lsp = require("keymaps.lsp")
+require("keymaps.github_review").setup()
 
 -- Disable Vim's built-in CTRL-Q (= CTRL-V / visual block) so it can be used as
 -- a tmux prefix. This must be mapped to <Nop>; keymap.del() only removes user

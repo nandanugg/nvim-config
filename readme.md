@@ -7,13 +7,13 @@ Make sure these tools exist before installing.
 Homebrew:
 
 ```bash
-brew tap jstkdng/programs && brew install neovim git tree-sitter fzf ripgrep fd bat sqlite go node wget prettier utftex delve gotestsum openjdk@17 php composer tilt chafa viu luarocks julia jstkdng/programs/ueberzugpp && brew install --cask font-jetbrains-mono-nerd-font && brew link --force openjdk@17
+brew tap jstkdng/programs && brew install neovim git gh tree-sitter fzf ripgrep fd bat sqlite go node wget prettier utftex delve gotestsum openjdk@17 php composer tilt chafa viu luarocks julia jstkdng/programs/ueberzugpp && brew install --cask font-jetbrains-mono-nerd-font && brew link --force openjdk@17
 ```
 
 Arch Linux official repositories:
 
 ```bash
-sudo pacman -S --needed base-devel neovim git tree-sitter-cli fzf ripgrep fd bat sqlite go nodejs npm wget prettier delve jdk17-openjdk php composer chafa viu ueberzugpp luarocks julia ttf-jetbrains-mono-nerd
+sudo pacman -S --needed base-devel neovim git github-cli tree-sitter-cli fzf ripgrep fd bat sqlite go nodejs npm wget prettier delve jdk17-openjdk php composer chafa viu ueberzugpp luarocks julia ttf-jetbrains-mono-nerd
 ```
 
 Arch Linux AUR:
@@ -32,6 +32,7 @@ go get github.com/stretchr/testify
 - Xcode Command Line Tools (`xcode-select --install`) for `clang`, `make`,
   `curl`, `tar`, `gzip`, and `unzip`
 - `git` (lazy.nvim, Mason, Telescope, fzf-lua, gitsigns, fugitive)
+- `gh`, authenticated with `gh auth login` (GitHub PR review comments)
 - `tree-sitter` (nvim-treesitter parser installs)
 - `node` and `npm` (Mason-installed JS/TS/CSS/HTML language servers)
 - `go` (Go LSP, Go testing, Go debugging)
@@ -59,3 +60,14 @@ go get github.com/stretchr/testify
 git clone git@github.com:nandanugg/nvim-config.git ~/.config/nvim
 ```
 3. Done, run `nvim` and all the config will get installed
+
+### GitHub PR line comments
+
+Select one or more lines in Visual or Visual Block mode, press `:`, then use:
+
+- `gc [comment]` to submit a short comment immediately.
+- `gce` to compose a longer Markdown comment in a new buffer. Close it
+  with `ZZ` or `:wq` to submit, or `ZQ`/`:q!` to cancel.
+
+The current branch must have an open PR. Comments target the selected lines on the
+right (head) side of its diff, and GitHub only accepts lines that are part of that diff.

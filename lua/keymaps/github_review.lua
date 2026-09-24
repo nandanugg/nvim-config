@@ -18,6 +18,87 @@ local function run(command, cwd)
     return vim.trim(result.stdout or "")
 end
 
+local function commentable_hunks(patch)
+    local hunks = {}
+    local hunk
+    local right_line
+
+    for line in (patch .. "\n"):gmatch("(.-)\n") do
+        local start = line:match("^@@ %-%d+,?%d* %+(%d+),?%d* @@")
+        if start then
+            right_line = tonumber(start)
+            hunk = { lines = {} }
+            table.insert(hunks, hunk)
+        elseif hunk then
+            local prefix = line:sub(1, 1)
+            if prefix == "+" or prefix == " " then
+                hunk.lines[right_line] = true
+                hunk.first = hunk.first or right_line
+                hunk.last = right_line
+                right_line = right_line + 1
+            elseif prefix ~= "-" and prefix ~= "\\" then
+                hunk = nil
+            end
+        end
+    end
+
+    return hunks
+end
+
+local function validate_range(repository, pr_number, path, line1, line2, root)
+    local output, files_error = run({
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "--paginate",
+        "--slurp",
+        "-F",
+        "per_page=100",
+        "repos/" .. repository .. "/pulls/" .. pr_number .. "/files",
+    }, root)
+    if not output then
+        return nil, "Could not inspect the PR diff: " .. files_error
+    end
+
+    local decoded, pages = pcall(vim.json.decode, output)
+    if not decoded or type(pages) ~= "table" then
+        return nil, "Could not read the PR diff"
+    end
+
+    local patch
+    for _, page in ipairs(pages) do
+        for _, file in ipairs(page) do
+            if file.filename == path then
+                patch = file.patch
+                break
+            end
+        end
+        if patch then
+            break
+        end
+    end
+    if not patch then
+        return nil, path .. " is not part of the PR's text diff"
+    end
+
+    local hunks = commentable_hunks(patch)
+    for _, hunk in ipairs(hunks) do
+        if hunk.lines[line1] and hunk.lines[line2] then
+            return true
+        end
+    end
+
+    local ranges = {}
+    for _, hunk in ipairs(hunks) do
+        if hunk.first then
+            table.insert(ranges, hunk.first == hunk.last and tostring(hunk.first) or (hunk.first .. "-" .. hunk.last))
+        end
+    end
+    local available = #ranges > 0 and ". Commentable hunk(s): " .. table.concat(ranges, ", ") or ""
+    return nil, "Selected lines " .. line1 .. "-" .. line2 .. " are outside the PR diff for " .. path .. available
+end
+
 local function review_target(line1, line2)
     local file = vim.api.nvim_buf_get_name(0)
     if file == "" or vim.bo.buftype ~= "" then
@@ -61,10 +142,16 @@ local function review_target(line1, line2)
         return nil, "PR #" .. pr.number .. " is " .. pr.state .. "; comments can only be added to an open PR"
     end
 
+    line1, line2 = math.min(line1, line2), math.max(line1, line2)
+    local valid, range_error = validate_range(repository, tostring(pr.number), path, line1, line2, root)
+    if not valid then
+        return nil, range_error
+    end
+
     return {
         commit = pr.headRefOid,
-        line1 = math.min(line1, line2),
-        line2 = math.max(line1, line2),
+        line1 = line1,
+        line2 = line2,
         path = path,
         pr_number = tostring(pr.number),
         repository = repository,

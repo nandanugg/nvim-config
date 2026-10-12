@@ -25,8 +25,11 @@ require("kanagawa").setup({
             },
         },
     },
-    overrides = function(colors) -- add/modify highlights
-        return {}
+    overrides = function(colors) -- add/modify highlights, then run :KanagawaCompile
+        return {
+            -- ternary values, captured in after/queries/ecma/highlights.scm
+            ["@ternary.value"] = { bold = true, italic = true },
+        }
     end,
     background = { -- map the value of 'background' option to a theme
         dark = "wave", -- wave / lotus / dragon

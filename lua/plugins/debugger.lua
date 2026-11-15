@@ -209,9 +209,14 @@ require("neotest").setup({
             testify_enabled = true,
             warn_test_name_dupes = false,
             go_test_args = { "-v", "-race", "-count=1" },
-            env = {
-                GOARCH = "amd64"
-            }
+            env = function()
+                -- Resolved on first test run (not at startup) and cached.
+                if not vim.g.go_host_arch then
+                    local arch = vim.trim(vim.fn.system({ "go", "env", "GOHOSTARCH" }))
+                    vim.g.go_host_arch = vim.v.shell_error == 0 and arch or ""
+                end
+                return vim.g.go_host_arch ~= "" and { GOARCH = vim.g.go_host_arch } or {}
+            end,
         }),
     },
 })

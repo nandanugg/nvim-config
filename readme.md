@@ -7,50 +7,56 @@ Make sure these tools exist before installing.
 Homebrew:
 
 ```bash
-brew tap jstkdng/programs && brew install neovim git gh tree-sitter fzf ripgrep fd bat sqlite go node wget prettier utftex delve gotestsum openjdk@17 php composer tilt chafa viu luarocks julia jstkdng/programs/ueberzugpp && brew install --cask font-jetbrains-mono-nerd-font && brew link --force openjdk@17
+brew install neovim git gh tree-sitter-cli fzf ripgrep fd bat go node wget prettier utftex delve openjdk@21 tilt && brew install --cask font-jetbrains-mono-nerd-font && brew link --force openjdk@21
 ```
 
 Arch Linux official repositories:
 
 ```bash
-sudo pacman -S --needed base-devel neovim git github-cli tree-sitter-cli fzf ripgrep fd bat sqlite go nodejs npm wget prettier delve jdk17-openjdk php composer chafa viu ueberzugpp luarocks julia ttf-jetbrains-mono-nerd
+sudo pacman -S --needed base-devel curl unzip neovim git github-cli tree-sitter-cli fzf ripgrep fd bat go nodejs npm wget prettier delve jdk21-openjdk ttf-jetbrains-mono-nerd
 ```
 
 Arch Linux AUR:
 
 ```bash
-paru -S --needed gotestsum tilt-bin libtexprintf-git
-```
-
-Go projects that use Testify suites:
-
-```bash
-go get github.com/stretchr/testify
+paru -S --needed tilt-bin libtexprintf-git
 ```
 
 - `neovim` >= 0.12 (required by the current `nvim-treesitter` branch)
-- Xcode Command Line Tools (`xcode-select --install`) for `clang`, `make`,
-  `curl`, `tar`, `gzip`, and `unzip`
+- A C compiler, `make`, `curl`, `tar`, `gzip`, and `unzip` (nvim-treesitter parser
+  builds, Mason downloads, codesnap library download, `go test -race`).
+  On macOS install Xcode Command Line Tools (`xcode-select --install`); on Arch use
+  `base-devel`, `curl`, and `unzip`
 - `git` (lazy.nvim, Mason, Telescope, fzf-lua, gitsigns, fugitive)
 - `gh`, authenticated with `gh auth login` (GitHub PR review comments)
-- `tree-sitter` (nvim-treesitter parser installs)
-- `node` and `npm` (Mason-installed JS/TS/CSS/HTML language servers)
-- `go` (Go LSP, Go testing, Go debugging)
+- `tree-sitter-cli` >= 0.26.1 (nvim-treesitter parser installs; use the package
+  manager, not npm)
+- `node` and `npm` (Mason-installed JS/TS/CSS/HTML/PHP language servers)
+- `go` (Go LSP, Go formatters, Go testing, Go debugging)
 - `wget` (Mason downloader fallback)
 - `prettier` (Conform fallback formatter for JS/TS/Astro/HTML)
 - `utftex` (render-markdown LaTeX rendering)
-- `ripgrep` (Telescope, fzf-lua, frecency)
+- `ripgrep` (Telescope, fzf-lua)
 - `fzf` (fzf-lua)
-- `fd` (Telescope, fzf-lua, frecency)
+- `fd` (Telescope, fzf-lua)
 - `bat` (syntax-highlighted previews)
-- `sqlite3` (sqlite.lua, neoclip, frecency)
-- `delve`, `gotestsum`, and `testify` (Go debugging and neotest-golang)
-- `openjdk@17` / `jdk17-openjdk` (Java LSP support with `jdtls`)
-- `php` and `composer` (PHP tooling)
+- `delve` (Go debugging)
+- `openjdk@21` / `jdk21-openjdk` (`jdtls` requires Java 21+, also used by
+  `google-java-format`)
 - `tilt` (Tiltfile LSP support)
-- `chafa`, `viu`, and `ueberzugpp` (fzf-lua media previews)
-- `luarocks` and `julia` (Mason language package manager checks)
 - Nerd Font (icons used by UI and markdown rendering)
+
+### Optional
+
+Not required by the config, but useful for specific workflows or to silence
+`:checkhealth` warnings:
+
+- `gotestsum` (alternative neotest-golang runner, currently disabled):
+  `go install gotest.tools/gotestsum@latest`
+- `php` and `composer` (running PHP projects; intelephense itself does not need them)
+- `chafa`, `viu`, and `ueberzugpp` (fzf-lua image previews). Homebrew:
+  `brew install chafa viu jstkdng/programs/ueberzugpp`
+- `luarocks` and `julia` (only silence `:checkhealth mason` warnings)
 
 ### Installing
 

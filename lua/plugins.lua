@@ -52,7 +52,6 @@ require("lazy").setup({
     {
         "AckslD/nvim-neoclip.lua", -- search clipboard
         dependencies = {
-            { "kkharji/sqlite.lua", module = "sqlite" },
             { "nvim-telescope/telescope.nvim" },
         },
         config = function()
@@ -75,7 +74,7 @@ require("lazy").setup({
         "ibhagwan/fzf-lua", -- fuzzy finder
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
-    { "nvim-telescope/telescope-frecency.nvim", dependencies = { "tami5/sqlite.lua" } }, -- search recent opened files
+    { "nvim-telescope/telescope-frecency.nvim" }, -- search recent opened files
     { "echasnovski/mini.files", version = "*" }, -- file explorer
     {
         "folke/flash.nvim", -- jump

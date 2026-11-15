@@ -111,7 +111,7 @@ end)
 vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-j>", ":tabnext<CR>", { noremap = true, silent = true })
--- Ctrl+Arrow resizes splits, matching the Zellij resize keys outside Neovim.
+-- Ctrl+Arrow resizes splits.
 vim.keymap.set("n", "<C-Up>", ":resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-Down>", ":resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-Right>", ":vertical resize -5<CR>", { noremap = true, silent = true })
